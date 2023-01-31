@@ -35,9 +35,11 @@ export default {
         const response = await axios.post("http://127.0.0.1:5000/", this.formData,{headers: {
                     "Content-Type": "multipart/form-data" }}
 );
-        console.log(response.data);
+        if(response.status != 200){
+            console.log(response.data);
+        }
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     }
   }
