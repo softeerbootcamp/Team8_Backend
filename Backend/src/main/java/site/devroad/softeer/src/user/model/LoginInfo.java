@@ -13,4 +13,8 @@ public class LoginInfo {
         this.accountId = accountId;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
 }
