@@ -41,7 +41,7 @@ public class PostSignUpReq {
     public boolean hasNull() {
         if (email == null || name == null || phoneNumber == null || password == null)
             return true;
-        if (email.equals("") || name.equals("") || phoneNumber.equals("") || password.equals(""))
+        if (email.trim().equals("") || name.trim().equals("") || phoneNumber.trim().equals("") || password.trim().equals(""))
             return true;
         return false;
     }
