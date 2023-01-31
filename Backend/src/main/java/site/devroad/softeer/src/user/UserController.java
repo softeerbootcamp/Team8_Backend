@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.user.dto.PostSignInReq;
+import site.devroad.softeer.src.user.dto.PostSignInRes;
 import site.devroad.softeer.src.user.dto.PostSignUpReq;
 import site.devroad.softeer.src.user.dto.PostSignUpRes;
 
@@ -25,5 +27,15 @@ public class UserController {
         }
         userService.join(postSignUpReq);
         return new ResponseEntity<>(new PostSignUpRes(), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/api/user/signin")
+    public ResponseEntity<?> postSignUp(@RequestBody PostSignInReq postSignInReq) {
+        try {
+            String jwt = userService.signIn(postSignInReq);
+            return new ResponseEntity<>(new PostSignInRes(jwt), HttpStatus.CREATED);
+        } catch (CustomException e) {
+            return e.getResponseEntity();
+        }
     }
 }
