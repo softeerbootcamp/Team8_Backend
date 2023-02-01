@@ -21,10 +21,11 @@ public class UserService {
         return userRepo.findByEmail(email).isPresent();
     }
 
-    public void join(PostSignUpReq req) {
-        Account student = userRepo.addAccountInfo(req.getName(), req.getPhoneNumber(), "Student");
+    public void join(PostSignUpReq req) throws CustomException {
+        validateSignUp(req);
+        Account student = userRepo.createAccountInfo(req.getName(), req.getPhone(), "Student");
         String hashPassword = BCrypt.hashpw(req.getPassword(), BCrypt.gensalt());
-        userRepo.addLoginInfo(req.getEmail(), hashPassword, student.getId());
+        userRepo.createLoginInfo(req.getEmail(), hashPassword, student.getId());
     }
 
     public String signIn(PostSignInReq req) throws CustomException {
@@ -39,5 +40,14 @@ public class UserService {
             return "magicalJWT";
         }
         throw new CustomException(ExceptionType.AUTHENTICATION_FAILED);
+    }
+
+    public void validateSignUp(PostSignUpReq req) throws CustomException {
+        String phone = req.getPhone();
+        String email = req.getEmail();
+        if (userRepo.findByPhone(phone).isEmpty())
+            throw new CustomException(ExceptionType.POST_ACCOUNT_PHONE_DUPLICATED);
+        if (userRepo.findByEmail(email).isEmpty())
+            throw new CustomException(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED);
     }
 }
