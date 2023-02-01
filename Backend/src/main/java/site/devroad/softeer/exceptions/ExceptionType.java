@@ -1,11 +1,9 @@
 package site.devroad.softeer.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @JsonFormat
-@Getter
 public enum ExceptionType {
     //Account Related Exceptions
     ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "Account not found", 1001),
@@ -37,5 +35,9 @@ public enum ExceptionType {
 
     public HttpStatus getStatus() {
         return httpStatus;
+    }
+
+    public Integer getCustomErrorCode() {
+        return customErrorCode;
     }
 }

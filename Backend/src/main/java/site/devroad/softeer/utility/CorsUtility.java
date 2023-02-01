@@ -1,4 +1,4 @@
-package site.devroad.softeer.config;
+package site.devroad.softeer.utility;
 
 import org.springframework.http.HttpHeaders;
 
