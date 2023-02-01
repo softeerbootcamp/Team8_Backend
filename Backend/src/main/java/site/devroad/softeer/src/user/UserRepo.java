@@ -45,6 +45,15 @@ public class UserRepo {
         }
     }
 
+    public Optional<Account> findByPhone(String phone) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Account WHERE phone = ?", accountRowMapper(), phone));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+
     private RowMapper<LoginInfo> loginInfoRowMapper() {
         return ((rs, rowNum) -> {
             Long id = (rs.getLong("id"));
