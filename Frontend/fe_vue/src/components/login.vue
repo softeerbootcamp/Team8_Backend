@@ -9,7 +9,6 @@
           <label for="InputPassword1" class="form-label">Password</label>
           <input type="password" class="form-control" v-model="formData.password" id="InputPassword1">
         </div>
-    
         <button type="submit" variant="primary">Submit</button>
       </form>
     </div>
@@ -37,9 +36,7 @@
           "http://127.0.0.1:5000/",
           {
             "email": this.formData.email,
-            "password": this.formData.password,
-            "name": this.formData.name,
-            "phoneNumber": this.formData.phoneNumber
+            "password": this.formData.password
           }
           ,
            {headers: {
