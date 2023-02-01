@@ -34,7 +34,7 @@ public class UserController {
     public CustomRes<?> postSignUp(@RequestBody PostSignInReq postSignInReq) {
         try {
             String jwt = userService.signIn(postSignInReq);
-            return new CustomRes<>(new PostSignInRes(jwt), HttpStatus.CREATED);
+            return new CustomRes<>(new PostSignInRes(jwt), HttpStatus.OK);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
