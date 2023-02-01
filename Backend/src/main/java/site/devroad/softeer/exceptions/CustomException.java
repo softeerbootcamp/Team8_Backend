@@ -1,6 +1,5 @@
 package site.devroad.softeer.exceptions;
 
-import site.devroad.softeer.utility.CorsUtility;
 import site.devroad.softeer.utility.CustomRes;
 
 import java.util.Map;
@@ -24,7 +23,6 @@ public class CustomException extends Exception {
         return new CustomRes<>(
                 Map.of("message", exceptionType.getMessage(),
                         "customErrorCode", exceptionType.getCustomErrorCode()),
-                CorsUtility.defaultHeader(),
                 exceptionType.getStatus());
     }
 }
