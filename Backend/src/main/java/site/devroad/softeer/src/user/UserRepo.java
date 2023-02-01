@@ -33,6 +33,10 @@ public class UserRepo {
         return jdbcTemplate.queryForObject("SELECT * FROM Account WHERE phone = ?", accountRowMapper(), phone);
     }
 
+    public void deleteLoginInfo(Long id) {
+        jdbcTemplate.update("DELETE FROM LoginInfo where id = ?", id);
+    }
+
     public Optional<LoginInfo> findByEmail(String email) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM LoginInfo WHERE email = ?", loginInfoRowMapper(), email));
