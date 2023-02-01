@@ -17,8 +17,7 @@ export default {
   name: 'App',
   data() {
     return {
-      신고수: 0,
-      메뉴들: ["Home", "About"],
+      메뉴들: ["Home"],
     }
   },
   methods: {
