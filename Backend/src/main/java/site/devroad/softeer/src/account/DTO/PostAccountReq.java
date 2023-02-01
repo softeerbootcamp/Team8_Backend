@@ -7,6 +7,7 @@ public class PostAccountReq {
     private String name;
     private String email;
     private String password;
+    private String phoneNumber;
 
     public boolean isValid(){
         return name != null && email != null && password != null;
