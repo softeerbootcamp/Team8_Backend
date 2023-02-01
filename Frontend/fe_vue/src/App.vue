@@ -1,44 +1,23 @@
 <template>
-  <div class="black-bg" v-if="모달창열렸니 == true">
-    <div class="white-bg">
-      <h4>
-        상세페이지임
-      </h4>
-      <button @click="모달창열렸니 = false">
-        닫기
-      </button>
-      <p>
-        상세페이지 내용임
-      </p>
-    </div>
-  </div>
-
+<div class="mainLogo">
+  DevRoad
+</div>
   <div class="menu">
-    <a v-for="hi in 메뉴들" :key="hi">{{ hi }}</a>
-  </div>
-  <div>
-    <h4 @click="모달창열렸니 = true">{{ products[0] }} </h4><p>50만원</p>
-
-    <button @mouseover="신고수++"> 허위매물 신고</button> <span>신고 수 : {{ 신고수 }}</span>
-
+    <a>
+      <router-link to="/signup">회원가입</router-link>
+    </a>
   </div>
 <div>
-  <router-link to="/signup">회원가입</router-link>
   <router-view> </router-view>
 </div>
 </template>
 
 <script>
-import data from './assets/oneroom.js'
 export default {
   name: 'App',
   data() {
     return {
-      원룸들 : data,
-      모달창열렸니:false,
-      신고수: 0,
-      메뉴들: ["Home", "Shop", "About"],
-      products: ['역삼 원룸', '천호 원룸 ', '마포구 원룸']
+      메뉴들: ["Home"],
     }
   },
   methods: {
@@ -82,10 +61,16 @@ div{
   border-radius: 5px;
 
 }
-
+.mainLogo{
+  color: darkslateblue;
+  text-align: left;
+  font-size: 30px;
+}
 .menu a {
   color: white;
   padding: 10px;
+  text-decoration: none;
+
 }
 
 .room_image {
