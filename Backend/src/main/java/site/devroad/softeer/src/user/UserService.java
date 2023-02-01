@@ -41,9 +41,9 @@ public class UserService {
     public void validateSignUp(PostSignUpReq req) throws CustomException {
         String phone = req.getPhone();
         String email = req.getEmail();
-        if (userRepo.findByPhone(phone).isEmpty())
+        if (userRepo.findByPhone(phone).isPresent())
             throw new CustomException(ExceptionType.POST_ACCOUNT_PHONE_DUPLICATED);
-        if (userRepo.findByEmail(email).isEmpty())
+        if (userRepo.findByEmail(email).isPresent())
             throw new CustomException(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED);
     }
 }
