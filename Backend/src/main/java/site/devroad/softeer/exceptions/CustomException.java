@@ -3,6 +3,7 @@ package site.devroad.softeer.exceptions;
 import java.util.Map;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
+import site.devroad.softeer.config.CorsUtility;
 
 @Getter
 public class CustomException extends Exception{
@@ -21,6 +22,7 @@ public class CustomException extends Exception{
         return new ResponseEntity<>(
                 Map.of("message", exceptionType.getMessage(),
                         "customErrorCode", exceptionType.getCustomErrorCode()),
+                CorsUtility.defaultHeader(),
                 exceptionType.getStatus());
     }
 }
