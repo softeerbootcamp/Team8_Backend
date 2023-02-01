@@ -1,15 +1,14 @@
 <template>
-  <router-link to="/userhome" class="mainLogo">DevRoad</router-link>
+  <router-link to="/" class="mainLogo">DevRoad</router-link>
   <div class="menu">
-    <a>
-      <router-link to="/signup" v-if="!isLogin">회원가입</router-link>
+    <a v-if="!isLogin">
+      <router-link to="/signup">회원가입</router-link>
     </a>
-    <a>
-      <router-link to="/login" v-if="!isLogin">로그인</router-link>
+    <a v-if="!isLogin">
+      <router-link to="/login" >로그인</router-link>
     </a>
-    <a>
-      <!-- todo : 로그아웃으로 라우터 링크 보내야함. -->
-      <router-link to="/userhome" v-if="isLogin">로그아웃</router-link>
+    <a v-if="isLogin">
+      <router-link to="/">로그아웃</router-link>
     </a>
   </div>
 <div>

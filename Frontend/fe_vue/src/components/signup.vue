@@ -56,7 +56,7 @@ export default {
     async submitForm() {
       try {
             const response = await axios.post(
-          "http://127.0.0.1:5000/",
+          "http://127.0.0.1:5000/"+"api/user/signup",
           {
             "email": this.formData.email,
             "password": this.formData.password,
