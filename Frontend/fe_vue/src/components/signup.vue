@@ -55,16 +55,23 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await axios.post("http://127.0.0.1:5000/", this.formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
+            const response = await axios.post(
+          "http://127.0.0.1:5000/",
+          {
+            "email": this.formData.email,
+            "password": this.formData.password,
+            "name": this.formData.name,
+            "phoneNumber": this.formData.phoneNumber
           }
-        }
+          ,
+           {headers: {
+                    "Content-Type": "application/json" }
+                  }
         );
-        if (response.status != 200) {
-          console.log(response.data);
-        }
-      } catch (error) {
+          if (response.status != 200) {
+            console.log(response.data);
+          }
+        } catch (error) {
         //console.error(error);
       }
     }
