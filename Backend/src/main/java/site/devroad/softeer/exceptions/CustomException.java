@@ -1,12 +1,10 @@
 package site.devroad.softeer.exceptions;
 
-import java.util.Map;
-import lombok.Getter;
-import org.springframework.http.ResponseEntity;
-import site.devroad.softeer.config.CorsUtility;
+import site.devroad.softeer.utility.CustomRes;
 
-@Getter
-public class CustomException extends Exception{
+import java.util.Map;
+
+public class CustomException extends Exception {
     private final ExceptionType exceptionType;
 
     public CustomException(ExceptionType response) {
@@ -17,12 +15,14 @@ public class CustomException extends Exception{
         return exceptionType;
     }
 
-    public ResponseEntity<?> getResponseEntity() {
+    public ExceptionType getExceptionType() {
+        return exceptionType;
+    }
 
-        return new ResponseEntity<>(
+    public CustomRes<?> getResponseEntity() {
+        return new CustomRes<>(
                 Map.of("message", exceptionType.getMessage(),
                         "customErrorCode", exceptionType.getCustomErrorCode()),
-                CorsUtility.defaultHeader(),
                 exceptionType.getStatus());
     }
 }
