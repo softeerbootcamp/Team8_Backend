@@ -17,10 +17,6 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-    public boolean isEmailExist(String email) {
-        return userRepo.findByEmail(email).isPresent();
-    }
-
     public void join(PostSignUpReq req) throws CustomException {
         validateSignUp(req);
         Account student = userRepo.createAccountInfo(req.getName(), req.getPhone(), "Student");

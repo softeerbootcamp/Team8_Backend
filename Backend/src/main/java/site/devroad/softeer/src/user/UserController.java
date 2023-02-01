@@ -22,11 +22,12 @@ public class UserController {
     public ResponseEntity<?> postSignUp(@RequestBody PostSignUpReq postSignUpReq) {
         if (postSignUpReq.hasNull())
             return new CustomException(ExceptionType.POST_ACCOUNT_FORM_INVALID).getResponseEntity();
-        if (userService.isEmailExist(postSignUpReq.getEmail())) {
-            return new CustomException(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED).getResponseEntity();
+        try {
+            userService.join(postSignUpReq);
+            return new ResponseEntity<>(new PostSignUpRes(), HttpStatus.CREATED);
+        } catch (CustomException e) {
+            return e.getResponseEntity();
         }
-        userService.join(postSignUpReq);
-        return new ResponseEntity<>(new PostSignUpRes(), HttpStatus.CREATED);
     }
 
     @PostMapping("/api/user/signin")
