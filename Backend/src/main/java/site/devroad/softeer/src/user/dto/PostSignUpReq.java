@@ -6,6 +6,13 @@ public class PostSignUpReq {
     private String phoneNumber;
     private String password;
 
+    public PostSignUpReq(String email, String name, String phoneNumber, String password) {
+        this.email = email;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
