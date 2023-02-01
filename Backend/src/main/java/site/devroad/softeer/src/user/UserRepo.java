@@ -21,20 +21,24 @@ public class UserRepo {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public LoginInfo addLoginInfo(String email, String password, Long accountId) {
+    public LoginInfo createLoginInfo(String email, String password, Long accountId) {
         jdbcTemplate.update("INSERT INTO LoginInfo (email, password, account_id) VALUES (?, ?, ?)",
                 email, password, accountId);
         return jdbcTemplate.queryForObject("SELECT * FROM LoginInfo WHERE email = ?", loginInfoRowMapper(), email);
     }
 
-    public Account addAccountInfo(String name, String phone, String type) {
+    public Account createAccountInfo(String name, String phone, String type) {
         jdbcTemplate.update("INSERT INTO Account (name, phone, type) VALUES (?, ?, ?)",
                 name, phone, type);
         return jdbcTemplate.queryForObject("SELECT * FROM Account WHERE phone = ?", accountRowMapper(), phone);
     }
 
-    public void deleteLoginInfo(Long id) {
+    public void deleteLoginInfoById(Long id) {
         jdbcTemplate.update("DELETE FROM LoginInfo where id = ?", id);
+    }
+
+    public void deleteAccountById(Long id) {
+        jdbcTemplate.update("DELETE FROM Account where id = ?", id);
     }
 
     public Optional<LoginInfo> findByEmail(String email) {
