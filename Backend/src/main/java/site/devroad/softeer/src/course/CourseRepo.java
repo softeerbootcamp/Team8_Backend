@@ -34,9 +34,9 @@ public class CourseRepo {
     }
     private RowMapper<Subject> subjectRowMapper(){
         return (rs, rowNum) -> {
-            Long id = (rs.getLong("id"));
-            String name = (rs.getString("name"));
-            String explain = (rs.getString("explain"));
+            Long id = rs.getLong("id");
+            String name = rs.getString("name");
+            String explain = rs.getString("explain");
             return new Subject(id, name, explain);
         };
     }
