@@ -3,8 +3,15 @@ package site.devroad.softeer.src.user.dto;
 public class PostSignUpReq {
     private String email;
     private String name;
-    private String phoneNumber;
+    private String phone;
     private String password;
+
+    public PostSignUpReq(String email, String name, String phone, String password) {
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.password = password;
+    }
 
     public String getEmail() {
         return email;
@@ -22,12 +29,12 @@ public class PostSignUpReq {
         this.name = name;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getPassword() {
@@ -39,9 +46,9 @@ public class PostSignUpReq {
     }
 
     public boolean hasNull() {
-        if (email == null || name == null || phoneNumber == null || password == null)
+        if (email == null || name == null || phone == null || password == null)
             return true;
-        if (email.trim().equals("") || name.trim().equals("") || phoneNumber.trim().equals("") || password.trim().equals(""))
+        if (email.trim().equals("") || name.trim().equals("") || phone.trim().equals("") || password.trim().equals(""))
             return true;
         return false;
     }
