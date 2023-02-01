@@ -13,6 +13,10 @@ public class LoginInfo {
         this.accountId = accountId;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getPassword() {
         return password;
     }
