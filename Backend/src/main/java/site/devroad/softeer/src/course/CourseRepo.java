@@ -1,4 +1,4 @@
 package site.devroad.softeer.src.lecture.model;
 
-public class Lecture {
+public class CourseRepo {
 }
