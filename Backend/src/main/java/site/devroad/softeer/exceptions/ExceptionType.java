@@ -14,6 +14,8 @@ public enum ExceptionType {
     POST_ACCOUNT_EMAIL_DUPLICATED(HttpStatus.BAD_REQUEST, "중복된 email이  있습니다.", 1004),
     ACCOUNT_NOT_UPDATED(HttpStatus.BAD_REQUEST, "Account not updated", 1005),
     AUTHENTICATION_FAILED(HttpStatus.BAD_REQUEST, "Password가 잘못되었습니다.", 1006),
+    POST_ACCOUNT_PHONE_DUPLICATED(HttpStatus.BAD_REQUEST, "중복된 휴대폰 번호가 있습니다.", 1007),
+
 
     //Database Related Exceptions
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Database error", 1101),
