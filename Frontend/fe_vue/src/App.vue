@@ -1,13 +1,14 @@
 <template>
-<div class="mainLogo">
-  DevRoad
-</div>
+  <router-link to="/" class="mainLogo">DevRoad</router-link>
   <div class="menu">
-    <a>
+    <a v-if="!isLogin">
       <router-link to="/signup">회원가입</router-link>
     </a>
-    <a>
-      <router-link to="/login">로그인</router-link>
+    <a v-if="!isLogin">
+      <router-link to="/login" >로그인</router-link>
+    </a>
+    <a v-if="isLogin">
+      <router-link to="/">로그아웃</router-link>
     </a>
   </div>
 <div>
@@ -21,6 +22,7 @@ export default {
   data() {
     return {
       메뉴들: ["Home"],
+      isLogin : false
     }
   },
   methods: {
@@ -68,6 +70,7 @@ div{
   color: darkslateblue;
   text-align: left;
   font-size: 30px;
+  text-decoration: none;
 }
 .menu a {
   color: white;
@@ -76,7 +79,4 @@ div{
 
 }
 
-.room_image {
-  width: 100%;
-}
 </style>
