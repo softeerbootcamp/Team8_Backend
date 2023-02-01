@@ -1,7 +1,5 @@
 <template>
-<div class="mainLogo">
-  DevRoad
-</div>
+  <router-link to="/" class="mainLogo">DevRoad</router-link>
   <div class="menu">
     <a>
       <router-link to="/signup">회원가입</router-link>
@@ -68,6 +66,7 @@ div{
   color: darkslateblue;
   text-align: left;
   font-size: 30px;
+  text-decoration: none;
 }
 .menu a {
   color: white;
@@ -76,7 +75,4 @@ div{
 
 }
 
-.room_image {
-  width: 100%;
-}
 </style>
