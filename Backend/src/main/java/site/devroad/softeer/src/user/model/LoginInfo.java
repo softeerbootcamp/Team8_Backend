@@ -21,4 +21,8 @@ public class LoginInfo {
         return password;
     }
 
+    public Long getAccountId(){
+        return accountId;
+    }
+
 }
