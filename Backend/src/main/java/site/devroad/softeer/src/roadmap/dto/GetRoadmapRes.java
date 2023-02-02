@@ -7,8 +7,8 @@ public class GetRoadmapRes {
     boolean success;
     Map<String, List<List<Object>>> subjects;
 
-    public GetRoadmapRes(boolean success, Map<String, List<List<Object>>> subjects) {
-        this.success = success;
+    public GetRoadmapRes(Map<String, List<List<Object>>> subjects) {
+        this.success = true;
         this.subjects = subjects;
     }
 
