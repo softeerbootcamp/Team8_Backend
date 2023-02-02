@@ -8,4 +8,12 @@ public class PostSignInRes {
         this.isSucess = true;
         this.jwt = jwt;
     }
+
+    public boolean isSucess() {
+        return isSucess;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
 }
