@@ -56,7 +56,7 @@ export default {
     async submitForm() {
       try {
             const response = await axios.post(
-          "http://127.0.0.1:5000/"+"api/user/signup",
+          "http://backend.devroad.site/"+"api/user/signup",
           {
             "email": this.formData.email,
             "password": this.formData.password,
@@ -67,7 +67,13 @@ export default {
            {headers: {
                     "Content-Type": "application/json" }
                   }
-        );
+        ).then(function (response) {
+          if (response.data.success) {
+            this.$router.push('/')
+          }else{
+            console.log("login failed : " +response.data.success);
+          }
+        });
           if (response.status != 200) {
             console.log(response.data);
           }
