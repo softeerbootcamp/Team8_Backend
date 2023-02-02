@@ -22,7 +22,8 @@ public class CustomException extends Exception {
     public CustomRes<?> getResponseEntity() {
         return new CustomRes<>(
                 Map.of("message", exceptionType.getMessage(),
-                        "customErrorCode", exceptionType.getCustomErrorCode()),
+                        "customErrorCode", exceptionType.getCustomErrorCode(),
+                        "success", false),
                 exceptionType.getStatus());
     }
 }
