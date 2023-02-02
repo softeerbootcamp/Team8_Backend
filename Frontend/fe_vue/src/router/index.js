@@ -3,10 +3,12 @@ import SignUp from '@/components/signup.vue'
 import LogIn from '@/components/login.vue'
 import RoadMap from '@/view/roadmap.vue'
 import CourseView from '@/view/courseView.vue'
+import UserHome from '@/view/userhome.vue'
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
 const routes = [
+
   {
     path:'/',
     name : 'Home',
@@ -24,6 +26,11 @@ const routes = [
         props : true
       },
     ]
+  },
+  {
+    path: '/userhome',
+    name: 'UserHome',
+    component: UserHome
   },
   {
     path: '/signup',

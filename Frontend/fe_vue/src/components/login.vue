@@ -30,8 +30,6 @@ export default {
   },
 
   methods: {
-  
-
     async loginForm() {
       try {
         const response = await axios.post(
@@ -49,7 +47,7 @@ export default {
         ).then(response => {
           if (response.data.success) {
             this.$store.commit("setLoginStatus", true);
-            this.$router.push({ name: "Home" });
+            this.$router.push({ name: "UserHome" });
           } else {
             console.log("login failed : " + response.data.success);
           }
