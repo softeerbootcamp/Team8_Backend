@@ -17,11 +17,11 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-    public void join(PostSignUpReq req) throws CustomException {
+    public Long join(PostSignUpReq req) throws CustomException {
         validateSignUp(req);
         Account student = userRepo.createAccountInfo(req.getName(), req.getPhone(), "Student");
         String hashPassword = BCrypt.hashpw(req.getPassword(), BCrypt.gensalt());
-        userRepo.createLoginInfo(req.getEmail(), hashPassword, student.getId());
+        return userRepo.createLoginInfo(req.getEmail(), hashPassword, student.getId()).getId();
     }
 
     public String signIn(PostSignInReq req) throws CustomException {

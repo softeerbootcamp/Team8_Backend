@@ -23,8 +23,8 @@ public class UserController {
         if (postSignUpReq.hasNull())
             return new CustomException(ExceptionType.POST_ACCOUNT_FORM_INVALID).getResponseEntity();
         try {
-            userService.join(postSignUpReq);
-            return new CustomRes<>(new PostSignUpRes(), HttpStatus.CREATED);
+            Long id = userService.join(postSignUpReq);
+            return new CustomRes<>(new PostSignUpRes(id), HttpStatus.CREATED);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
