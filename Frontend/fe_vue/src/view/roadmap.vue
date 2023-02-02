@@ -81,8 +81,8 @@ export default {
             this.setSubIdFromData(subid);
             var vm = this;
             //api/roadmap/{:roadmapId}/{:subjectId}
-            axios.get('http://127.0.0.1:5000/' + 'api/roadmap/' + this.roadmapId +'/' +subid)
-                .then(function (response) {
+            axios.get('https://backend.devroad.site/' + 'api/roadmap/' + this.roadmapId +'/' +subid)
+                .then(response =>  {
                     console.log(response);
                     vm.subDataSuccess = response.data.success;
                     vm.subjectDetail = response.data.courses;
@@ -94,8 +94,8 @@ export default {
         getSubData: function () {
             this.roadMapShowClicked = true;
             var vm = this;
-            axios.get('http://127.0.0.1:5001/' + 'api/roadmap/' + this.roadmapId)
-                .then(function (response) {
+            axios.get('https://backend.devroad.site/' + 'api/roadmap/' + this.roadmapId)
+                .then(response => {
                     console.log(response);
                     vm.isSuccess = response.data.isSuccess;
                     vm.roadmapDetail = response.data.roadmapDetail;
