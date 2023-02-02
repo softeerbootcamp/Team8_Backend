@@ -12,4 +12,20 @@ public class SubjectToRoadmap {
         this.subjectId = subjectId;
         this.sequence = sequence;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getRoadmapId() {
+        return roadmapId;
+    }
+
+    public Long getSubjectId() {
+        return subjectId;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
 }
