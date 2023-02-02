@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import site.devroad.softeer.exceptions.CustomException;
-import site.devroad.softeer.src.roadmap.model.Roadmap;
+import site.devroad.softeer.src.roadmap.dto.GetRoadmapRes;
 import site.devroad.softeer.utility.CustomRes;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RoadmapController {
@@ -21,10 +24,10 @@ public class RoadmapController {
     }
 
     @GetMapping("/api/roadmap/{roadmapId}")
-    public CustomRes<?> getRoadmap(@RequestHeader(value = "jwt") String jwt, @PathVariable("roadmapId") Long roadmapId) {
+    public CustomRes<?> getRoadmapSubjects(@RequestHeader(value = "jwt") String jwt, @PathVariable("roadmapId") Long roadmapId) {
         try {
-            Roadmap roadMap = roadmapService.getRoadMap(jwt, roadmapId);
-            return new CustomRes<>(roadMap, HttpStatus.OK);
+            Map<String, List<List<Object>>> subjects = roadmapService.getSubjects(jwt, roadmapId);
+            return new CustomRes<>(new GetRoadmapRes(subjects), HttpStatus.OK);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
