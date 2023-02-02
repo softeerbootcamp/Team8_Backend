@@ -1,37 +1,19 @@
 <template>
-  <router-link to="/" class="mainLogo">DevRoad</router-link>
-  <div class="menu">
-    <a v-if="!isLogin">
-      <router-link to="/signup">회원가입</router-link>
-    </a>
-    <a v-if="!isLogin">
-      <router-link to="/login" >로그인</router-link>
-    </a>
-    <a v-if="isLogin">
-      <router-link to="/">로그아웃</router-link>
-    </a>
-
-  </div>
+ 
 <div>
+  <Header />
   <router-view> </router-view>
 </div>
 </template>
 
 <script>
+import Header from "./components/header.vue";
+
 export default {
   name: 'App',
-  data() {
-    return {
-      메뉴들: ["Home"],
-      isLogin : false
-    }
-  },
-  methods: {
-
-  },
   components: {
-
-  }
+        Header
+    }
 }
 </script>
 

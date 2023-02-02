@@ -1,9 +1,4 @@
 <template>
-    <h1>roadMap prototype</h1>
-    <h2> is Success </h2>
-    {{ isSuccess }}
-
-    <h2>roadmapDetail</h2>
     <div class="d-grid gap-2 col-6 mx-auto">
         <div v-for="subject in roadmapDetail" :key="subject">
                 <span v-for="course in subject" :key="course">

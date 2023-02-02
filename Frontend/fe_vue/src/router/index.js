@@ -7,14 +7,17 @@ import CourseView from '@/view/courseView.vue'
 //     redirect: "/login",
 //     component: LoginLayout,
 const routes = [
-  
+  {
+    path:'/',
+        component: () => import("../view/home.vue"),
+  },
   {
     path: '/roadmap',
     name: 'RoadMap',
     component: RoadMap,
     children :[
       {
-        path: '/courseView/:isCardOn',
+        path: '/courseView/:subjectDetail',
         name: 'CourseView',
         component: CourseView,
         props : true
