@@ -11,7 +11,7 @@ public class CustomRes<T> extends ResponseEntity {
     }
 
     public CustomRes(T body, HttpStatus status) {
-        super(body, CorsUtility.defaultHeader(), status);
+        super(body, status);
     }
 
     private CustomRes(MultiValueMap headers, HttpStatus status) {

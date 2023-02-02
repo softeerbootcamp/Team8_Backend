@@ -15,12 +15,11 @@ import java.util.Date;
 public class JwtUtility {
     private static Logger logger = LoggerFactory.getLogger(JwtUtility.class);
 
-    @Value("${JWT.secret}")
-    private static String secret;
+    //TODO : application.yml 에서 값을 불러오도록 수정할것.
+    private static String secret = "secretKey";
 
     public static String makeJwtToken(Long accountId){
         Date now = new Date();
-        System.out.println(secret);
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
                 .setIssuer("fresh") // (2)
@@ -34,7 +33,7 @@ public class JwtUtility {
     //throw custom Exception when error occurs
     public static void validateToken(String jwt) throws CustomException {
         try{
-            Jwts.parser().parse(jwt);
+            Jwts.parser().setSigningKey(secret).parse(jwt);
         }
         catch(Exception e){
             logger.info("JWT error : {}", e.getMessage());
@@ -43,9 +42,9 @@ public class JwtUtility {
     }
 
     public static Long getAccountId(String jwt){
-        return (Long) Jwts.parser().setSigningKey(secret)
+        return Long.parseLong((String) Jwts.parser().setSigningKey(secret)
                 .parseClaimsJws(jwt)
-                .getBody().get("accountId");
+                .getBody().get("accountId"));
     }
 
 }
