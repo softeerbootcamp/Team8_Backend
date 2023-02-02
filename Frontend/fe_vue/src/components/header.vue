@@ -18,7 +18,6 @@ export default {
     name: 'Header',
     data() {
         return {
-            isLogin: false
         }
     },
    
