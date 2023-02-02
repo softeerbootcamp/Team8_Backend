@@ -2,14 +2,24 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SignUp from '@/components/signup.vue'
 import LogIn from '@/components/login.vue'
 import RoadMap from '@/view/roadmap.vue'
+import CourseView from '@/view/courseView.vue'
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
 const routes = [
+  
   {
     path: '/roadmap',
     name: 'RoadMap',
-    component: RoadMap
+    component: RoadMap,
+    children :[
+      {
+        path: '/courseView/:isCardOn',
+        name: 'CourseView',
+        component: CourseView,
+        props : true
+      },
+    ]
   },
   {
     path: '/signup',

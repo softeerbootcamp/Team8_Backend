@@ -10,6 +10,7 @@
     <a v-if="isLogin">
       <router-link to="/">로그아웃</router-link>
     </a>
+
   </div>
 <div>
   <router-view> </router-view>
