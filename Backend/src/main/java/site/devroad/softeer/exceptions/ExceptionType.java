@@ -21,7 +21,11 @@ public enum ExceptionType {
 
     //Database Related Exceptions
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Database error", 1101),
-    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", 1102);
+    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", 1102),
+
+    //JWT Related Exceptions
+    JWT_NOT_VALID(HttpStatus.BAD_REQUEST, "JWT not valid", 1201);
+
 
     private HttpStatus httpStatus;
     private String message;
