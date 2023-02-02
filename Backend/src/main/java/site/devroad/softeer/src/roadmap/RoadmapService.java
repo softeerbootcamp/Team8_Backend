@@ -4,20 +4,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
-import site.devroad.softeer.src.roadmap.model.Roadmap;
+import site.devroad.softeer.src.course.CourseRepo;
+import site.devroad.softeer.src.course.model.Subject;
+import site.devroad.softeer.src.roadmap.model.SubjectToRoadmap;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RoadmapService {
     @Autowired
     RoadmapRepo roadmapRepo;
 
-    public Roadmap getRoadMap(String jwt, Long roadmapId) throws CustomException {
+    @Autowired
+    CourseRepo courseRepo;
+
+    public Map<String, List<List<Object>>> getSubjects(String jwt, Long roadmapId) throws CustomException {
         //TODO: req의 JWT 검증
-        Optional<Roadmap> roadmap = roadmapRepo.findById(roadmapId);
-        if (roadmap.isEmpty())
+        Optional<List<SubjectToRoadmap>> strs = roadmapRepo.findSTRById(roadmapId);
+        if (strs.isEmpty()) {
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
-        return roadmap.get();
+        }
+        List<SubjectToRoadmap> subjectToRoadmaps = strs.get();
+        Map<String, List<List<Object>>> subjects = new HashMap<>();
+        for (SubjectToRoadmap str : subjectToRoadmaps) {
+            Subject subjectById = courseRepo.findSubjectById(str.getSubjectId())
+                    .orElseThrow();
+            subjects.computeIfAbsent(str.getSequence().toString(), key -> new ArrayList<>())
+                    .add(List.of(subjectById.getName(), subjectById.getId()));
+        }
+        return subjects;
     }
 }

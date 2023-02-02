@@ -1,15 +1,28 @@
 package site.devroad.softeer.src.course;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import site.devroad.softeer.src.course.model.Chapter;
 import site.devroad.softeer.src.course.model.Course;
 import site.devroad.softeer.src.course.model.Subject;
 
+import javax.sql.DataSource;
+import java.util.Optional;
+
 @Repository
 public class CourseRepo {
 
-    private RowMapper<Course> courseRowMapper(){
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public CourseRepo(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    private RowMapper<Course> courseRowMapper() {
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long subjectId = rs.getLong("subject_id");
@@ -22,7 +35,7 @@ public class CourseRepo {
         };
     }
 
-    private RowMapper<Chapter> chapterRowMapper(){
+    private RowMapper<Chapter> chapterRowMapper() {
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long courseId = rs.getLong("course_id");
@@ -33,12 +46,22 @@ public class CourseRepo {
             return new Chapter(id, courseId, lectureUrl, thumbnailUrl, explain, sequence);
         };
     }
-    private RowMapper<Subject> subjectRowMapper(){
+
+    private RowMapper<Subject> subjectRowMapper() {
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             String name = rs.getString("name");
             String explain = rs.getString("explain");
             return new Subject(id, name, explain);
         };
+    }
+
+    public Optional<Subject> findSubjectById(Long subjectId) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Subject WHERE id = ?"
+                    , subjectRowMapper(), subjectId));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 }
