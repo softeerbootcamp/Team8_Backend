@@ -6,15 +6,14 @@
     <h2>roadmapDetail</h2>
     <div class="d-grid gap-2 col-6 mx-auto">
         <div v-for="subject in roadmapDetail" :key="subject">
-            <router-link :to="{ name: 'CourseView', params: { isCardOn: isCardOn} }">
                 <span v-for="course in subject" :key="course">
-                    <button class="btn btn-primary ms-3" @click="getCourseData(subject)">
+                    <button class="btn btn-primary ms-3" @click="[getCourseData(subject),$router.push({ name: 'CourseView', params: { subjectDetail : subjectDetail}})]">
                         {{ course[0] }}
                     </button>
-                    <router-view v-if="curSubjectId==course[1]"></router-view>
-
+                    <div v-if=" (curSubjectId == course[1]) && isCardOn ">
+                        <router-view></router-view>
+                        </div>
                 </span>
-            </router-link>
 
         </div>
 
