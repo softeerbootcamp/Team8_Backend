@@ -13,6 +13,8 @@ public enum ExceptionType {
     ACCOUNT_NOT_UPDATED(HttpStatus.BAD_REQUEST, "Account not updated", 1005),
     AUTHENTICATION_FAILED(HttpStatus.BAD_REQUEST, "Password가 잘못되었습니다.", 1006),
     POST_ACCOUNT_PHONE_DUPLICATED(HttpStatus.BAD_REQUEST, "중복된 휴대폰 번호가 있습니다.", 1007),
+    ROADMAP_NOT_FOUND(HttpStatus.NOT_FOUND, "Roadmap not found", 1008),
+
 
 
     //Database Related Exceptions
