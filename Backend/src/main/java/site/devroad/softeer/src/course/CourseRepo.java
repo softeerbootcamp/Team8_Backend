@@ -14,10 +14,11 @@ public class CourseRepo {
             Long id = rs.getLong("id");
             Long subjectId = rs.getLong("subject_id");
             String tutorName = rs.getString("tutor_name");
+            String thumbnailUrl = rs.getString("thumbnail_url");
             String explain = rs.getString("explain");
             Long languageId = rs.getLong("language_id");
             String type = rs.getString("type");
-            return new Course(id, subjectId, tutorName, explain, languageId, type);
+            return new Course(id, subjectId, tutorName, thumbnailUrl, explain, languageId, type);
         };
     }
 
