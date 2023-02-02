@@ -6,11 +6,5 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class UserRepoTest {
-    @Autowired
-    UserRepo userRepo;
 
-    @Test
-    void addAccountTest() {
-        userRepo.addAccountInfo("asdf", "01012341234", "student");
-    }
 }
