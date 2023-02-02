@@ -9,6 +9,7 @@ import CourseView from '@/view/courseView.vue'
 const routes = [
   {
     path:'/',
+    name : 'Home',
         component: () => import("../view/home.vue"),
   },
   {

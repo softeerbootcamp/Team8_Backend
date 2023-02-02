@@ -56,22 +56,22 @@ export default {
     async submitForm() {
       try {
             const response = await axios.post(
-          "http://backend.devroad.site/"+"api/user/signup",
+          "https://backend.devroad.site/"+"api/user/signup/",
           {
             "email": this.formData.email,
             "password": this.formData.password,
             "name": this.formData.name,
-            "phoneNumber": this.formData.phoneNumber
+            "phone": this.formData.phoneNumber
           }
           ,
            {headers: {
                     "Content-Type": "application/json" }
                   }
-        ).then(function (response) {
+        ).then(response => {
           if (response.data.success) {
-            this.$router.push('/')
+            this.$router.push({ name: "Home" });
           }else{
-            console.log("login failed : " +response.data.success);
+            console.log("signup failed : " +response.data.success);
           }
         });
           if (response.status != 200) {
