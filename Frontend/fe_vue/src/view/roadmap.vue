@@ -1,21 +1,20 @@
 <template>
     <div class="d-grid gap-2 col-6 mx-auto">
-        <div v-for="subject in roadmapDetail" :key="subject">
-                <span v-for="course in subject" :key="course">
-                    <button class="btn btn-primary ms-3" @click="[getCourseData(subject),$router.push({ name: 'CourseView', params: { subjectDetail : subjectDetail}})]">
-                        {{ course[0] }}
-                    </button>
-                    <div v-if=" (curSubjectId == course[1]) && isCardOn ">
-                        <router-view></router-view>
-                        </div>
-                </span>
+        <div v-for="subject in getRoadmapDetailFromStore()" :key="subject">
+            <span v-for="course in subject" :key="course">
+                <button class="btn btn-primary ms-3"
+                    @click="[getCourseData(subject), $router.push({ name: 'CourseView', params: { subjectDetail: subjectDetail } })]">
+                    {{ course[0] }}
+                </button>
+                <div v-if="(curSubjectId == course[1]) && isCardOn">
+                    <router-view></router-view>
+                </div>
+            </span>
 
         </div>
 
     </div>
-    <button @click="getSubData" v-if="!roadMapShowClicked">
-        temp btn for getting data
-    </button>
+
 
 </template>
 
@@ -23,66 +22,40 @@
 import axios from "axios";
 
 export default {
+    name: 'RoadMap',
 
     data() {
+        console.log("rdetail" + this.props)
         return {
-            roadMapShowClicked: false,
             isCardOn: false,
             success: false,
-            subDataSuccess:false,
-            roadmapId: "temp",
-            roadmapDetail: [],
+            subDataSuccess: false,
+            roadmapId: "1",
 
-            curSubjectId : "",
+            curSubjectId: "",
 
             subjectId: "subidtemp",
-            subjectDetail: []
+            subjectDetail: [],
 
         }
 
     },
     methods: {
+        getRoadmapDetailFromStore() {
+            return this.$store.state.roadmapDetail
+        },
         setSubIdFromData(subid) {
             this.curSubjectId = subid;
         },
-        /** 
-         * roadmapDetail : 
-         * "subjects" : 
-    {
-        //[name, id]
-        "1" : [["기초프로그래밍", 1001]] ,
-        "2" : [["파이썬 기초", 2001], ["자바의 기초",2002]],
-        "3" : [["자료구조와 알고리즘", 3001], ["운영체제",3002]],
-        "4" : [["김영한의 스프링", 4001 ]]
-    }
-         * 
-         * 
-         * subdetail : 
-         * {
-   "success" : "true",
-   "courses" : 
-   [ 
-                {
-            "subjectId":123, 
-            "courseId":123, 
-            "courseName":"name", 
-            "thumbnailUrl":"url", 
-            "courseUrl":"url", 
-            "explain": "hello"
-        } , { ... } 
-    ]
-   
-}
-         */
         getCourseData(subject) {
             this.isCardOn = true;
-            console.log("subject : " +subject);
+            console.log("subject : " + subject);
             var subid = subject.toString().split(',')[1];
             this.setSubIdFromData(subid);
             var vm = this;
             //api/roadmap/{:roadmapId}/{:subjectId}
-            axios.get('http://127.0.0.1:5000/' + 'api/roadmap/' + this.roadmapId +'/' +subid)
-                .then(function (response) {
+            axios.get('https://backend.devroad.site/' + 'api/roadmap/' + this.roadmapId + '/' + subid)
+                .then(response => {
                     console.log(response);
                     vm.subDataSuccess = response.data.success;
                     vm.subjectDetail = response.data.courses;
@@ -91,20 +64,7 @@ export default {
                     console.log(error)
                 })
         },
-        getSubData: function () {
-            this.roadMapShowClicked = true;
-            var vm = this;
-            axios.get('http://127.0.0.1:5001/' + 'api/roadmap/' + this.roadmapId)
-                .then(function (response) {
-                    console.log(response);
-                    vm.isSuccess = response.data.isSuccess;
-                    vm.roadmapDetail = response.data.roadmapDetail;
 
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-        }
     }
 
 

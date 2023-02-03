@@ -30,12 +30,10 @@ export default {
   },
 
   methods: {
-  
-
     async loginForm() {
       try {
         const response = await axios.post(
-          "http://backend.devroad.site/"+"api/user/signin/",
+          "https://backend.devroad.site/"+"api/user/signin/",
           {
             "email": this.formData.email,
             "password": this.formData.password
@@ -46,12 +44,12 @@ export default {
               "Content-Type": "application/json"
             }
           }
-        ).then(function (response) {
+        ).then(response => {
           if (response.data.success) {
-            this.$store.commit('setLoginStatus', true)
-            this.$router.push('/')
-          }else{
-            console.log("login failed : " +response.data.success);
+            this.$store.commit("setLoginStatus", true);
+            this.$router.push({ name: "UserHome" });
+          } else {
+            console.log("login failed : " + response.data.success);
           }
         });
         if (response.status != 200) {

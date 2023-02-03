@@ -18,7 +18,7 @@ export default {
     name: 'Header',
     computed:{
         getIsLogin(){
-            return this.$store.isLogin
+            return this.$store.state.isLogin
         }
     },
     data() {
