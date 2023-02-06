@@ -11,10 +11,13 @@
       {{ roadmapPercentage }}%
     </div>
   </div>
-  <router-link :to="{ name: 'RoadMap' }">
+  <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted">
     <button @click="getSubData" v-if="!roadMapShowClicked">
       로드맵 시작하기!?
     </button>
+  </router-link>
+  <router-link :to="{ name: 'ChapterView' }" v-if="isRoadmapStarted">
+    <button>로드맵 이어하기!</button>
   </router-link>
 </template>
 <script>
@@ -42,6 +45,12 @@ export default {
     this.getUserData();
   },
   methods: {
+    isRoadmapStarted() {
+      if (this.totalChapterIdx != 0) {
+        return true;
+      }
+      return false;
+    },
     getUserData() {
       axios
         .get("https://backend.devroad.site/api/user", {
