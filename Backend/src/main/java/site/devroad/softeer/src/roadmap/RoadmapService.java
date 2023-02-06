@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.course.model.Subject;
-import site.devroad.softeer.src.course.repository.CourseRepo;
 import site.devroad.softeer.src.course.repository.SubjectRepo;
 import site.devroad.softeer.src.roadmap.model.Roadmap;
 import site.devroad.softeer.src.roadmap.model.SubjectToRoadmap;
+import site.devroad.softeer.src.user.UserRepo;
 
 import java.util.*;
 
@@ -15,14 +15,17 @@ import java.util.*;
 public class RoadmapService {
     private final RoadmapRepo roadmapRepo;
     private final SubjectRepo subjectRepo;
+    private final UserRepo userRepo;
 
-    public RoadmapService(RoadmapRepo roadmapRepo, SubjectRepo subjectRepo) {
+    public RoadmapService(RoadmapRepo roadmapRepo, SubjectRepo subjectRepo, UserRepo userRepo) {
         this.roadmapRepo = roadmapRepo;
         this.subjectRepo = subjectRepo;
+        this.userRepo = userRepo;
     }
 
     public Map<String, List<List<Object>>> getSubjects(Long accountId) throws CustomException {
-        Optional<Roadmap> roadmapById = roadmapRepo.findRoadmapById(accountId);
+        Long roadMapId = userRepo.findAccountById(accountId).getRoadMapId();
+        Optional<Roadmap> roadmapById = roadmapRepo.findRoadmapById(roadMapId);
         if (roadmapById.isEmpty()) {
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
         }
