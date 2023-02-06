@@ -18,7 +18,7 @@ jobs:
       with:
         host: ec2-43-201-140-54.ap-northeast-2.compute.amazonaws.com
         username: ubuntu
-        key: ${{ secrets.AWS_PEM_KEY_TEST }}
+        key: ${{ secrets.AWS_PEM_KEY }}
         script: |
-          /home/ubuntu/thisworks.sh
+          /home/ubuntu/runserve.sh
           # Insert your script here
