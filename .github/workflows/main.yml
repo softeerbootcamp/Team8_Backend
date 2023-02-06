@@ -13,10 +13,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Run script on EC2
+    - name: Run script on My CustomServer
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.EC2_SERVER_HOST }}
+        host: ec2-43-201-140-54.ap-northeast-2.compute.amazonaws.com
         username: ubuntu
         key: ${{ secrets.AWS_PEM_KEY_TEST }}
         script: |
