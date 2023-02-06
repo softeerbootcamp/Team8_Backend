@@ -43,9 +43,11 @@ export default {
       curSubjectIdx: 0,
       totalChapterIdx: 0,
       curChapterIdx: 0,
+      jwt: null,
     };
   },
   mounted() {
+    this.getJwt();
     this.getUserData();
   },
   computed: {
@@ -57,11 +59,15 @@ export default {
     },
   },
   methods: {
-    getUserData() {
-      axios
-        .get("https://backend.devroad.site/api/user", {
+    getJwt() {
+      this.jwt = this.$store.state.jwt;
+      console.log("jwt : " + this.jwt);
+    },
+    async getUserData() {
+      try {
+        const response = await axios.get("https://backend.devroad.site/api/user", {
           headers: {
-            jwt: "jwt",
+            jwt: this.jwt,
           },
         })
         .then((response) => {
@@ -77,6 +83,14 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+      if (response.status != 200) {
+        console.log(response.data);
+      }
+      } catch (error) {
+                //console.error(error);
+
+      }
+      
     },
     setProgressbar() {
       if (this.totalChapterIdx == 0) {
@@ -87,16 +101,14 @@ export default {
         (this.curChapterIdx / this.totalChapterIdx) * 100
       );
     },
-    getSubData: function () {
+    async getSubData() {
       var vm = this;
-      axios
-        .get("https://backend.devroad.site/" + "api/roadmap", {
+      await axios.get("https://backend.devroad.site/" + "api/roadmap", {
           headers: {
-            jwt: "jwt",
+            jwt: this.$store.state.jwt,
           },
         })
         .then((response) => {
-          console.log("user res : " + response);
           vm.isSuccess = response.data.success;
           vm.subjects = response.data.subjects;
           this.$store.commit("setSubjectsStatus", response.data.subjects);

@@ -34,12 +34,7 @@ export default {
     };
   },
   mounted() {
-    this.subjects = this.getSubjectsFromStore();
-  },
-  methods: {
-    getSubjectsFromStore() {
-      return this.$store.state.subjects;
-    },
+    this.subjects = this.$store.state.subjects;
   },
 };
 </script>

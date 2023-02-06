@@ -43,9 +43,8 @@ export default {
   methods: {
     async loginForm() {
       try {
-        const response = await axios
-          .post(
-            "https://backend.devroad.site/" + "api/user/signin/",
+        const response = await axios.post(
+            "https://backend.devroad.site/" + "api/user/signin",
             {
               email: this.formData.email,
               password: this.formData.password,

@@ -5,7 +5,7 @@ export default new Vuex.Store({
   state: {
     isLogin: false,
     subjects: [],
-    jwtToken: null,
+    jwt: null,
   },
   mutations: {
     setLoginStatus(state, status) {
@@ -15,10 +15,10 @@ export default new Vuex.Store({
       state.subjects = subjects;
     },
     setJwtToken(state, token) {
-      state.jwtToken = token;
+      state.jwt = token;
     },
     ifTokenVal(state) {
-      if (state.jwtToken == null) {
+      if (state.jwt == null) {
         state.isLogin = false;
         return false;
       }
@@ -26,7 +26,7 @@ export default new Vuex.Store({
       return true;
     },
     logout(state, status) {
-      state.jwtToken = null;
+      state.jwt = null;
       state.isLogin = status;
     },
   },
