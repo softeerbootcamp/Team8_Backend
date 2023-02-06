@@ -75,7 +75,7 @@ export default {
     getSubData: function () {
       var vm = this;
       axios
-        .get("https://backend.devroad.site/" + "api/roadmap/", {
+        .get("https://backend.devroad.site/" + "api/roadmap", {
           headers: {
             jwt: "jwt",
           },
