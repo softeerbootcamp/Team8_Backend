@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import { getSubjectDetail } from "@/api";
 
 export default {
   props: ["subject"],
@@ -19,6 +19,7 @@ export default {
       courseSubject: this.subject,
       subjectId: "",
       courseData: "",
+      // subject detail = courses
       subjectDetail: null,
       subDataSuccess: false,
       // subid 는 이후 받아와야한다.
@@ -30,14 +31,14 @@ export default {
   },
   methods: {
     // subjectID ex ) "1001"
-    getCourseData(subject) {
+    async getCourseData(subject) {
       console.log("subject!!! : " + subject);
+      this.subid = subject[1];
       // 선택된 subject 정보를 다음 라우터에 넘겨주기 위해 curSubId 설정
       var vm = this;
-      //GET /api/roadmap/{:subjectId}/ Course Detail
+      //GET /api/roadmap/{:subjectId}/ sub Detail
 
-      axios
-        .get("https://backend.devroad.site/" + "api/subject/" + vm.subid)
+      await getSubjectDetail(vm.subid)
         .then((response) => {
           console.log(response);
           vm.subDataSuccess = response.data.success;
@@ -50,4 +51,6 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+
+</style>
