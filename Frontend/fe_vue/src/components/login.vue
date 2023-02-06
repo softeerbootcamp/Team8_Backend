@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
+import { signinUser } from "@/api";
 
 export default {
   name: "Login",
@@ -42,19 +43,11 @@ export default {
 
   methods: {
     async loginForm() {
-      try {
-        const response = await axios.post(
-            "https://backend.devroad.site/" + "api/user/signin",
-            {
-              email: this.formData.email,
-              password: this.formData.password,
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
+      const userData = {
+        email: this.formData.email,
+        password: this.formData.password
+      };
+      await signinUser(userData)
           .then((response) => {
             if (response.data.success) {
               this.$store.commit("setLoginStatus", true);
@@ -64,12 +57,7 @@ export default {
               console.log("login failed : " + response.data.success);
             }
           });
-        if (response.status != 200) {
-          console.log(response.data);
-        }
-      } catch (error) {
-        //console.error(error);
-      }
+        
     },
   },
 };
