@@ -8,5 +8,14 @@ const axiosService = axios.create({
 function signinUser(userData) {
   return axiosService.post('api/user/signin', userData);
 }
+function signupUser(userData){
+  return axiosService.post('api/user/signup', userData);
+}
+function userData(config){
+  return axiosService.get('api/user',config);
+}
+function getRoadmap(config){
+  return axiosService.get('api/roadmap',config);
 
-export { signinUser };
+}
+export { signinUser,signupUser,userData,getRoadmap };

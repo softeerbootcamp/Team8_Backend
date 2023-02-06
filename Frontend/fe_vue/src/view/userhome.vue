@@ -1,13 +1,7 @@
 <template>
   <div class="progress">
-    <div
-      class="progress-bar"
-      role="progressbar"
-      :style="`width: ${roadmapPercentage}%`"
-      :aria-valuenow="roadmapPercentage"
-      aria-valuemin="0"
-      aria-valuemax="100"
-    >
+    <div class="progress-bar" role="progressbar" :style="`width: ${roadmapPercentage}%`"
+      :aria-valuenow="roadmapPercentage" aria-valuemin="0" aria-valuemax="100">
       {{ roadmapPercentage }}%
     </div>
   </div>
@@ -26,7 +20,7 @@
   </button>
 </template>
 <script>
-import axios from "axios";
+import { userData, getRoadmap } from '@/api'
 
 export default {
   name: "UserHome",
@@ -49,6 +43,7 @@ export default {
   mounted() {
     this.getJwt();
     this.getUserData();
+    this.setProgressbar();
   },
   computed: {
     isRoadmapStarted() {
@@ -61,15 +56,14 @@ export default {
   methods: {
     getJwt() {
       this.jwt = this.$store.state.jwt;
-      console.log("jwt : " + this.jwt);
     },
     async getUserData() {
-      try {
-        const response = await axios.get("https://backend.devroad.site/api/user", {
-          headers: {
-            jwt: this.jwt,
-          },
-        })
+      const config = {
+        headers: {
+          jwt: this.jwt
+        }
+      };
+      await userData(config)
         .then((response) => {
           this.userId = response.data.userId;
           this.userName = response.data.userName;
@@ -83,14 +77,8 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-      if (response.status != 200) {
-        console.log(response.data);
-      }
-      } catch (error) {
-                //console.error(error);
 
-      }
-      
+
     },
     setProgressbar() {
       if (this.totalChapterIdx == 0) {
@@ -102,12 +90,13 @@ export default {
       );
     },
     async getSubData() {
+      const config = {
+        headers: {
+          jwt: this.$store.state.jwt,
+        }
+      }
       var vm = this;
-      await axios.get("https://backend.devroad.site/" + "api/roadmap", {
-          headers: {
-            jwt: this.$store.state.jwt,
-          },
-        })
+      await getRoadmap(config)
         .then((response) => {
           vm.isSuccess = response.data.success;
           vm.subjects = response.data.subjects;
@@ -121,4 +110,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>
