@@ -15,8 +15,11 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    UserRepo userRepo;
+    private final UserRepo userRepo;
+
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
 
     public Long join(PostSignUpReq req) throws CustomException {
         validateSignUp(req);
