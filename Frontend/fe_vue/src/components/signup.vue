@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { signupUser } from "@/api";
 
 export default {
   name: "SignUp",
@@ -54,32 +54,19 @@ export default {
 
   methods: {
     async submitForm() {
-      try {
-            const response = await axios.post(
-          "https://backend.devroad.site/"+"api/user/signup/",
-          {
-            "email": this.formData.email,
-            "password": this.formData.password,
-            "name": this.formData.name,
-            "phone": this.formData.phoneNumber
-          }
-          ,
-           {headers: {
-                    "Content-Type": "application/json" }
-                  }
-        ).then(response => {
-          if (response.data.success) {
+      const userData = {
+        email: this.formData.email,
+        password: this.formData.password,
+        name: this.formData.name,
+        phone: this.formData.phoneNumber
+      };
+      await signupUser(userData).then(response => {
+      if (response.data.success) {
             this.$router.push({ name: "Home" });
           }else{
             console.log("signup failed : " +response.data.success);
           }
         });
-          if (response.status != 200) {
-            console.log(response.data);
-          }
-        } catch (error) {
-        //console.error(error);
-      }
     }
   }
 };
