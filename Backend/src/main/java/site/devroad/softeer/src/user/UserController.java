@@ -1,22 +1,20 @@
 package site.devroad.softeer.src.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
-import site.devroad.softeer.src.user.dto.PostSignInReq;
-import site.devroad.softeer.src.user.dto.PostSignInRes;
-import site.devroad.softeer.src.user.dto.PostSignUpReq;
-import site.devroad.softeer.src.user.dto.PostSignUpRes;
+import site.devroad.softeer.src.user.dto.*;
+import site.devroad.softeer.utility.JwtUtility;
 
 @RestController
 public class UserController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/api/user/signup")
     public ResponseEntity<?> postSignUp(@RequestBody PostSignUpReq postSignUpReq) {
@@ -36,6 +34,32 @@ public class UserController {
         try {
             String jwt = userService.signIn(postSignInReq);
             return new ResponseEntity<>(new PostSignInRes(jwt), HttpStatus.OK);
+        } catch (CustomException e) {
+            return e.getResponseEntity();
+        }
+    }
+
+    @GetMapping("/api/user")
+    public ResponseEntity<?> getMockUserDetail(@RequestHeader(value = "jwt") String jwt) {
+        GetDetailRes getDetailRes = new GetDetailRes();
+        getDetailRes.setUserId(1L);
+        getDetailRes.setUserName("hello");
+        getDetailRes.setCurChapterIdx(4L);
+        getDetailRes.setTotalChapterIdx(15L);
+        getDetailRes.setRoadmapId(1L);
+        getDetailRes.setCurSubjectIdx(2L);
+        getDetailRes.setTotalSubjectIdx(4L);
+        return new ResponseEntity<>(getDetailRes, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/api/user/real")
+    public ResponseEntity<?> getUserDetail(@RequestHeader(value = "jwt") String jwt) {
+        try {
+            JwtUtility.validateToken(jwt);
+            Long accountId = JwtUtility.getAccountId(jwt);
+            GetDetailRes getDetailRes = new GetDetailRes();
+            return new ResponseEntity<>(getDetailRes, HttpStatus.OK);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
