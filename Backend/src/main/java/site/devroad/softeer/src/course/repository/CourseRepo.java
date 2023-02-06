@@ -48,7 +48,17 @@ public class CourseRepo {
             String explain = rs.getString("explain");
             Long languageId = rs.getLong("language_id");
             String type = rs.getString("type");
-            return new Course(id, subjectId, tutorName, thumbnailUrl, explain, languageId, type);
+            String courseName = rs.getString("course_name");
+            Course course = new Course();
+            course.setId(id);
+            course.setSubjectId(subjectId);
+            course.setTutorName(tutorName);
+            course.setThumbnailUrl(thumbnailUrl);
+            course.setExplain(explain);
+            course.setLanguageId(languageId);
+            course.setType(type);
+            course.setCourseName(courseName);
+            return course;
         };
     }
 }
