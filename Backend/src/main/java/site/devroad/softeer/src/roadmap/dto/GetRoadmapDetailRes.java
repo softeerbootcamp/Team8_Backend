@@ -8,8 +8,7 @@ public class GetRoadmapDetailRes {
     Map<String, List<List<Object>>> subjects;
 
     public GetRoadmapDetailRes(Map<String, List<List<Object>>> subjects) {
-        this.success = true
-        ;
+        this.success = true;
         this.subjects = subjects;
     }
 
