@@ -42,4 +42,11 @@ public class RoadmapService {
         }
         return subjects;
     }
+
+    public Long getCurChapterId(Long accountId) throws CustomException {
+        Optional<Roadmap> roadmapByAccountId = roadmapRepo.findRoadmapByAccountId(accountId);
+        if (roadmapByAccountId.isEmpty())
+            throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
+        return roadmapByAccountId.get().getChapterId();
+    }
 }
