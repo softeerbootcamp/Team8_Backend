@@ -29,7 +29,7 @@ public class ChapterRepo {
 
     public List<Chapter> findChapterByCourseId(Long courseId) {
         try {
-            return jdbcTemplate.query("SELECT * FROM Chapter WHERE course_id = ?"
+            return jdbcTemplate.query("SELECT * FROM Chapter WHERE course_id = ? ORDER BY sequence"
                     , chapterRowMapper(), courseId);
         } catch (DataAccessException e) {
             return Collections.emptyList();
