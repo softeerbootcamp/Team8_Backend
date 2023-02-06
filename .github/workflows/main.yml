@@ -1,0 +1,24 @@
+name: EC2 Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run script on EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_SERVER_HOST }}
+        username: ubuntu
+        key: ${{ secrets.AWS_PEM_KEY_TEST }}
+        script: |
+          /home/ubuntu/thisworks.sh
+          # Insert your script here
