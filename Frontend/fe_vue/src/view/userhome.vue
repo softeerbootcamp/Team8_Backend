@@ -1,47 +1,113 @@
 <template>
-    <router-link :to="{ name: 'RoadMap'}">
-        <button @click="getSubData" v-if="!roadMapShowClicked">
-            로드맵 시작하기!
-        </button>
-    </router-link>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" :style="`width: ${roadmapPercentage}%`"
+      :aria-valuenow="roadmapPercentage" aria-valuemin="0" aria-valuemax="100">
+      {{ roadmapPercentage }}%
+    </div>
+  </div>
+
+  <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted">
+    <!-- <router-link :to="{ name: 'RoadMap' }" v-if="isRoadmapStarted"> -->
+    <button @click="getSubData" v-if="!roadMapShowClicked">
+      로드맵 시작하기!?
+    </button>
+  </router-link>
+  <router-link :to="{ name: 'ChapterView' }" v-if="isRoadmapStarted">
+    <button>로드맵 이어하기!</button>
+  </router-link>
+  <button type="button" class="btn btn-primary btn-sm">
+    <span class="bi bi-file-text"></span>
+  </button>
 </template>
-
 <script>
-import axios from "axios";
+import { userData, getRoadmap } from '@/api'
+
 export default {
-    name: 'UserHome',
-    data() {
-        return {
-            roadMapShowClicked: false,
-            roadmapId: "1",
-            roadmapDetail: [],
-            isSuccess: false
+  name: "UserHome",
+  data() {
+    return {
+      roadmapPercentage: 0,
+      roadMapShowClicked: false,
+      subjects: [],
+      isSuccess: false,
+      userId: null,
+      userName: null,
+      roadmapId: "1",
+      totalSubjectIdx: 0,
+      curSubjectIdx: 0,
+      totalChapterIdx: 0,
+      curChapterIdx: 0,
+      jwt: null,
+    };
+  },
+  mounted() {
+    this.getJwt();
+    this.getUserData();
+    this.setProgressbar();
+  },
+  computed: {
+    isRoadmapStarted() {
+      if (this.totalChapterIdx != 0) {
+        return true;
+      }
+      return false;
+    },
+  },
+  methods: {
+    getJwt() {
+      this.jwt = this.$store.state.jwt;
+    },
+    async getUserData() {
+      const config = {
+        headers: {
+          jwt: this.jwt
         }
+      };
+      await userData(config)
+        .then((response) => {
+          this.userId = response.data.userId;
+          this.userName = response.data.userName;
+          this.roadmapId = response.data.roadmapId;
+          this.totalSubjectIdx = response.data.totalSubjectIdx;
+          this.curSubjectIdx = response.data.curSubjectIdx;
+          this.totalChapterIdx = response.data.totalChapterIdx;
+          this.curChapterIdx = response.data.curChapterIdx;
+          this.setProgressbar();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
 
     },
-    methods: {
-        getSubData: function () {
-            var vm = this;
-            axios.get('https://backend.devroad.site/' + 'api/roadmap/' + this.roadmapId,
-                {
-                    headers: {
-                        "jwt": "jwt"
-                    }
-                })
-                .then(response => {
-                    console.log(response);
-                    vm.isSuccess = response.data.success;
-                    vm.roadmapDetail = response.data.subjects;
-                    this.$store.commit("setRoadmapDetailStatus", response.data.subjects);
-
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-        },
+    setProgressbar() {
+      if (this.totalChapterIdx == 0) {
+        this.roadmapPercentage = 0;
+        return;
+      }
+      this.roadmapPercentage = parseInt(
+        (this.curChapterIdx / this.totalChapterIdx) * 100
+      );
     },
-
-}
+    async getSubData() {
+      const config = {
+        headers: {
+          jwt: this.$store.state.jwt,
+        }
+      }
+      var vm = this;
+      await getRoadmap(config)
+        .then((response) => {
+          vm.isSuccess = response.data.success;
+          vm.subjects = response.data.subjects;
+          this.$store.commit("setSubjectsStatus", response.data.subjects);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+  },
+};
 </script>
 
 <style>
