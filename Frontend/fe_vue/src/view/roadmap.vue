@@ -1,6 +1,6 @@
 <template>
   <div class="d-grid gap-2 col-6 mx-auto">
-    <div v-for="subject in getRoadmapDetailFromStore()" :key="subject">
+    <div v-for="subject in subjects" :key="subject">
       <span v-for="course in subject" :key="course">
         <button
           class="btn btn-primary ms-3"
@@ -12,6 +12,9 @@
           "
         >
           {{ course[0] }}
+        </button>
+        <button type="button" class="btn btn-primary btn-sm">
+          <span class="bi bi-file-text"></span>
         </button>
       </span>
     </div>
@@ -27,13 +30,15 @@ export default {
       isCardOn: false,
       success: false,
       subDataSuccess: false,
-
-      subjectDetail: [],
+      subjects: [],
     };
   },
+  mounted() {
+    this.subjects = this.getSubjectsFromStore();
+  },
   methods: {
-    getRoadmapDetailFromStore() {
-      return this.$store.state.roadmapDetail;
+    getSubjectsFromStore() {
+      return this.$store.state.subjects;
     },
   },
 };

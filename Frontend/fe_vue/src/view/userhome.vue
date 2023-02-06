@@ -11,7 +11,9 @@
       {{ roadmapPercentage }}%
     </div>
   </div>
+
   <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted">
+    <!-- <router-link :to="{ name: 'RoadMap' }" v-if="isRoadmapStarted"> -->
     <button @click="getSubData" v-if="!roadMapShowClicked">
       로드맵 시작하기!?
     </button>
@@ -19,6 +21,9 @@
   <router-link :to="{ name: 'ChapterView' }" v-if="isRoadmapStarted">
     <button>로드맵 이어하기!</button>
   </router-link>
+  <button type="button" class="btn btn-primary btn-sm">
+    <span class="bi bi-file-text"></span>
+  </button>
 </template>
 <script>
 import axios from "axios";
@@ -27,10 +32,9 @@ export default {
   name: "UserHome",
   data() {
     return {
-      max: 100,
       roadmapPercentage: 0,
       roadMapShowClicked: false,
-      roadmapDetail: [],
+      subjects: [],
       isSuccess: false,
       userId: null,
       userName: null,
@@ -44,13 +48,15 @@ export default {
   mounted() {
     this.getUserData();
   },
-  methods: {
+  computed: {
     isRoadmapStarted() {
       if (this.totalChapterIdx != 0) {
         return true;
       }
       return false;
     },
+  },
+  methods: {
     getUserData() {
       axios
         .get("https://backend.devroad.site/api/user", {
@@ -92,8 +98,8 @@ export default {
         .then((response) => {
           console.log("user res : " + response);
           vm.isSuccess = response.data.success;
-          vm.roadmapDetail = response.data.subjects;
-          this.$store.commit("setRoadmapDetailStatus", response.data.subjects);
+          vm.subjects = response.data.subjects;
+          this.$store.commit("setSubjectsStatus", response.data.subjects);
         })
         .catch(function (error) {
           console.log(error);
