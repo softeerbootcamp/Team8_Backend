@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import site.devroad.softeer.exceptions.CustomException;
-import site.devroad.softeer.src.course.model.Course;
 import site.devroad.softeer.src.course.service.SubjectService;
 import site.devroad.softeer.src.roadmap.dto.GetRoadmapDetailRes;
 import site.devroad.softeer.src.roadmap.dto.GetSubjectDetailRes;
+import site.devroad.softeer.src.roadmap.dto.subdto.CourseDetail;
 import site.devroad.softeer.utility.JwtUtility;
 
 import java.util.List;
@@ -43,7 +43,8 @@ public class RoadmapController {
     public ResponseEntity<?> getSubjectDetail(@RequestHeader(value = "jwt") String jwt, @PathVariable("subjectId") String subjectId) {
         try {
             JwtUtility.validateToken(jwt);
-            List<Course> courses = subjectService.getCourses(Long.valueOf(subjectId));
+            Long accountId = JwtUtility.getAccountId(jwt);
+            List<CourseDetail> courses = subjectService.getCourseDetails(Long.valueOf(subjectId), accountId);
             return new ResponseEntity<>(new GetSubjectDetailRes(courses), HttpStatus.OK);
         } catch (CustomException e) {
             return e.getResponseEntity();

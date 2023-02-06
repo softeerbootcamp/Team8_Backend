@@ -1,19 +1,19 @@
 package site.devroad.softeer.src.roadmap.dto;
 
-import site.devroad.softeer.src.course.model.Course;
+import site.devroad.softeer.src.roadmap.dto.subdto.CourseDetail;
 
 import java.util.List;
 
 public class GetSubjectDetailRes {
-    private final List<Course> courses;
+    private final List<CourseDetail> courses;
     private final boolean success;
 
-    public GetSubjectDetailRes(List<Course> courses) {
+    public GetSubjectDetailRes(List<CourseDetail> courses) {
         this.success = true;
         this.courses = courses;
     }
 
-    public List<Course> getCourses() {
+    public List<CourseDetail> getCourses() {
         return courses;
     }
 

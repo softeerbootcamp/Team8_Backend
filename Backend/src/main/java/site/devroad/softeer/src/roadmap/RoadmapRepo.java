@@ -29,6 +29,15 @@ public class RoadmapRepo {
         }
     }
 
+    public Optional<Roadmap> findRoadmapByAccountId(Long accountId) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT r.* FROM Account a JOIN Roadmap r " +
+                    "ON a.roadmap_id = r.id WHERE a.id = ?", roadmapRowMapper(), accountId));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
     public Optional<List<SubjectToRoadmap>> findSTRById(Long roadmapId) {
         try {
             return Optional.ofNullable(jdbcTemplate.query("SELECT * FROM SubjectToRoadmap WHERE roadmap_id = ?"

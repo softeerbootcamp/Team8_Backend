@@ -1,15 +1,14 @@
 <template>
-  <router-view />
+  <div>hi!</div>
 </template>
 
 <script>
 export default {
-  name: "Home",
+  name: "ChapterView",
   data() {
     return {};
   },
-  methods: {},
-  computed: {},
 };
 </script>
+
 <style></style>
