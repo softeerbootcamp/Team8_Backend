@@ -5,6 +5,7 @@ import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.course.CourseRepo;
 import site.devroad.softeer.src.course.model.Subject;
+import site.devroad.softeer.src.roadmap.model.Roadmap;
 import site.devroad.softeer.src.roadmap.model.SubjectToRoadmap;
 
 import java.util.*;
@@ -19,11 +20,14 @@ public class RoadmapService {
         this.courseRepo = courseRepo;
     }
 
-    public Map<String, List<List<Object>>> getSubjects(String jwt, Long roadmapId) throws CustomException {
-        //TODO: req의 JWT 검증
-        Optional<List<SubjectToRoadmap>> strs = roadmapRepo.findSTRById(roadmapId);
-        if (strs.isEmpty()) {
+    public Map<String, List<List<Object>>> getSubjects(Long accountId) throws CustomException {
+        Optional<Roadmap> roadmapById = roadmapRepo.findRoadmapById(accountId);
+        if (roadmapById.isEmpty()) {
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
+        }
+        Optional<List<SubjectToRoadmap>> strs = roadmapRepo.findSTRById(roadmapById.get().getId());
+        if (strs.isEmpty()) {
+            throw new CustomException(ExceptionType.SUBJECT_NOT_FOUND);
         }
         List<SubjectToRoadmap> subjectToRoadmaps = strs.get();
         Map<String, List<List<Object>>> subjects = new HashMap<>();
