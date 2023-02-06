@@ -37,6 +37,10 @@ public class UserRepo {
         jdbcTemplate.update("DELETE FROM LoginInfo where id = ?", id);
     }
 
+    public Account findAccountById(Long id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM Account WHERE id = ?", accountRowMapper(), id);
+    }
+
     public void deleteAccountById(Long id) {
         jdbcTemplate.update("DELETE FROM Account where id = ?", id);
     }
