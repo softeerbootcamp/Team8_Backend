@@ -45,12 +45,11 @@ public class UserController {
         getDetailRes.setUserId(1L);
         getDetailRes.setUserName("hello");
         getDetailRes.setCurChapterIdx(4L);
-        getDetailRes.setTotalChapterIdx(15L);
+        getDetailRes.setTotalChapterIdx(0L);
         getDetailRes.setRoadmapId(1L);
         getDetailRes.setCurSubjectIdx(2L);
         getDetailRes.setTotalSubjectIdx(4L);
         return new ResponseEntity<>(getDetailRes, HttpStatus.OK);
-
     }
 
     @GetMapping("/api/user/real")
