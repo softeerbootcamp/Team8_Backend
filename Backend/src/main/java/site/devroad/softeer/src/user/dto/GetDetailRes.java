@@ -10,15 +10,8 @@ public class GetDetailRes {
     private Long totalChapterIdx;
     private Long curChapterIdx;
 
-    public GetDetailRes(Long userId, String userName, Long roadmapId, Long totalSubjectIdx, Long curSubjectIdx, Long totalChapterIdx, Long curChapterIdx) {
+    public GetDetailRes() {
         this.success = true;
-        this.userId = userId;
-        this.userName = userName;
-        this.roadmapId = roadmapId;
-        this.totalSubjectIdx = totalSubjectIdx;
-        this.curSubjectIdx = curSubjectIdx;
-        this.totalChapterIdx = totalChapterIdx;
-        this.curChapterIdx = curChapterIdx;
     }
 
     public boolean isSuccess() {
@@ -29,27 +22,55 @@ public class GetDetailRes {
         return userId;
     }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public String getUserName() {
         return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Long getRoadmapId() {
         return roadmapId;
     }
 
+    public void setRoadmapId(Long roadmapId) {
+        this.roadmapId = roadmapId;
+    }
+
     public Long getTotalSubjectIdx() {
         return totalSubjectIdx;
+    }
+
+    public void setTotalSubjectIdx(Long totalSubjectIdx) {
+        this.totalSubjectIdx = totalSubjectIdx;
     }
 
     public Long getCurSubjectIdx() {
         return curSubjectIdx;
     }
 
+    public void setCurSubjectIdx(Long curSubjectIdx) {
+        this.curSubjectIdx = curSubjectIdx;
+    }
+
     public Long getTotalChapterIdx() {
         return totalChapterIdx;
     }
 
+    public void setTotalChapterIdx(Long totalChapterIdx) {
+        this.totalChapterIdx = totalChapterIdx;
+    }
+
     public Long getCurChapterIdx() {
         return curChapterIdx;
+    }
+
+    public void setCurChapterIdx(Long curChapterIdx) {
+        this.curChapterIdx = curChapterIdx;
     }
 }
