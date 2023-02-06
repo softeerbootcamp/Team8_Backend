@@ -1,6 +1,6 @@
 package site.devroad.softeer.exceptions;
 
-import site.devroad.softeer.utility.CustomRes;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
@@ -19,8 +19,8 @@ public class CustomException extends Exception {
         return exceptionType;
     }
 
-    public CustomRes<?> getResponseEntity() {
-        return new CustomRes<>(
+    public ResponseEntity<?> getResponseEntity() {
+        return new ResponseEntity<>(
                 Map.of("message", exceptionType.getMessage(),
                         "customErrorCode", exceptionType.getCustomErrorCode(),
                         "success", false),

@@ -9,13 +9,17 @@ import site.devroad.softeer.src.user.dto.PostSignInReq;
 import site.devroad.softeer.src.user.dto.PostSignUpReq;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
+import site.devroad.softeer.utility.JwtUtility;
 
 import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    UserRepo userRepo;
+    private final UserRepo userRepo;
+
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
 
     public Long join(PostSignUpReq req) throws CustomException {
         validateSignUp(req);
@@ -33,7 +37,8 @@ public class UserService {
         String password = req.getPassword();
         boolean authentication = BCrypt.checkpw(password, loginInfo.get().getPassword());
         if (authentication) {
-            return "magicalJWT";
+            Long accountId = loginInfo.get().getAccountId();
+            return JwtUtility.makeJwtToken(accountId);
         }
         throw new CustomException(ExceptionType.AUTHENTICATION_FAILED);
     }
