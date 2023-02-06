@@ -1,6 +1,5 @@
 package site.devroad.softeer.src.roadmap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
@@ -12,11 +11,13 @@ import java.util.*;
 
 @Service
 public class RoadmapService {
-    @Autowired
-    RoadmapRepo roadmapRepo;
+    private final RoadmapRepo roadmapRepo;
+    private final CourseRepo courseRepo;
 
-    @Autowired
-    CourseRepo courseRepo;
+    public RoadmapService(RoadmapRepo roadmapRepo, CourseRepo courseRepo) {
+        this.roadmapRepo = roadmapRepo;
+        this.courseRepo = courseRepo;
+    }
 
     public Map<String, List<List<Object>>> getSubjects(String jwt, Long roadmapId) throws CustomException {
         //TODO: req의 JWT 검증
