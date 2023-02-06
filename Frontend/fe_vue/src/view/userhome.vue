@@ -68,22 +68,20 @@ export default {
         this.roadmapPercentage = 0;
         return;
       }
-      this.roadmapPercentage =
-        (this.curChapterIdx / this.totalChapterIdx) * 100;
+      this.roadmapPercentage = parseInt(
+        (this.curChapterIdx / this.totalChapterIdx) * 100
+      );
     },
     getSubData: function () {
       var vm = this;
       axios
-        .get(
-          "https://backend.devroad.site/" + "api/roadmap/" + this.roadmapId,
-          {
-            headers: {
-              jwt: "jwt",
-            },
-          }
-        )
+        .get("https://backend.devroad.site/" + "api/roadmap/", {
+          headers: {
+            jwt: "jwt",
+          },
+        })
         .then((response) => {
-          console.log(response);
+          console.log("user res : " + response);
           vm.isSuccess = response.data.success;
           vm.roadmapDetail = response.data.subjects;
           this.$store.commit("setRoadmapDetailStatus", response.data.subjects);
