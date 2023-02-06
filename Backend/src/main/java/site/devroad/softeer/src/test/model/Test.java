@@ -2,7 +2,7 @@ package site.devroad.softeer.src.test.model;
 
 public class Test {
     Long id;
-    Long course_id;
+    Long subjectId;
     String url;
     String name;
     String explain;
@@ -12,8 +12,8 @@ public class Test {
         return id;
     }
 
-    public Long getCourse_id() {
-        return course_id;
+    public Long getSubjectId() {
+        return subjectId;
     }
 
     public String getUrl() {
@@ -32,9 +32,9 @@ public class Test {
         return price;
     }
 
-    public Test(Long id, Long course_id, String url, String name, String explain, Integer price) {
+    public Test(Long id, Long subjectId, String url, String name, String explain, Integer price) {
         this.id = id;
-        this.course_id = course_id;
+        this.subjectId = subjectId;
         this.url = url;
         this.name = name;
         this.explain = explain;

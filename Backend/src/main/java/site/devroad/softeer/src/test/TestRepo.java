@@ -45,12 +45,12 @@ public class TestRepo {
     RowMapper<Test> testRowMapper(){
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
-            Long course_id = rs.getLong("course_id");
+            Long subject_id = rs.getLong("subject_id");
             String url = rs.getString("url");
             String name = rs.getString("name");
             String explain = rs.getString("explain");
             Integer price = rs.getInt("price");
-            return new Test(id, course_id, url, name, explain, price);
+            return new Test(id, subject_id, url, name, explain, price);
         };
     }
 }
