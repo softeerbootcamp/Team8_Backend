@@ -1,16 +1,13 @@
 <template>
   <div class="d-grid gap-2 col-6 mx-auto">
-    <div v-for="subject in subjects" :key="subject">
+    <div v-for="subject in getsubjects" :key="subject">
       <span v-for="course in subject" :key="course">
-        <button
-          class="btn btn-primary ms-3"
-          @click="
-            $router.push({
-              name: 'CourseView',
-              params: { subject: subject },
-            })
-          "
-        >
+        <button class="btn btn-primary ms-3" @click="
+          $router.push({
+            name: 'CourseView',
+            params: { subject: subject },
+          })
+        ">
           {{ course[0] }}
         </button>
         <button type="button" class="btn btn-primary btn-sm">
@@ -30,13 +27,17 @@ export default {
       isCardOn: false,
       success: false,
       subDataSuccess: false,
-      subjects: [],
     };
   },
-  mounted() {
-    this.subjects = this.$store.state.subjects;
-  },
+
+  computed: {
+    getsubjects() {
+      return this.$store.state.subjects;
+    }
+  }
 };
 </script>
 
-<style></style>
+<style>
+
+</style>

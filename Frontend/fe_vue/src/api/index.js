@@ -16,6 +16,9 @@ function userData(config){
 }
 function getRoadmap(config){
   return axiosService.get('api/roadmap',config);
-
 }
-export { signinUser,signupUser,userData,getRoadmap };
+function getSubjectDetail(param){
+  return axiosService.get('api/roadmap'+param);
+}
+
+export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail };
