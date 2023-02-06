@@ -33,7 +33,7 @@ export default {
     // subjectID ex ) "1001"
     async getCourseData(subject) {
       console.log("subject!!! : " + subject);
-      this.subid = subject[1];
+      this.subid = subject[1]
       // 선택된 subject 정보를 다음 라우터에 넘겨주기 위해 curSubId 설정
       var vm = this;
       //GET /api/roadmap/{:subjectId}/ sub Detail
