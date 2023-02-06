@@ -1,52 +1,55 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import SignUp from '@/components/signup.vue'
-import LogIn from '@/components/login.vue'
-import RoadMap from '@/view/roadmap.vue'
-import CourseView from '@/view/courseView.vue'
-import UserHome from '@/view/userhome.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import SignUp from "@/components/signup.vue";
+import LogIn from "@/components/login.vue";
+import RoadMap from "@/view/roadmap.vue";
+import CourseView from "@/view/courseView.vue";
+import UserHome from "@/view/userhome.vue";
+import ChapterView from "@/view/chapterView.vue";
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
 const routes = [
-
   {
-    path:'/',
-    name : 'Home',
-        component: () => import("../view/home.vue"),
+    path: "/",
+    name: "Home",
+    component: () => import("../view/home.vue"),
   },
   {
-    path: '/roadmap',
-    name: 'RoadMap',
+    path: "/roadmap",
+    name: "RoadMap",
     component: RoadMap,
-    children :[
-      {
-        path: '/courseView/:subjectDetail',
-        name: 'CourseView',
-        component: CourseView,
-        props : true
-      },
-    ]
   },
   {
-    path: '/userhome',
-    name: 'UserHome',
-    component: UserHome
+    path: "/chapterView",
+    name: "ChapterView",
+    component: ChapterView,
   },
   {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp
+    path: "/courseView/:subject",
+    name: "CourseView",
+    component: CourseView,
   },
   {
-    path: '/login',
-    name: 'LogIn',
-    component: LogIn
-  }
-]
+    path: "/userhome",
+    name: "UserHome",
+    component: UserHome,
+  },
+  {
+    path: "/signup",
+    name: "SignUp",
+    component: SignUp,
+  },
+  {
+    path: "/login",
+    name: "LogIn",
+    component: LogIn,
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
+
