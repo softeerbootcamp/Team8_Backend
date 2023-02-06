@@ -41,9 +41,9 @@ export default {
     };
   },
   mounted() {
-    this.getJwt();
-    this.getUserData();
     this.setProgressbar();
+    this.getUserData();
+
   },
   computed: {
     isRoadmapStarted() {
@@ -54,13 +54,10 @@ export default {
     },
   },
   methods: {
-    getJwt() {
-      this.jwt = this.$store.state.jwt;
-    },
     async getUserData() {
       const config = {
         headers: {
-          jwt: this.jwt
+          jwt: this.$store.state.jwt
         }
       };
       await userData(config)
