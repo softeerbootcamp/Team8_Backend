@@ -27,8 +27,11 @@ function getAllSubjectData(){
   return axiosService.get('api/subject');
 }
 function postRoadmapToUserByEmail(requestBody){
-  return axiosService.post('/api/roadmap',requestBody);
+  return axiosService.post('api/roadmap',requestBody);
+}
+function getNoRoadmapUserData(){
+    return axiosService.get('api/user/noRoadmap');
 }
 
 export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData
-,getAllSubjectData,postRoadmapToUserByEmail };
+,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData };
