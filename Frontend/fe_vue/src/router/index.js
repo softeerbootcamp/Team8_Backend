@@ -5,6 +5,7 @@ import RoadMap from "@/view/roadmap.vue";
 import CourseView from "@/view/courseView.vue";
 import UserHome from "@/view/userhome.vue";
 import ChapterView from "@/view/chapterView.vue";
+import RoadMapFactory from "@/view/roadmapFactory.vue"
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
@@ -13,6 +14,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: () => import("../view/home.vue"),
+  },
+  {
+    path: "/roadmapFactory",
+    name: "RoadMapFactory",
+    component: RoadMapFactory,
   },
   {
     path: "/roadmap",

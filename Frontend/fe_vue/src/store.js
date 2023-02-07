@@ -6,9 +6,14 @@ export default new Vuex.Store({
     isLogin: false,
     subjects: [],
     jwt: null,
-    curSubjectId:""
+    curSubjectId:"",
+    isAdmin: true
   },
   mutations: {
+    setIsAdmin(state,status){
+      state.isAdmin = status;
+    }
+    ,
     setCurSubjectId(state,status){
       state.curSubjectId = status;
     },

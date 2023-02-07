@@ -22,7 +22,10 @@ function getSubjectDetail(param,config){
 }
 function getCourceData(param,config){
   return axiosService.get('api/course'+"/"+param,config);
-
+}
+function getAllSubjectData(){
+  return axiosService.get('api/subject');
 }
 
-export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData };
+export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData
+,getAllSubjectData };
