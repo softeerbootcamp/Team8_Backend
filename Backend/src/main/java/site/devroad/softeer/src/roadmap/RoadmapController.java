@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.devroad.softeer.exceptions.CustomException;
+import site.devroad.softeer.src.course.model.Chapter;
 import site.devroad.softeer.src.course.model.Subject;
 import site.devroad.softeer.src.course.service.CourseService;
 import site.devroad.softeer.src.course.service.SubjectService;
@@ -83,6 +84,18 @@ public class RoadmapController {
             Long nextChapterId = courseService.getNextChapterId(chapterIdL);
             Boolean courseFinished = courseService.getCourseFinished(chapterIdL);
             return new ResponseEntity<>(new PutChapterFinishRes(courseFinished, nextChapterId), HttpStatus.ACCEPTED);
+        } catch (CustomException e) {
+            return e.getResponseEntity();
+        }
+    }
+
+    @GetMapping("/api/chapter/{chapterId}")
+    public ResponseEntity<?> getChapterDetail(@RequestHeader(value = "jwt") String jwt, @PathVariable("chapterId") String chapterId) {
+        try {
+            jwtUtility.validateToken(jwt);
+            Long chapterIdL = Long.valueOf(chapterId);
+            Chapter chapter = courseService.getChapter(chapterIdL);
+            return new ResponseEntity<>(new GetChapterDetailRes(chapter), HttpStatus.OK);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
