@@ -4,12 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.devroad.softeer.exceptions.CustomException;
+import site.devroad.softeer.src.course.model.Subject;
 import site.devroad.softeer.src.course.service.CourseService;
 import site.devroad.softeer.src.course.service.SubjectService;
-import site.devroad.softeer.src.roadmap.dto.GetCourseDetailRes;
-import site.devroad.softeer.src.roadmap.dto.GetRoadmapDetailRes;
-import site.devroad.softeer.src.roadmap.dto.GetSubjectDetailRes;
-import site.devroad.softeer.src.roadmap.dto.PutChapterFinishRes;
+import site.devroad.softeer.src.roadmap.dto.*;
 import site.devroad.softeer.src.roadmap.dto.subdto.ChapterDetail;
 import site.devroad.softeer.src.roadmap.dto.subdto.CourseDetail;
 import site.devroad.softeer.utility.JwtUtility;
@@ -40,6 +38,12 @@ public class RoadmapController {
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
+    }
+
+    @GetMapping("/api/subject")
+    public ResponseEntity<?> getAllSubjects() {
+        List<Subject> allSubjects = subjectService.getAllSubjects();
+        return new ResponseEntity<>(new GetAllSubjects(allSubjects), HttpStatus.OK);
     }
 
     @GetMapping("/api/subject/{subjectId}")
@@ -74,9 +78,7 @@ public class RoadmapController {
             Long accountId = JwtUtility.getAccountId(jwt);
             Long chapterIdL = Long.valueOf(chapterId);
             roadmapService.setCurChapterId(accountId, chapterIdL);
-            //TODO : 다음 챕터의 id
             Long nextChapterId = courseService.getNextChapterId(chapterIdL);
-            //TODO : 코스의 총 챕터 개수와 sequence값을 비교하여
             Boolean courseFinished = courseService.getCourseFinished(chapterIdL);
             return new ResponseEntity<>(new PutChapterFinishRes(courseFinished, nextChapterId), HttpStatus.ACCEPTED);
         } catch (CustomException e) {
