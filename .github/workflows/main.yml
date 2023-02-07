@@ -1,4 +1,4 @@
-name: EC2 Deployment
+name: EC2 Deployment and Test
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Run script on My CustomServer
+    - name: Run script on Ec2 Server
       uses: appleboy/ssh-action@master
       with:
         host: ec2-43-201-140-54.ap-northeast-2.compute.amazonaws.com
@@ -22,3 +22,20 @@ jobs:
         script: |
           /home/ubuntu/runserve.sh
           # Insert your script here
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Navigate to Backend folder
+      run: cd Backend
+
+    - name: Use Gradle 7.1.1
+      run: gradle wrapper --gradle-version 7.1.1
+
+    - name: Gradle Test
+      run: ./gradlew test
+      if: github.ref == 'refs/heads/dev'
