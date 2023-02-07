@@ -29,16 +29,18 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Navigate to Backend folder
-      run: cd Backend
+      
+    - name: setting java
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 11
+        
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
     
-    - name: check the Structure of Folder
-      run: tree
-
-    - name: Use Gradle 7.1.1
-      run: gradle wrapper --gradle-version 7.1.1
-
-    - name: Gradle Test
-      run: ./gradlew test
+    - name: Execute Gradle build
+      run: |
+        cd Backend
+        ./gradlew test
       if: github.ref == 'refs/heads/dev'
