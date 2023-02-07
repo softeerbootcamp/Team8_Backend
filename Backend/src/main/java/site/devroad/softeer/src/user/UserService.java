@@ -51,4 +51,10 @@ public class UserService {
         if (userRepo.findByEmail(email).isPresent())
             throw new CustomException(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED);
     }
+
+
+    public Boolean isAdmin(Long accountId){
+        Account account = userRepo.findAccountById(accountId);
+        return
+    }
 }

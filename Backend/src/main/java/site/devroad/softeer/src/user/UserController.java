@@ -65,4 +65,14 @@ public class UserController {
             return e.getResponseEntity();
         }
     }
+
+    @GetMapping("/api/user/noRoadmap")
+    public ResponseEntity<?> getNoRoadmapUser(@RequestHeader(value = "jwt") String jwt) {
+        try{
+            JwtUtility.validateToken(jwt);
+            return new ResponseEntity<>()
+        } catch (CustomException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
