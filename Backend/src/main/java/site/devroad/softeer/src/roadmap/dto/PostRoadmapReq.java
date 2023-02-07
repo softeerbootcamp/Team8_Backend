@@ -4,18 +4,18 @@ import java.util.List;
 
 public class PostRoadmapReq {
     private String email;
-    private List<Long> subjects;
+    private List<Long> subjectSequence;
 
     public PostRoadmapReq(String email, List<Long> subjects) {
         this.email = email;
-        this.subjects = subjects;
+        this.subjectSequence = subjects;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public List<Long> getSubjects() {
-        return subjects;
+    public List<Long> getSubjectSequence() {
+        return subjectSequence;
     }
 }
