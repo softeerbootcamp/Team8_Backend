@@ -17,8 +17,21 @@ function userData(config){
 function getRoadmap(config){
   return axiosService.get('api/roadmap',config);
 }
-function getSubjectDetail(param){
-  return axiosService.get('api/roadmap'+param);
+function getSubjectDetail(param,config){
+  return axiosService.get('api/subject'+"/"+param,config);
+}
+function getCourceData(param,config){
+  return axiosService.get('api/course'+"/"+param,config);
+}
+function getAllSubjectData(){
+  return axiosService.get('api/subject');
+}
+function postRoadmapToUserByEmail(requestBody){
+  return axiosService.post('api/roadmap',requestBody);
+}
+function getNoRoadmapUserData(){
+    return axiosService.get('api/user/noRoadmap');
 }
 
-export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail };
+export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData
+,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData };

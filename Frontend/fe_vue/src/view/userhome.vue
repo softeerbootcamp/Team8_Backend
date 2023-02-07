@@ -15,9 +15,6 @@
   <router-link :to="{ name: 'ChapterView' }" v-if="isRoadmapStarted">
     <button>로드맵 이어하기!</button>
   </router-link>
-  <button type="button" class="btn btn-primary btn-sm">
-    <span class="bi bi-file-text"></span>
-  </button>
 </template>
 <script>
 import { userData, getRoadmap } from '@/api'

@@ -24,6 +24,8 @@ public enum ExceptionType {
 
     //JWT Related Exceptions
     JWT_NOT_VALID(HttpStatus.BAD_REQUEST, "JWT not valid", 1201),
+    NO_ADMIN_USER(HttpStatus.BAD_REQUEST, "Not admin", 1202),
+
 
 
     //Test Related Exceptions

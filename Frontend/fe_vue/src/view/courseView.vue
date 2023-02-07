@@ -1,11 +1,15 @@
 <template>
-  <div class="d-grid gap-2 col-6 mx-auto">
-    <div class="card" style="width: 18rem">
-      <div class="card-body">
-        <div class="card-title">코스 정보</div>
-        <p class="card-text">{{ courseData }}!!!</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" v-for="course in subjectDetail" :key="course">
+      <router-link :to="'/chapterView/' + course.id" style="text-decoration: none; color:black;">
+        <div class="card">
+          <img :src="course.thumbnailUrl" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{ course.courseName }}</h5>
+            <p class="card-text">{{ course.explain }}</p>
+          </div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -13,36 +17,27 @@
 import { getSubjectDetail } from "@/api";
 
 export default {
-  props: ["subject"],
   data() {
     return {
-      courseSubject: this.subject,
-      subjectId: "",
-      courseData: "",
-      // subject detail = courses
+      subid: "",
       subjectDetail: null,
-      subDataSuccess: false,
-      // subid 는 이후 받아와야한다.
-      subid: "1",
     };
   },
   mounted() {
-    this.getCourseData(this.courseSubject);
+    this.getCourseData();
   },
   methods: {
-    // subjectID ex ) "1001"
-    async getCourseData(subject) {
-      console.log("subject!!! : " + subject);
-      this.subid = subject[1];
-      // 선택된 subject 정보를 다음 라우터에 넘겨주기 위해 curSubId 설정
-      var vm = this;
-      //GET /api/roadmap/{:subjectId}/ sub Detail
+    async getCourseData() {
+      this.subid = this.$store.state.curSubjectId;
 
-      await getSubjectDetail(vm.subid)
+      const config = {
+        headers: {
+          jwt: this.$store.state.jwt
+        }
+      };
+      await getSubjectDetail(this.subid, config)
         .then((response) => {
-          console.log(response);
-          vm.subDataSuccess = response.data.success;
-          vm.subjectDetail = response.data.courses;
+          this.subjectDetail = response.data.courses;
         })
         .catch(function (error) {
           console.log(error);
@@ -52,5 +47,13 @@ export default {
 };
 </script>
 <style>
+.card {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 
+}
+
+.card:hover {
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
 </style>
