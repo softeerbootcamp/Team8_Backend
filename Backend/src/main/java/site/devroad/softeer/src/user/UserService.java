@@ -9,6 +9,8 @@ import site.devroad.softeer.src.user.dto.PostSignUpReq;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,5 +49,19 @@ public class UserService {
             throw new CustomException(ExceptionType.POST_ACCOUNT_PHONE_DUPLICATED);
         if (userRepo.findByEmail(email).isPresent())
             throw new CustomException(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED);
+    }
+
+    public boolean validateAdmin(Long accountId) throws CustomException {
+        Account accountById = userRepo.findAccountById(accountId);
+        return accountById.getType().equals("Admin");
+    }
+
+    public List<String> getNoRoadmapUsers() throws CustomException {
+        List<LoginInfo> noRoadmapUser = userRepo.findNoRoadmapUser();
+        List<String> users = new ArrayList<>();
+        for (LoginInfo loginInfo : noRoadmapUser) {
+            users.add(loginInfo.getEmail());
+        }
+        return users;
     }
 }

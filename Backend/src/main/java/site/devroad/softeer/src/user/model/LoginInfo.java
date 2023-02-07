@@ -21,8 +21,11 @@ public class LoginInfo {
         return password;
     }
 
-    public Long getAccountId(){
+    public Long getAccountId() {
         return accountId;
     }
 
+    public String getEmail() {
+        return email;
+    }
 }
