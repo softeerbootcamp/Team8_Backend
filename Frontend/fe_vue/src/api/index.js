@@ -20,5 +20,9 @@ function getRoadmap(config){
 function getSubjectDetail(param,config){
   return axiosService.get('api/subject'+"/"+param,config);
 }
+function getCourceData(param,config){
+  return axiosService.get('api/course'+"/"+param,config);
 
-export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail };
+}
+
+export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData };
