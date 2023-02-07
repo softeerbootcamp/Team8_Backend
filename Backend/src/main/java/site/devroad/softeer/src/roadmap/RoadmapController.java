@@ -90,7 +90,7 @@ public class RoadmapController {
     public ResponseEntity<?> createRoadmap(@RequestBody PostRoadmapReq roadmapReq){
         try {
             roadmapService.createRoadmap(roadmapReq);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(new PostRoadmapRes(true), HttpStatus.CREATED);
         }catch(CustomException e){
             return e.getResponseEntity();
         }
