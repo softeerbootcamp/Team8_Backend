@@ -45,5 +45,6 @@ jobs:
     - name: Execute Gradle build
       run: |
         cd Backend
+        echo "${{ secrets.APP_YML }}" > src/main/resources/application.yml
         ./gradlew test
       if: github.ref == 'refs/heads/dev'
