@@ -24,8 +24,15 @@ public enum ExceptionType {
     UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", 1102),
 
     //JWT Related Exceptions
-    JWT_NOT_VALID(HttpStatus.BAD_REQUEST, "JWT not valid", 1201);
+    JWT_NOT_VALID(HttpStatus.BAD_REQUEST, "JWT not valid", 1201),
 
+
+    //Test Related Exceptions
+    TEST_NOT_FOUND(HttpStatus.NOT_FOUND, "Test not exist", 1301),
+
+
+    //Last Exceptions
+    DATABASE_NOT_CONNECTED(HttpStatus.INTERNAL_SERVER_ERROR, "Database not connected", 2001);
 
     private HttpStatus httpStatus;
     private String message;
