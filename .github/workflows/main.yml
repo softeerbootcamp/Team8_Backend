@@ -1,0 +1,49 @@
+name: EC2 Deployment and Test
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run script on Ec2 Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ec2-43-201-140-54.ap-northeast-2.compute.amazonaws.com
+        username: ubuntu
+        key: ${{ secrets.AWS_PEM_KEY }}
+        script: |
+          /home/ubuntu/runserve.sh
+          # Insert your script here
+      if: github.ref == 'refs/heads/main'
+
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: setting java
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 11
+        
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+    
+    - name: Execute Gradle build
+      run: |
+        cd Backend
+        ./gradlew test
+      if: github.ref == 'refs/heads/dev'
