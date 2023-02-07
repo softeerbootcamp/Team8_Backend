@@ -36,6 +36,15 @@ public class ChapterRepo {
         }
     }
 
+    public Optional<Chapter> findNextChapter(Long courseId, Integer sequence) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Chapter WHERE course_id = ? and sequence = ?"
+                    , chapterRowMapper(), courseId, sequence));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
     private RowMapper<Chapter> chapterRowMapper() {
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
