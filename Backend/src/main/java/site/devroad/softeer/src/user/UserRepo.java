@@ -72,6 +72,11 @@ public class UserRepo {
         });
     }
 
+
+    public void setRoadmap(Long id, Long roadmapId) {
+        jdbcTemplate.update("UPDATE Account SET roadmap_id = ? WHERE id=?", roadmapId, id);
+    }
+
     private RowMapper<Account> accountRowMapper() {
         return ((rs, rowNum) -> {
             Long id = (rs.getLong("id"));
@@ -84,4 +89,5 @@ public class UserRepo {
             return new Account(id, name, roadMapId, phone, type, createdAt, updatedAt);
         });
     }
+
 }
