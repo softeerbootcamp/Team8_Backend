@@ -20,7 +20,7 @@ const routes = [
     component: RoadMap,
   },
   {
-    path: "/chapterView",
+    path: "/chapterView/:courseId",
     name: "ChapterView",
     component: ChapterView,
   },
