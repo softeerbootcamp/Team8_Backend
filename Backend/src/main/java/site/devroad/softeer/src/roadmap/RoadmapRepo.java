@@ -61,6 +61,16 @@ public class RoadmapRepo {
         }
     }
 
+    public void deleteRoadmap(Long roadmapId){
+        try{
+            jdbcTemplate.update("update Account set roadmap_id = null where roadmap_id = ?", roadmapId);
+            jdbcTemplate.update("delete from SubjectToRoadmap where roadmap_id = ?", roadmapId);
+            jdbcTemplate.update("delete from Roadmap where id = ?", roadmapId);
+        }catch(DataAccessException e){
+            e.printStackTrace();
+        }
+    }
+
 
     public Long createRoadmap(String roadmapName) throws CustomException {
         try{

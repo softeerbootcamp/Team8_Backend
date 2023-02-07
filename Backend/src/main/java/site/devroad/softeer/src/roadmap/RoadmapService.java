@@ -76,8 +76,8 @@ public class RoadmapService {
 
         userRepo.setRoadmap(account.getId(), roadmapId);
 
-        for(int i = 0; i<roadmapReq.getSubjects().size(); i++) {
-            roadmapRepo.addSubjectToRoadMap(roadmapId, roadmapReq.getSubjects().get(i), i+1);
+        for(int i = 0; i<roadmapReq.getSubjectSequence().size(); i++) {
+            roadmapRepo.addSubjectToRoadMap(roadmapId, roadmapReq.getSubjectSequence().get(i), i+1);
         }
     }
 }
