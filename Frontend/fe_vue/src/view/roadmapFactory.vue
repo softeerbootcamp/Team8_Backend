@@ -28,7 +28,7 @@
     </div>
 </template>
 <script>
-import { getAllSubjectData } from '@/api'
+import { getAllSubjectData, postRoadmapToUserByEmail } from '@/api'
 
 export default {
     name: "RoadMapFactory",
@@ -47,12 +47,32 @@ export default {
             this.roadmapSubjectCnt = this.roadmapSubjectCnt - 1;
 
         },
-        onSubmit(event) {
+        async onSubmit(event) {
             event.preventDefault();
-            const formData = {
-                subjectSequence: this.selectedSubjects
-            }
-            alert(JSON.stringify(formData));
+            const userEmail = "12341234@naver.com";
+            const subjectSequence = this.selectedSubjects.filter(subject => subject !== null).map(subject => subject.id);
+            console.log("subjectSequence : " + subjectSequence);
+            console.log("filtered subjectSequence : " + subjectSequence);
+
+            const requestBody = {
+                email: userEmail,
+                subjectSequence: subjectSequence
+            };
+            // 현재는 email 수동
+
+            await postRoadmapToUserByEmail(requestBody)
+                .then((response) => {
+                    console.log("post roadmap response:" + response);
+                    if (response.data.success) {
+                        console.log("success!!");
+                        this.$router.push({ name: "Home" });
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+
         },
         onReset(event) {
             event.preventDefault();

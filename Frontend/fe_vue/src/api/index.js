@@ -26,6 +26,9 @@ function getCourceData(param,config){
 function getAllSubjectData(){
   return axiosService.get('api/subject');
 }
+function postRoadmapToUserByEmail(requestBody){
+  return axiosService.post('/api/roadmap',requestBody);
+}
 
 export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData
-,getAllSubjectData };
+,getAllSubjectData,postRoadmapToUserByEmail };
