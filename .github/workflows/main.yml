@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
   deploy:
@@ -22,6 +23,8 @@ jobs:
         script: |
           /home/ubuntu/runserve.sh
           # Insert your script here
+      if: github.ref == 'refs/heads/main'
+
 
   test:
     runs-on: ubuntu-latest
