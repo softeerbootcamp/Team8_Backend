@@ -21,18 +21,20 @@ public class RoadmapController {
     private final RoadmapService roadmapService;
     private final SubjectService subjectService;
     private final CourseService courseService;
+    private final JwtUtility jwtUtility;
 
-    public RoadmapController(RoadmapService roadmapService, SubjectService subjectService, CourseService courseService) {
+    public RoadmapController(RoadmapService roadmapService, SubjectService subjectService, CourseService courseService, JwtUtility jwtUtility) {
         this.roadmapService = roadmapService;
         this.subjectService = subjectService;
         this.courseService = courseService;
+        this.jwtUtility = jwtUtility;
     }
 
     @GetMapping("/api/roadmap")
     public ResponseEntity<?> getRoadmapSubjects(@RequestHeader(value = "jwt") String jwt) {
         try {
-            JwtUtility.validateToken(jwt);
-            Long accountId = JwtUtility.getAccountId(jwt);
+            jwtUtility.validateToken(jwt);
+            Long accountId = jwtUtility.getAccountId(jwt);
             Map<String, List<List<Object>>> subjects = roadmapService.getSubjects(accountId);
             return new ResponseEntity<>(new GetRoadmapDetailRes(subjects), HttpStatus.OK);
         } catch (CustomException e) {
@@ -49,8 +51,8 @@ public class RoadmapController {
     @GetMapping("/api/subject/{subjectId}")
     public ResponseEntity<?> getSubjectDetail(@RequestHeader(value = "jwt") String jwt, @PathVariable("subjectId") String subjectId) {
         try {
-            JwtUtility.validateToken(jwt);
-            Long accountId = JwtUtility.getAccountId(jwt);
+            jwtUtility.validateToken(jwt);
+            Long accountId = jwtUtility.getAccountId(jwt);
             List<CourseDetail> courses = subjectService.getCourseDetails(Long.valueOf(subjectId), accountId);
             return new ResponseEntity<>(new GetSubjectDetailRes(courses), HttpStatus.OK);
         } catch (CustomException e) {
@@ -61,8 +63,8 @@ public class RoadmapController {
     @GetMapping("/api/course/{courseId}")
     public ResponseEntity<?> getCourseDetail(@RequestHeader(value = "jwt") String jwt, @PathVariable("courseId") String courseId) {
         try {
-            JwtUtility.validateToken(jwt);
-            Long accountId = JwtUtility.getAccountId(jwt);
+            jwtUtility.validateToken(jwt);
+            Long accountId = jwtUtility.getAccountId(jwt);
             List<ChapterDetail> chapterDetails = courseService.getChapterDetails(Long.valueOf(courseId));
             Long curChapterId = roadmapService.getCurChapterId(accountId);
             return new ResponseEntity<>(new GetCourseDetailRes(chapterDetails, curChapterId), HttpStatus.OK);
@@ -74,8 +76,8 @@ public class RoadmapController {
     @PutMapping("/api/chapter/{chapterId}")
     public ResponseEntity<?> finishChapter(@RequestHeader(value = "jwt") String jwt, @PathVariable("chapterId") String chapterId) {
         try {
-            JwtUtility.validateToken(jwt);
-            Long accountId = JwtUtility.getAccountId(jwt);
+            jwtUtility.validateToken(jwt);
+            Long accountId = jwtUtility.getAccountId(jwt);
             Long chapterIdL = Long.valueOf(chapterId);
             roadmapService.setCurChapterId(accountId, chapterIdL);
             Long nextChapterId = courseService.getNextChapterId(chapterIdL);
