@@ -22,7 +22,8 @@
 
 # 프로젝트 구조
 
-![ProjectDiagram](https://user-images.githubusercontent.com/37894908/217128157-ea62c9b4-6b37-448d-a270-88a152430754.jpg)
+![ProjectDiagram (1)](https://user-images.githubusercontent.com/37894908/217138941-c24909fd-a859-4414-b74a-ea2bbc3cbe61.jpg)
+
 
 프로젝트의 큰 구조는 위와 같습니다. 각각 fork 한 본인의 repository에서 작업이후 dev branch에 담아서 pull request를 진행하고 있습니다.
 
