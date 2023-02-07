@@ -67,4 +67,19 @@ public class UserController {
             return e.getResponseEntity();
         }
     }
+
+    @GetMapping("/api/user/noRoadmap")
+    public ResponseEntity<?> getNoRoadmapUser(@RequestHeader(value = "jwt") String jwt) {
+        try {
+            jwtUtility.validateToken(jwt);
+            Long accountId = jwtUtility.getAccountId(jwt);
+            boolean isAdmin = userService.validateAdmin(accountId);
+            if (isAdmin) {
+                return new ResponseEntity<>(new GetNoUserRes(true, userService.getNoRoadmapUsers()), HttpStatus.OK);
+            }
+            return new CustomException(ExceptionType.NO_ADMIN_USER).getResponseEntity();
+        } catch (CustomException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
