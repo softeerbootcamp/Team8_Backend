@@ -32,6 +32,9 @@ jobs:
 
     - name: Navigate to Backend folder
       run: cd Backend
+    
+    - name: check the Structure of Folder
+      run: tree
 
     - name: Use Gradle 7.1.1
       run: gradle wrapper --gradle-version 7.1.1
