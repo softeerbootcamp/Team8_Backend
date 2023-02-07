@@ -15,8 +15,7 @@ public enum ExceptionType {
     POST_ACCOUNT_PHONE_DUPLICATED(HttpStatus.BAD_REQUEST, "중복된 휴대폰 번호가 있습니다.", 1007),
     ROADMAP_NOT_FOUND(HttpStatus.NOT_FOUND, "Roadmap not found", 1008),
     SUBJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "Subject not found", 1009),
-
-
+    CHAPTER_NOT_FOUND(HttpStatus.NOT_FOUND, "Chapter not found", 1010),
 
 
     //Database Related Exceptions
