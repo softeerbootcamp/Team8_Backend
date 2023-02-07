@@ -10,9 +10,7 @@ import site.devroad.softeer.src.user.UserRepo;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class TestServiceTest {
@@ -28,7 +26,7 @@ class TestServiceTest {
 
     @Test
     @DisplayName("사용자가 실제로 해당 테스트를 패스 했는지 성공여부를 확인.")
-    void testIfPasssed(){
+    void testIfPasssed() {
         //given
         LoginInfo loginInfo = userRepo.findByEmail("jm1234@naver.com").get();
         Account account = userRepo.findAccountById(loginInfo.getAccountId());
@@ -40,11 +38,9 @@ class TestServiceTest {
 
             //then
             assertEquals(result, false);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
-
     }
 }

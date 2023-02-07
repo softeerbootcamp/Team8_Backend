@@ -11,9 +11,11 @@ import site.devroad.softeer.utility.JwtUtility;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final JwtUtility jwtUtility;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtility jwtUtility) {
         this.userService = userService;
+        this.jwtUtility = jwtUtility;
     }
 
     @PostMapping("/api/user/signup")
@@ -32,7 +34,7 @@ public class UserController {
     @PostMapping("/api/user/signin")
     public ResponseEntity<?> postSignUp(@RequestBody PostSignInReq postSignInReq) {
         try {
-            String jwt = userService.signIn(postSignInReq);
+            String jwt = jwtUtility.makeJwtToken(userService.signIn(postSignInReq));
             if (postSignInReq.getEmail().equals("admin@naver.com"))
                 return new ResponseEntity<>(new PostSignInRes(jwt, true), HttpStatus.OK);
             return new ResponseEntity<>(new PostSignInRes(jwt, false), HttpStatus.OK);
@@ -57,8 +59,8 @@ public class UserController {
     @GetMapping("/api/user/real")
     public ResponseEntity<?> getUserDetail(@RequestHeader(value = "jwt") String jwt) {
         try {
-            JwtUtility.validateToken(jwt);
-            Long accountId = JwtUtility.getAccountId(jwt);
+            jwtUtility.validateToken(jwt);
+            Long accountId = jwtUtility.getAccountId(jwt);
             GetDetailRes getDetailRes = new GetDetailRes();
             return new ResponseEntity<>(getDetailRes, HttpStatus.OK);
         } catch (CustomException e) {

@@ -1,7 +1,6 @@
 package site.devroad.softeer.src.user;
 
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
@@ -9,7 +8,6 @@ import site.devroad.softeer.src.user.dto.PostSignInReq;
 import site.devroad.softeer.src.user.dto.PostSignUpReq;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
-import site.devroad.softeer.utility.JwtUtility;
 
 import java.util.Optional;
 
@@ -28,7 +26,7 @@ public class UserService {
         return userRepo.createLoginInfo(req.getEmail(), hashPassword, student.getId()).getId();
     }
 
-    public String signIn(PostSignInReq req) throws CustomException {
+    public Long signIn(PostSignInReq req) throws CustomException {
         String email = req.getEmail();
         Optional<LoginInfo> loginInfo = userRepo.findByEmail(email);
         if (loginInfo.isEmpty()) {
@@ -37,8 +35,7 @@ public class UserService {
         String password = req.getPassword();
         boolean authentication = BCrypt.checkpw(password, loginInfo.get().getPassword());
         if (authentication) {
-            Long accountId = loginInfo.get().getAccountId();
-            return JwtUtility.makeJwtToken(accountId);
+            return loginInfo.get().getAccountId();
         }
         throw new CustomException(ExceptionType.AUTHENTICATION_FAILED);
     }
