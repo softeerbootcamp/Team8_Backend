@@ -1,18 +1,25 @@
 package site.devroad.softeer.src.roadmap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.course.model.Subject;
 import site.devroad.softeer.src.course.repository.SubjectRepo;
+import site.devroad.softeer.src.roadmap.dto.PostRoadmapReq;
 import site.devroad.softeer.src.roadmap.model.Roadmap;
 import site.devroad.softeer.src.roadmap.model.SubjectToRoadmap;
 import site.devroad.softeer.src.user.UserRepo;
+import site.devroad.softeer.src.user.model.Account;
+import site.devroad.softeer.src.user.model.LoginInfo;
 
 import java.util.*;
 
 @Service
 public class RoadmapService {
+
+    private static Logger logger = LoggerFactory.getLogger(RoadmapService.class);
     private final RoadmapRepo roadmapRepo;
     private final SubjectRepo subjectRepo;
     private final UserRepo userRepo;
@@ -56,5 +63,21 @@ public class RoadmapService {
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
         Long roadmapId = roadmapByAccountId.get().getId();
         roadmapRepo.updateCurChapterId(roadmapId, curChapterId);
+    }
+
+    public void createRoadmap(PostRoadmapReq roadmapReq) throws CustomException{
+        Optional<LoginInfo> loginInfo = userRepo.findByEmail(roadmapReq.getEmail());
+        if(loginInfo.isEmpty()){
+            throw new CustomException(ExceptionType.ACCOUNT_NOT_FOUND);
+        }
+        Account account = userRepo.findAccountById(loginInfo.get().getAccountId());
+
+        Long roadmapId = roadmapRepo.createRoadmap(account.getName() + "'s roadmap");
+
+        userRepo.setRoadmap(account.getId(), roadmapId);
+
+        for(int i = 0; i<roadmapReq.getSubjects().size(); i++) {
+            roadmapRepo.addSubjectToRoadMap(roadmapId, roadmapReq.getSubjects().get(i), i+1);
+        }
     }
 }
