@@ -22,6 +22,17 @@ public class TestSubmissionRepo {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+
+    public Optional<TestSubmission> findById(Long id){
+        try{
+            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from TestSubmission where id = ?",
+                    testSubmissionRowMapper(), id));
+        }catch
+        (DataAccessException e){
+            return Optional.empty();
+        }
+    }
+
     public Optional<TestSubmission> findByTestIdAndAccountId(Long testId, Long accountId) {
         try{
             return Optional.ofNullable(jdbcTemplate.queryForObject(
