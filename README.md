@@ -1,7 +1,7 @@
 # DevRoad
 <img width="300" alt="스크린샷 2023-02-07 오전 10 04 48" src="https://user-images.githubusercontent.com/37894908/217122572-2e6b7791-9bf2-4fae-926f-c433dedde8a3.png">
 <br>
-<a href="devRoad.com" target="_blank">DevRoad바로가기</a>
+<a href="https://devRoad.site" target="_blank">DevRoad바로가기</a>
 <br>
 
 개발자로 가는 길, 동료들과 함께하세요.
