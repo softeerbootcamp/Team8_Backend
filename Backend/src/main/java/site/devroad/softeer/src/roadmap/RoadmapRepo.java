@@ -29,6 +29,9 @@ public class RoadmapRepo {
         }
     }
 
+    public void updateCurChapterId(Long roadmapId, Long curChapterId) {
+        jdbcTemplate.update("UPDATE Roadmap SET chapter_id = ? WHERE id = ?", curChapterId, roadmapId);
+    }
     public Optional<Roadmap> findRoadmapByAccountId(Long accountId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT r.* FROM Account a JOIN Roadmap r " +

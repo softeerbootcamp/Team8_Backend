@@ -36,6 +36,8 @@ public class SubjectService {
         List<Course> courses = courseRepo.findBySubjectId(subjectId);
         ArrayList<CourseDetail> courseDetails = new ArrayList<>();
         for (Course course : courses) {
+            Long courseId = course.getId();
+
             courseDetails.add(createCourseDetail(course));
         }
         return courseDetails;
@@ -47,5 +49,9 @@ public class SubjectService {
 
     public Optional<Subject> getSubject(Long subjectId) {
         return subjectRepo.findById(subjectId);
+    }
+
+    public List<Subject> getAllSubjects() {
+        return subjectRepo.findAll();
     }
 }
