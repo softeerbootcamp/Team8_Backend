@@ -1,5 +1,6 @@
 package site.devroad.softeer.src.user;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import site.devroad.softeer.src.user.dto.PostSignInReq;
 import site.devroad.softeer.src.user.dto.PostSignUpReq;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
+import site.devroad.softeer.utility.JwtUtility;
 
 import java.util.Optional;
 
@@ -24,6 +26,9 @@ class UserServiceTest {
 
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    JwtUtility jwtUtility;
 
     @Test
     void signupSuccessTest() {
@@ -64,7 +69,7 @@ class UserServiceTest {
     @Test
     void duplicatePhoneTest() {
         //given
-        String dupPhone = "01012344321";
+        String dupPhone = "01000000000";
         String email = "test@gmail.com";
         createUser(email, "dupTest", dupPhone, "1234");
         PostSignUpReq postSignUpReq = new PostSignUpReq("hello@hanmail.net", "test1", dupPhone, "1234");
@@ -86,7 +91,8 @@ class UserServiceTest {
         //TODO : 회원가입 로직 및 회원 탈퇴 로직을 구현해서 테스트
         PostSignInReq postSignInReq = new PostSignInReq("1234@naver.com", "1234");
         try {
-            assertThat(userService.signIn(postSignInReq)).isEqualTo("magicalJWT");
+            Long userId = userService.signIn(postSignInReq);
+            assertThat(userId).isInstanceOf(Long.class);
         } catch (CustomException e) {
             logger.warn(e.getMessage());
         }
