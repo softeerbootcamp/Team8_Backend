@@ -25,7 +25,7 @@ const routes = [
     component: ChapterView,
   },
   {
-    path: "/courseView/:subject",
+    path: "/courseView",
     name: "CourseView",
     component: CourseView,
   },

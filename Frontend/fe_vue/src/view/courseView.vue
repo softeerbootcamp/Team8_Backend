@@ -1,44 +1,58 @@
 <template>
-  <div class="d-grid gap-2 col-6 mx-auto">
-    <div class="card" style="width: 18rem">
-      <div class="card-body">
-        <div class="card-title">코스 정보</div>
-        <p class="card-text">{{ courseData }}!!!</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" v-for="course in subjectDetail" :key="course.id">
+      <div class="card">
+        <img :src="course.thumbnailUrl" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ course.courseName }}</h5>
+          <p class="card-text">Tutor: {{ course.tutorName }}</p>
+          <p class="card-text">Explain: {{ course.explain }}</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import { getSubjectDetail } from "@/api";
 
 export default {
-  props: ["subject"],
   data() {
     return {
-      courseSubject: this.subject,
+      curSubject: "",
       subjectId: "",
+      // course 정보들
       courseData: "",
+      courseName: "",
+      tutorName: "",
+      thumbnailUrl: "",
+      explain: "",
+      finish: "",
       // subject detail = courses
       subjectDetail: null,
       subDataSuccess: false,
-      // subid 는 이후 받아와야한다.
-      subid: "1",
+      subid: "",
     };
   },
   mounted() {
-    this.getCourseData(this.courseSubject);
+    this.getCourseData();
   },
   methods: {
     // subjectID ex ) "1001"
-    async getCourseData(subject) {
-      console.log("subject!!! : " + subject);
-      this.subid = subject[1]
+    async getCourseData() {
+      console.log("this.$store.state.curSubjectId : " + this.$store.state.curSubjectId);
+      this.subid = this.$store.state.curSubjectId;
+      console.log("subid!!!! : " + this.subid);
+
       // 선택된 subject 정보를 다음 라우터에 넘겨주기 위해 curSubId 설정
       var vm = this;
       //GET /api/roadmap/{:subjectId}/ sub Detail
-
-      await getSubjectDetail(vm.subid)
+      const config = {
+        headers: {
+          jwt: this.$store.state.jwt
+        }
+      };
+      await getSubjectDetail(vm.subid, config)
         .then((response) => {
           console.log(response);
           vm.subDataSuccess = response.data.success;

@@ -6,8 +6,12 @@ export default new Vuex.Store({
     isLogin: false,
     subjects: [],
     jwt: null,
+    curSubjectId:""
   },
   mutations: {
+    setCurSubjectId(state,status){
+      state.curSubjectId = status;
+    },
     setLoginStatus(state, status) {
       state.isLogin = status;
     },
