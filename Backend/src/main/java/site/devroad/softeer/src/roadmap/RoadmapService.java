@@ -49,4 +49,12 @@ public class RoadmapService {
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
         return roadmapByAccountId.get().getChapterId();
     }
+
+    public void setCurChapterId(Long accountId, Long curChapterId) throws CustomException {
+        Optional<Roadmap> roadmapByAccountId = roadmapRepo.findRoadmapByAccountId(accountId);
+        if (roadmapByAccountId.isEmpty())
+            throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
+        Long roadmapId = roadmapByAccountId.get().getId();
+        roadmapRepo.updateCurChapterId(roadmapId, curChapterId);
+    }
 }

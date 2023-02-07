@@ -33,7 +33,9 @@ public class UserController {
     public ResponseEntity<?> postSignUp(@RequestBody PostSignInReq postSignInReq) {
         try {
             String jwt = userService.signIn(postSignInReq);
-            return new ResponseEntity<>(new PostSignInRes(jwt), HttpStatus.OK);
+            if (postSignInReq.getEmail().equals("admin@naver.com"))
+                return new ResponseEntity<>(new PostSignInRes(jwt, true), HttpStatus.OK);
+            return new ResponseEntity<>(new PostSignInRes(jwt, false), HttpStatus.OK);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
