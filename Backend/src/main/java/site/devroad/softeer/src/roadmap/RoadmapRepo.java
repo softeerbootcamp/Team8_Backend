@@ -5,6 +5,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import site.devroad.softeer.exceptions.CustomException;
+import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.model.Roadmap;
 import site.devroad.softeer.src.roadmap.model.SubjectToRoadmap;
 
@@ -43,10 +45,30 @@ public class RoadmapRepo {
 
     public Optional<List<SubjectToRoadmap>> findSTRById(Long roadmapId) {
         try {
-            return Optional.ofNullable(jdbcTemplate.query("SELECT * FROM SubjectToRoadmap WHERE roadmap_id = ?"
+            return Optional.of(jdbcTemplate.query("SELECT * FROM SubjectToRoadmap WHERE roadmap_id = ?"
                     , subjectToRoadmapRowMapper(), roadmapId));
         } catch (DataAccessException e) {
             return Optional.empty();
+        }
+    }
+
+    public void addSubjectToRoadMap(Long roadmapId, Long subjectId, Integer seq) throws CustomException{
+        try{
+            //roadmap id 하나 받아서 seq해서 넣기.
+            jdbcTemplate.update("insert into SubjectToRoadmap(roadmap_id, subject_id, sequence) values(?, ?, ?)", roadmapId, subjectId, seq);
+        }catch (DataAccessException e){
+            throw new CustomException(ExceptionType.DATABASE_ERROR);
+        }
+    }
+
+
+    public Long createRoadmap(String roadmapName) throws CustomException {
+        try{
+            jdbcTemplate.update("insert into Roadmap(name) values(?)", roadmapName);
+            return jdbcTemplate.queryForObject("select max(id) from Roadmap", Long.class);
+        }
+        catch(DataAccessException e){
+            throw new CustomException(ExceptionType.DATABASE_ERROR);
         }
     }
 
@@ -68,4 +90,6 @@ public class RoadmapRepo {
             return new SubjectToRoadmap(id, roadmapId, subjectId, sequence);
         };
     }
+
+
 }
