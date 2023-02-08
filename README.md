@@ -35,7 +35,7 @@
 
 # 팀원 소개
 - 유준민(FullStack) : @jun-min1623
-- 장민호(FullStack) : @2roum
+- 장민호(FullStack) : [#2roum](https://github.com/2roum)
 - 노현욱(FullStack) : @rohsik2
 
 # 기능 소개
