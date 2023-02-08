@@ -7,15 +7,15 @@ public class ExamSubmission {
     Long testId;
     String url;
     SubmissionType submissionType;
-    String explain;
+    String description;
 
-    public ExamSubmission(Long id, Long accountId, Long testId, String url, SubmissionType submissionType, String explain) {
+    public ExamSubmission(Long id, Long accountId, Long testId, String url, SubmissionType submissionType, String description) {
         this.id = id;
         this.accountId = accountId;
         this.testId = testId;
         this.url = url;
         this.submissionType = submissionType;
-        this.explain = explain;
+        this.description = description;
     }
 
     public Long getId() {
@@ -38,7 +38,7 @@ public class ExamSubmission {
         return submissionType;
     }
 
-    public String getExplain() {
-        return explain;
+    public String getDescription() {
+        return description;
     }
 }

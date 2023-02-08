@@ -6,16 +6,16 @@ public class Chapter {
     private final String title;
     private final String chapterUrl;
     private final String thumbnailUrl;
-    private final String explain;
+    private final String description;
     private final Integer sequence;
 
-    public Chapter(Long id, Long courseId, String title, String chapterUrl, String thumbnailUrl, String explain, Integer sequence) {
+    public Chapter(Long id, Long courseId, String title, String chapterUrl, String thumbnailUrl, String description, Integer sequence) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
         this.chapterUrl = chapterUrl;
         this.thumbnailUrl = thumbnailUrl;
-        this.explain = explain;
+        this.description = description;
         this.sequence = sequence;
     }
 
@@ -39,8 +39,8 @@ public class Chapter {
         return thumbnailUrl;
     }
 
-    public String getExplain() {
-        return explain;
+    public String getDescription() {
+        return description;
     }
 
     public Integer getSequence() {

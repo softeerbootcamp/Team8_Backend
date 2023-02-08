@@ -10,7 +10,7 @@ public class ExamDetail {
     public ExamDetail(Exam exam){
         this.url = exam.getUrl();
         this.name = exam.getName();
-        this.explain = exam.getExplain();
+        this.explain = exam.getDescription();
     }
 
     public ExamDetail(String url, String title, String explain) {

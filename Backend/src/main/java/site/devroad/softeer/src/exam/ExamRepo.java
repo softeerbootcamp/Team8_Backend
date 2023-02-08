@@ -24,7 +24,7 @@ public class ExamRepo {
 
     public Optional<Exam> findExamBySubjectId(Long subjectId){
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Test where subject_id = ?", examRowMapper(), subjectId));
+            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where subject_id = ?", examRowMapper(), subjectId));
         }
         catch(DataAccessException e){
             return Optional.empty();
@@ -33,21 +33,21 @@ public class ExamRepo {
 
     public Optional<Exam> findExamById(Long examId) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Test where id = ?", examRowMapper(), examId));
+            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where id = ?", examRowMapper(), examId));
         }
         catch(DataAccessException e){
             return Optional.empty();
         }
     }
 
-    public void delete(Long testId){
-        jdbcTemplate.update("delete * from Test where id = ?", testId);
+    public void delete(Long examId){
+        jdbcTemplate.update("delete * from Exam where id = ?", examId);
     }
 
 
     public void addExamToAccount(Long accountId, Long examId) throws CustomException {
         try{
-            jdbcTemplate.update("insert into PurchasedTest(account_id, test_id) values(?, ?)", accountId, examId);
+            jdbcTemplate.update("insert into PurchasedExam(account_id, exam_id) values(?, ?)", accountId, examId);
         }catch(DataAccessException e){
             throw new CustomException(ExceptionType.DATABASE_ERROR);
         }
@@ -56,7 +56,7 @@ public class ExamRepo {
     public Boolean isExamPurchased(Long accountId, Long examId) throws CustomException{
         try{
             Long result  = jdbcTemplate.queryForObject(
-                    "select count(*) from PurchasedTest where account_id = ? and test_id = ?", Long.class, accountId, examId);
+                    "select count(*) from PurchasedExam where account_id = ? and exam_id = ?", Long.class, accountId, examId);
             return result == 1L;
         }catch(DataAccessException e){
             throw new CustomException(ExceptionType.DATABASE_ERROR);
@@ -70,9 +70,9 @@ public class ExamRepo {
             Long subject_id = rs.getLong("subject_id");
             String url = rs.getString("url");
             String name = rs.getString("name");
-            String explain = rs.getString("explain");
+            String description = rs.getString("description");
             Integer price = rs.getInt("price");
-            return new Exam(id, subject_id, url, name, explain, price);
+            return new Exam(id, subject_id, url, name, description, price);
         };
     }
 }

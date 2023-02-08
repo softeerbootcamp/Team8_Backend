@@ -3,12 +3,12 @@ package site.devroad.softeer.src.course.model;
 public class Subject {
     private Long id;
     private String name;
-    private String explain;
+    private String description;
 
-    public Subject(Long id, String name, String explain) {
+    public Subject(Long id, String name, String description) {
         this.id = id;
         this.name = name;
-        this.explain = explain;
+        this.description = description;
     }
 
     public Long getId() {
@@ -19,7 +19,7 @@ public class Subject {
         return name;
     }
 
-    public String getExplain() {
-        return explain;
+    public String getDescription() {
+        return description;
     }
 }
