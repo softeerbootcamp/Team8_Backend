@@ -27,12 +27,21 @@ public class ChapterRepo {
         }
     }
 
-    public List<Chapter> findChapterByCourse(Long courseId) {
+    public List<Chapter> findChapterByCourseId(Long courseId) {
         try {
-            return jdbcTemplate.query("SELECT * FROM Chapter WHERE course_id = ?"
+            return jdbcTemplate.query("SELECT * FROM Chapter WHERE course_id = ? ORDER BY sequence"
                     , chapterRowMapper(), courseId);
         } catch (DataAccessException e) {
             return Collections.emptyList();
+        }
+    }
+
+    public Optional<Chapter> findNextChapter(Long courseId, Integer sequence) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Chapter WHERE course_id = ? and sequence = ?"
+                    , chapterRowMapper(), courseId, sequence));
+        } catch (DataAccessException e) {
+            return Optional.empty();
         }
     }
 
@@ -40,11 +49,12 @@ public class ChapterRepo {
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long courseId = rs.getLong("course_id");
+            String title = rs.getString("title");
             String lectureUrl = rs.getString("lecture_url");
             String thumbnailUrl = rs.getString("thumbnail_url");
             String explain = rs.getString("explain");
             Integer sequence = rs.getInt("sequence");
-            return new Chapter(id, courseId, lectureUrl, thumbnailUrl, explain, sequence);
+            return new Chapter(id, courseId, title, lectureUrl, thumbnailUrl, explain, sequence);
         };
     }
 }

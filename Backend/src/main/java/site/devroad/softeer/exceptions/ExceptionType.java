@@ -15,8 +15,7 @@ public enum ExceptionType {
     POST_ACCOUNT_PHONE_DUPLICATED(HttpStatus.BAD_REQUEST, "중복된 휴대폰 번호가 있습니다.", 1007),
     ROADMAP_NOT_FOUND(HttpStatus.NOT_FOUND, "Roadmap not found", 1008),
     SUBJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "Subject not found", 1009),
-
-
+    CHAPTER_NOT_FOUND(HttpStatus.NOT_FOUND, "Chapter not found", 1010),
 
 
     //Database Related Exceptions
@@ -24,8 +23,17 @@ public enum ExceptionType {
     UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", 1102),
 
     //JWT Related Exceptions
-    JWT_NOT_VALID(HttpStatus.BAD_REQUEST, "JWT not valid", 1201);
+    JWT_NOT_VALID(HttpStatus.BAD_REQUEST, "JWT not valid", 1201),
+    NO_ADMIN_USER(HttpStatus.BAD_REQUEST, "Not admin", 1202),
 
+
+
+    //Test Related Exceptions
+    TEST_NOT_FOUND(HttpStatus.NOT_FOUND, "Test not exist", 1301),
+
+
+    //Last Exceptions
+    DATABASE_NOT_CONNECTED(HttpStatus.INTERNAL_SERVER_ERROR, "Database not connected", 2001);
 
     private HttpStatus httpStatus;
     private String message;

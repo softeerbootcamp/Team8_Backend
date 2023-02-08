@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import site.devroad.softeer.src.course.model.Subject;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -31,6 +33,14 @@ public class SubjectRepo {
                     , subjectRowMapper(), subjectId));
         } catch (DataAccessException e) {
             return Optional.empty();
+        }
+    }
+
+    public List<Subject> findAll() {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Subject", subjectRowMapper());
+        } catch (DataAccessException e) {
+            return Collections.emptyList();
         }
     }
 }

@@ -10,6 +10,8 @@ import site.devroad.softeer.src.user.model.LoginInfo;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -53,6 +55,15 @@ public class UserRepo {
         }
     }
 
+    public List<LoginInfo> findNoRoadmapUser() {
+        try {
+            return jdbcTemplate.query("SELECT l.* FROM LoginInfo l JOIN Account a " +
+                    "ON l.account_id = a.id where a.roadmap_id = null", loginInfoRowMapper());
+        } catch (DataAccessException e) {
+            return Collections.emptyList();
+        }
+    }
+
     public Optional<Account> findByPhone(String phone) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Account WHERE phone = ?", accountRowMapper(), phone));
@@ -60,7 +71,6 @@ public class UserRepo {
             return Optional.empty();
         }
     }
-
 
     private RowMapper<LoginInfo> loginInfoRowMapper() {
         return ((rs, rowNum) -> {
@@ -70,6 +80,11 @@ public class UserRepo {
             Long accountId = (rs.getLong("account_id"));
             return new LoginInfo(id, email, password, accountId);
         });
+    }
+
+
+    public void setRoadmap(Long id, Long roadmapId) {
+        jdbcTemplate.update("UPDATE Account SET roadmap_id = ? WHERE id=?", roadmapId, id);
     }
 
     private RowMapper<Account> accountRowMapper() {
@@ -84,4 +99,5 @@ public class UserRepo {
             return new Account(id, name, roadMapId, phone, type, createdAt, updatedAt);
         });
     }
+
 }

@@ -1,22 +1,25 @@
 package site.devroad.softeer.utility;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import site.devroad.softeer.exceptions.CustomException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class JwtUtilityTest {
+    @Autowired
+    JwtUtility jwtUtility;
 
     @Test
     void makeJwtToken() {
         //given
-        String jwt = JwtUtility.makeJwtToken(13L);
+        String jwt = jwtUtility.makeJwtToken(13L);
         //when
         try {
-            JwtUtility.validateToken(jwt);
-            Long id = JwtUtility.getAccountId(jwt);
+            jwtUtility.validateToken(jwt);
+            Long id = jwtUtility.getAccountId(jwt);
 
             //then
             assertThat(id == 13L).isTrue();
