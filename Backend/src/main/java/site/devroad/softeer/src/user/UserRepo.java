@@ -58,7 +58,7 @@ public class UserRepo {
     public List<LoginInfo> findNoRoadmapUser() {
         try {
             return jdbcTemplate.query("SELECT l.* FROM LoginInfo l JOIN Account a " +
-                    "ON l.account_id = a.id where a.roadmap_id = null", loginInfoRowMapper());
+                    "ON l.account_id = a.id AND a.roadmap_id IS NULL", loginInfoRowMapper());
         } catch (DataAccessException e) {
             return Collections.emptyList();
         }
