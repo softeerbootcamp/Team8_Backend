@@ -29,7 +29,8 @@ public enum ExceptionType {
 
 
     //Test Related Exceptions
-    TEST_NOT_FOUND(HttpStatus.NOT_FOUND, "Test not exist", 1301),
+    EXAM_NOT_FOUND(HttpStatus.NOT_FOUND, "EXAM not exist", 1301),
+    EXAM_NOT_PURCHASED(HttpStatus.BAD_REQUEST, "Exam not purchased", 1302),
 
 
     //Last Exceptions
