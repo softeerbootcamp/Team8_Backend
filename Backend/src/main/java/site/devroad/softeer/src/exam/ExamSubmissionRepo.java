@@ -1,4 +1,4 @@
-package site.devroad.softeer.src.test;
+package site.devroad.softeer.src.exam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,24 +6,24 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.test.model.SubmissionType;
-import site.devroad.softeer.src.test.model.TestSubmission;
+import site.devroad.softeer.src.exam.model.SubmissionType;
+import site.devroad.softeer.src.exam.model.ExamSubmission;
 
 import javax.sql.DataSource;
 import java.util.Optional;
 
 @Repository
-public class TestSubmissionRepo {
-    private static Logger logger = LoggerFactory.getLogger(TestSubmission.class);
+public class ExamSubmissionRepo {
+    private static Logger logger = LoggerFactory.getLogger(ExamSubmission.class);
 
     JdbcTemplate jdbcTemplate;
 
-    public TestSubmissionRepo(DataSource dataSource){
+    public ExamSubmissionRepo(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
-    public Optional<TestSubmission> findById(Long id){
+    public Optional<ExamSubmission> findById(Long id){
         try{
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from TestSubmission where id = ?",
                     testSubmissionRowMapper(), id));
@@ -33,7 +33,7 @@ public class TestSubmissionRepo {
         }
     }
 
-    public Optional<TestSubmission> findByTestIdAndAccountId(Long testId, Long accountId) {
+    public Optional<ExamSubmission> findByTestIdAndAccountId(Long testId, Long accountId) {
         try{
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                     "select * from TestSubmission where test_id = ? and account_id = ?",
@@ -47,7 +47,7 @@ public class TestSubmissionRepo {
     }
 
 
-    public RowMapper<TestSubmission> testSubmissionRowMapper(){
+    public RowMapper<ExamSubmission> testSubmissionRowMapper(){
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long accountId = rs.getLong("account_id");
@@ -56,7 +56,7 @@ public class TestSubmissionRepo {
             int pass_code = rs.getInt("is_passed");
             SubmissionType type = SubmissionType.getType(pass_code);
             String explain = rs.getString("explain");
-            return new TestSubmission(id, accountId, testId, url, type, explain);
+            return new ExamSubmission(id, accountId, testId, url, type, explain);
         };
     }
 }

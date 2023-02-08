@@ -42,10 +42,11 @@ public class RoadmapService {
         }
         List<SubjectToRoadmap> subjectToRoadmaps = strs.get();
         Map<String, List<List<Object>>> subjects = new HashMap<>();
+
         for (SubjectToRoadmap str : subjectToRoadmaps) {
             Subject subjectById = subjectRepo.findById(str.getSubjectId()).orElseThrow();
             subjects.computeIfAbsent(str.getSequence().toString(), key -> new ArrayList<>())
-                    .add(List.of(subjectById.getName(), subjectById.getId()));
+                    .add(List.of(subjectById.getName(), subjectById.getId(), "PURCHASED", 1));
         }
         return subjects;
     }

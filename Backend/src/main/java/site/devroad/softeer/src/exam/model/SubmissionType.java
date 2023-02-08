@@ -1,4 +1,4 @@
-package site.devroad.softeer.src.test.model;
+package site.devroad.softeer.src.exam.model;
 
 import java.util.Arrays;
 import java.util.Optional;
