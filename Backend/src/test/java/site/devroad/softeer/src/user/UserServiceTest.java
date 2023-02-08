@@ -18,8 +18,8 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-class UserServiceExam {
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceExam.class);
+class UserServiceTest {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
     @Autowired
     UserService userService;
 

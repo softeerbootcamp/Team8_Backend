@@ -14,7 +14,7 @@ import site.devroad.softeer.src.user.model.LoginInfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class ExamServiceExam {
+class ExamServiceTest {
 
     @Autowired
     ExamService examService;
