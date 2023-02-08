@@ -32,6 +32,10 @@ function postRoadmapToUserByEmail(requestBody){
 function getNoRoadmapUserData(config){
     return axiosService.get('api/user/noRoadmap',config);
 }
+function getExamDetailData(config,param){
+  return axiosService.get('api/exam/',param,config);
+}
 
 export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData
-,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData };
+,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData,getExamDetailData
+ };
