@@ -52,9 +52,9 @@ public class ChapterRepo {
             String title = rs.getString("title");
             String lectureUrl = rs.getString("lecture_url");
             String thumbnailUrl = rs.getString("thumbnail_url");
-            String explain = rs.getString("explain");
+            String description = rs.getString("description");
             Integer sequence = rs.getInt("sequence");
-            return new Chapter(id, courseId, title, lectureUrl, thumbnailUrl, explain, sequence);
+            return new Chapter(id, courseId, title, lectureUrl, thumbnailUrl, description, sequence);
         };
     }
 }

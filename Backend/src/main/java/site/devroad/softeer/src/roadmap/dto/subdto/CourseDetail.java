@@ -17,7 +17,7 @@ public class CourseDetail {
         this.courseName = course.getCourseName();
         this.tutorName = course.getTutorName();
         this.thumbnailUrl = course.getThumbnailUrl();
-        this.explain = course.getExplain();
+        this.explain = course.getDescription();
         this.finish = true;
     }
 

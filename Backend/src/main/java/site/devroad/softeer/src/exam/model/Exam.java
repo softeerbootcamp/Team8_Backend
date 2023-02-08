@@ -5,7 +5,7 @@ public class Exam {
     Long subjectId;
     String url;
     String name;
-    String explain;
+    String description;
     Integer price;
 
     public Long getId() {
@@ -24,20 +24,20 @@ public class Exam {
         return name;
     }
 
-    public String getExplain() {
-        return explain;
+    public String getDescription() {
+        return description;
     }
 
     public Integer getPrice() {
         return price;
     }
 
-    public Exam(Long id, Long subjectId, String url, String name, String explain, Integer price) {
+    public Exam(Long id, Long subjectId, String url, String name, String description, Integer price) {
         this.id = id;
         this.subjectId = subjectId;
         this.url = url;
         this.name = name;
-        this.explain = explain;
+        this.description = description;
         this.price = price;
     }
 }
