@@ -33,7 +33,7 @@ public class ExamService {
         this.userRepo = userRepo;
     }
 
-    public Boolean isUserPassedTest(Long subjectId, Long accountId) throws CustomException {
+    public Boolean isUserPassedExam(Long subjectId, Long accountId) throws CustomException {
 
         //subjectId -> subject
         Optional<Subject> optionalSubject = subjectRepo.findById(subjectId);
@@ -42,20 +42,20 @@ public class ExamService {
 
         Subject subject = optionalSubject.get();
 
-        logger.debug("subject id : {}, subject explain : {}",  subject.getId(), subject.getExplain());
+        logger.debug("subject id : {}, subject description : {}",  subject.getId(), subject.getDescription());
 
-        //subject.id -> test
-        Optional<Exam> optionalTest = examRepo.findExamBySubjectId(subject.getId());
-        if(optionalTest.isEmpty())
+        //subject.id -> exam
+        Optional<Exam> optionalExam = examRepo.findExamBySubjectId(subject.getId());
+        if(optionalExam.isEmpty())
             throw new CustomException(ExceptionType.EXAM_NOT_FOUND);
 
-        Exam exam = optionalTest.get();
-        logger.debug("test id : {}, test explain : {}, accountId : {}",  exam.getId(), exam.getExplain(), accountId);
-        //test.id + account.id -> testSubmission
-        Optional<ExamSubmission> testSubmission = examSubmissionRepo.findByTestIdAndAccountId(exam.getId(), accountId);
+        Exam exam = optionalExam.get();
+        logger.debug("exam id : {}, exam description : {}, accountId : {}",  exam.getId(), exam.getDescription(), accountId);
+        //exam.id + account.id -> examSubmission
+        Optional<ExamSubmission> examSubmission = examSubmissionRepo.findByExamIdAndAccountId(exam.getId(), accountId);
 
-        logger.debug("submit id : {}, {}", testSubmission.get().getId(), testSubmission.get().getSubmissionType());
-        return testSubmission.filter(submission -> submission.getSubmissionType() == SubmissionType.PASSED).isPresent();
+        logger.debug("submit id : {}, {}", examSubmission.get().getId(), examSubmission.get().getSubmissionType());
+        return examSubmission.filter(submission -> submission.getSubmissionType() == SubmissionType.PASSED).isPresent();
 
 
     }

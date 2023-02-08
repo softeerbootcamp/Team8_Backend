@@ -11,11 +11,11 @@ public enum SubmissionType {
     FAILED(5, "FAILED");
 
     Integer is_passed;
-    String explain;
+    String description;
 
-    SubmissionType(int is_passed, String explain){
+    SubmissionType(int is_passed, String description){
         this.is_passed = is_passed;
-        this.explain = explain;
+        this.description = description;
     }
 
     public static SubmissionType getType(int is_passed){
