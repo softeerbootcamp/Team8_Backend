@@ -15,7 +15,7 @@ public class ChapterDetail {
         this.chapterName = chapter.getTitle();
         this.chapterUrl = chapter.getChapterUrl();
         this.thumbnailUrl = chapter.getThumbnailUrl();
-        this.explain = chapter.getExplain();
+        this.explain = chapter.getDescription();
         //TODO : chapter가 끝났는지 받아와야함.
         this.finish = true;
     }

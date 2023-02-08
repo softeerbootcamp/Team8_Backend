@@ -25,20 +25,20 @@ public class ExamSubmissionRepo {
 
     public Optional<ExamSubmission> findById(Long id){
         try{
-            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from TestSubmission where id = ?",
-                    testSubmissionRowMapper(), id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from ExamSubmission where id = ?",
+                    examSubmissionRowMapper(), id));
         }catch
         (DataAccessException e){
             return Optional.empty();
         }
     }
 
-    public Optional<ExamSubmission> findByTestIdAndAccountId(Long testId, Long accountId) {
+    public Optional<ExamSubmission> findByExamIdAndAccountId(Long examId, Long accountId) {
         try{
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "select * from TestSubmission where test_id = ? and account_id = ?",
-                    testSubmissionRowMapper(),
-                    testId, accountId
+                    "select * from ExamSubmission where exam_id = ? and account_id = ? order by id desc limit 1",
+                    examSubmissionRowMapper(),
+                    examId, accountId
             ));
         }
         catch(DataAccessException e){
@@ -47,16 +47,16 @@ public class ExamSubmissionRepo {
     }
 
 
-    public RowMapper<ExamSubmission> testSubmissionRowMapper(){
+    public RowMapper<ExamSubmission> examSubmissionRowMapper(){
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long accountId = rs.getLong("account_id");
-            Long testId = rs.getLong("test_id");
+            Long examId = rs.getLong("exam_id");
             String url = rs.getString("url");
             int pass_code = rs.getInt("is_passed");
             SubmissionType type = SubmissionType.getType(pass_code);
-            String explain = rs.getString("explain");
-            return new ExamSubmission(id, accountId, testId, url, type, explain);
+            String description = rs.getString("description");
+            return new ExamSubmission(id, accountId, examId, url, type, description);
         };
     }
 }
