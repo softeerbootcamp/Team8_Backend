@@ -51,7 +51,7 @@ export default {
                     if (response.data.success) {
                         this.examUrl = response.data.examDetail.url;
                         this.examTitle = response.data.examDetail.name;
-                        this.examExplain = response.data.examDetail.explain;
+                        this.examExplain = response.data.examDetail.description;
                     } else {
                         console.log("데이터를 불러오는데 실패하였습니다!")
                     }

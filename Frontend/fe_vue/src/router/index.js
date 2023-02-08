@@ -24,7 +24,7 @@ const routes = [
     component: ExamView,
   },
   {
-    path: "/examsubmitview/:subjectName",
+    path: "/examsubmitview/:subjectName/:examId",
     name: "ExamSubmitView",
     component: ExamSubmitView,
   },

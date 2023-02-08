@@ -1,8 +1,5 @@
 <template>
     <div>
-        유저 요청 관리 페이지
-    </div>
-    <div>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -14,9 +11,9 @@
             <tbody>
                 <tr v-for="(user, index) in noRoadmapUsers" :key="index">
                     <th scope="row">{{ index + 1 }}</th>
-                    <td>{{ user.email }}</td>
+                    <td>{{ user }}</td>
                     <td>
-                        <router-link :to="'/roadmapFactory/' + user.email" style="text-decoration: none; color:black;">
+                        <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;">
                             <button>
                                 유저 로드맵 작성하기
                             </button>

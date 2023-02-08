@@ -66,7 +66,7 @@ export default {
                     console.log("post roadmap response:" + response);
                     if (response.data.success) {
                         console.log("success!!");
-                        this.$router.push({ name: "Home" });
+                        this.$router.push({ name: "AdminHome" });
                     }
                 })
                 .catch(function (error) {

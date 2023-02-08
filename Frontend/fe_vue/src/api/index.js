@@ -35,7 +35,11 @@ function getNoRoadmapUserData(config){
 function getExamDetailData(config,param){
   return axiosService.get('api/exam/',param,config);
 }
+function postAssignMentData(config, param){
+  return axiosService.post('api/exam/assignment',param,config);
 
+}
 export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData
-,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData,getExamDetailData
+,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData,getExamDetailData,
+postAssignMentData
  };

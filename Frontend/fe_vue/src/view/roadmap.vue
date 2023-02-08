@@ -10,7 +10,8 @@
         , setCurrentSubjectId(course)]">
           {{ course[0] }}
         </button>
-        <button :class="getButtonClass(subject.state)" type="button" class="btn btn-sm">
+
+        <button :class="getButtonClass(course[2])" type="button">
           <span class="bi bi-file-text"></span>
         </button>
       </span>
