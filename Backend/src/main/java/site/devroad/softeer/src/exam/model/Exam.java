@@ -1,6 +1,6 @@
-package site.devroad.softeer.src.test.model;
+package site.devroad.softeer.src.exam.model;
 
-public class Test {
+public class Exam {
     Long id;
     Long subjectId;
     String url;
@@ -32,7 +32,7 @@ public class Test {
         return price;
     }
 
-    public Test(Long id, Long subjectId, String url, String name, String explain, Integer price) {
+    public Exam(Long id, Long subjectId, String url, String name, String explain, Integer price) {
         this.id = id;
         this.subjectId = subjectId;
         this.url = url;

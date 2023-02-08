@@ -1,4 +1,4 @@
-package site.devroad.softeer.src.test;
+package site.devroad.softeer.src.exam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,24 +8,24 @@ import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.course.model.Subject;
 import site.devroad.softeer.src.course.repository.SubjectRepo;
-import site.devroad.softeer.src.test.model.SubmissionType;
-import site.devroad.softeer.src.test.model.Test;
-import site.devroad.softeer.src.test.model.TestSubmission;
+import site.devroad.softeer.src.exam.model.SubmissionType;
+import site.devroad.softeer.src.exam.model.Exam;
+import site.devroad.softeer.src.exam.model.ExamSubmission;
 
 import java.util.Optional;
 
 @Service
-public class TestService {
+public class ExamService {
 
-    private static Logger logger = LoggerFactory.getLogger(TestService.class);
-    private TestRepo testRepo;
+    private static Logger logger = LoggerFactory.getLogger(ExamService.class);
+    private ExamRepo examRepo;
     private SubjectRepo subjectRepo;
-    private TestSubmissionRepo testSubmissionRepo;
+    private ExamSubmissionRepo examSubmissionRepo;
     @Autowired
-    public TestService(TestRepo testRepo, SubjectRepo subjectRepo, TestSubmissionRepo testSubmissionRepo){
-        this.testRepo = testRepo;
+    public ExamService(ExamRepo examRepo, SubjectRepo subjectRepo, ExamSubmissionRepo examSubmissionRepo){
+        this.examRepo = examRepo;
         this.subjectRepo = subjectRepo;
-        this.testSubmissionRepo = testSubmissionRepo;
+        this.examSubmissionRepo = examSubmissionRepo;
     }
 
     public Boolean isUserPassedTest(Long subjectId, Long accountId) throws CustomException {
@@ -40,14 +40,14 @@ public class TestService {
         logger.debug("subject id : {}, subject explain : {}",  subject.getId(), subject.getExplain());
 
         //subject.id -> test
-        Optional<Test> optionalTest = testRepo.findTestBySubjectId(subject.getId());
+        Optional<Exam> optionalTest = examRepo.findTestBySubjectId(subject.getId());
         if(optionalTest.isEmpty())
             throw new CustomException(ExceptionType.TEST_NOT_FOUND);
 
-        Test test = optionalTest.get();
-        logger.debug("test id : {}, test explain : {}, accountId : {}",  test.getId(), test.getExplain(), accountId);
+        Exam exam = optionalTest.get();
+        logger.debug("test id : {}, test explain : {}, accountId : {}",  exam.getId(), exam.getExplain(), accountId);
         //test.id + account.id -> testSubmission
-        Optional<TestSubmission> testSubmission = testSubmissionRepo.findByTestIdAndAccountId(test.getId(), accountId);
+        Optional<ExamSubmission> testSubmission = examSubmissionRepo.findByTestIdAndAccountId(exam.getId(), accountId);
 
         logger.debug("submit id : {}, {}", testSubmission.get().getId(), testSubmission.get().getSubmissionType());
         return testSubmission.filter(submission -> submission.getSubmissionType() == SubmissionType.PASSED).isPresent();

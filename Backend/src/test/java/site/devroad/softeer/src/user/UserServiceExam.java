@@ -1,6 +1,5 @@
 package site.devroad.softeer.src.user;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +18,8 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-class UserServiceTest {
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
+class UserServiceExam {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceExam.class);
     @Autowired
     UserService userService;
 
