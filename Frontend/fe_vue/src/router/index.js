@@ -8,6 +8,7 @@ import ChapterView from "@/view/chapterView.vue";
 import RoadMapFactory from "@/view/roadmapFactory.vue"
 import AdminHome from "@/view/adminHome.vue"
 import ExamView from "@/view/examView.vue"
+import ExamSubmitView from "@/view/examSubmitView.vue"
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
@@ -21,6 +22,11 @@ const routes = [
     path: "/examview/:examId/:subjectName",
     name: "ExamView",
     component: ExamView,
+  },
+  {
+    path: "/examsubmitview/:subjectName",
+    name: "ExamSubmitView",
+    component: ExamSubmitView,
   },
   {
     path: "/adminhome",

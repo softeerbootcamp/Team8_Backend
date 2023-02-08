@@ -14,7 +14,9 @@
             </div>
             <div class="card-footer">
                 <a v-bind:href="examUrl">템플릿 코드를 다운로드하는 곳</a>
-                <button>제출하러가기</button>
+                <router-link to="/examsubmitview">
+                    <button class="btn btn-primary mt-2">제출하러가기</button>
+                </router-link>
                 <!-- <router-link :to="{ name: 'home' }" class="btn btn-secondary">Back</router-link> -->
             </div>
         </div>
@@ -47,9 +49,9 @@ export default {
             await getExamDetailData(config, params)
                 .then((response) => {
                     if (response.data.success) {
-                        this.examUrl = response.data.exam.url;
-                        this.examTitle = response.data.exam.title;
-                        this.examExplain = response.data.exam.explain;
+                        this.examUrl = response.data.examDetail.url;
+                        this.examTitle = response.data.examDetail.name;
+                        this.examExplain = response.data.examDetail.explain;
                     } else {
                         console.log("데이터를 불러오는데 실패하였습니다!")
                     }
