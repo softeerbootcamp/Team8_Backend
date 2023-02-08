@@ -14,9 +14,6 @@
       </a>
     </div>
     <div class="menu" v-if="isAdmin">
-      <a>
-        <router-link to="RoadMapFactory">유저 로드맵 작성하기</router-link>
-      </a>
       <a v-if="isLogin">
         <router-link to="/" @click="logout">로그아웃</router-link>
       </a>

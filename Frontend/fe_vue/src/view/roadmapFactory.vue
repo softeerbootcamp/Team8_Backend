@@ -8,9 +8,10 @@
                     <label for="subject">Subject:</label>
                     <select id="subject" class="form-control" v-model="selectedSubjects[i]" required>
                         <option value="" disabled>Select One</option>
-                        <option v-for="subject in subjects" v-bind:value="subject" v-bind:key="subject.id">{{
-                            subject.name
-                        }}</option>
+                        <option v-for="subject in subjects" v-bind:value="subject" v-bind:key="subject.id"
+                            :disabled="selectedSubjects.includes(subject)">{{
+                                subject.name
+                            }}</option>
                     </select>
                 </div>
             </div>
@@ -49,7 +50,7 @@ export default {
         },
         async onSubmit(event) {
             event.preventDefault();
-            const userEmail = "12341234@naver.com";
+            const userEmail = this.$route.params.userEmail;
             const subjectSequence = this.selectedSubjects.filter(subject => subject !== null).map(subject => subject.id);
             console.log("subjectSequence : " + subjectSequence);
             console.log("filtered subjectSequence : " + subjectSequence);

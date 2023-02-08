@@ -23,7 +23,7 @@ const routes = [
   },
 
   {
-    path: "/roadmapFactory",
+    path: "/roadmapFactory/:userEmail",
     name: "RoadMapFactory",
     component: RoadMapFactory,
   },
