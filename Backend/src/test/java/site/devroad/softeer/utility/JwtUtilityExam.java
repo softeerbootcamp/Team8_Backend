@@ -8,7 +8,7 @@ import site.devroad.softeer.exceptions.CustomException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-class JwtUtilityTest {
+class JwtUtilityExam {
     @Autowired
     JwtUtility jwtUtility;
 

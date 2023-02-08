@@ -1,6 +1,6 @@
-package site.devroad.softeer.src.test.model;
+package site.devroad.softeer.src.exam.model;
 
-public class TestSubmission {
+public class ExamSubmission {
 
     Long id;
     Long accountId;
@@ -9,7 +9,7 @@ public class TestSubmission {
     SubmissionType submissionType;
     String explain;
 
-    public TestSubmission(Long id, Long accountId, Long testId, String url, SubmissionType submissionType, String explain) {
+    public ExamSubmission(Long id, Long accountId, Long testId, String url, SubmissionType submissionType, String explain) {
         this.id = id;
         this.accountId = accountId;
         this.testId = testId;

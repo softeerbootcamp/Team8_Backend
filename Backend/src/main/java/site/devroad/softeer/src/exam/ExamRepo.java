@@ -1,26 +1,26 @@
-package site.devroad.softeer.src.test;
+package site.devroad.softeer.src.exam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.test.model.Test;
+import site.devroad.softeer.src.exam.model.Exam;
 
 import javax.sql.DataSource;
 import java.util.Optional;
 
 @Repository
-public class TestRepo {
+public class ExamRepo {
 
     private JdbcTemplate jdbcTemplate;
     @Autowired
-    public TestRepo(DataSource dataSource){
+    public ExamRepo(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
-    public Optional<Test> findTestBySubjectId(Long subjectId){
+    public Optional<Exam> findTestBySubjectId(Long subjectId){
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Test where subject_id = ?", testRowMapper(), subjectId));
         }
@@ -29,7 +29,7 @@ public class TestRepo {
         }
     }
 
-    public Optional<Test> findTestbyId(Long testId) {
+    public Optional<Exam> findTestbyId(Long testId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Test where id = ?", testRowMapper(), testId));
         }
@@ -42,7 +42,7 @@ public class TestRepo {
         jdbcTemplate.update("delete * from Test where id = ?", testId);
     }
 
-    RowMapper<Test> testRowMapper(){
+    RowMapper<Exam> testRowMapper(){
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long subject_id = rs.getLong("subject_id");
@@ -50,7 +50,7 @@ public class TestRepo {
             String name = rs.getString("name");
             String explain = rs.getString("explain");
             Integer price = rs.getInt("price");
-            return new Test(id, subject_id, url, name, explain, price);
+            return new Exam(id, subject_id, url, name, explain, price);
         };
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import site.devroad.softeer.src.course.model.Subject;
 import site.devroad.softeer.src.course.repository.SubjectRepo;
+import site.devroad.softeer.src.exam.ExamService;
 import site.devroad.softeer.src.user.UserRepo;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
@@ -13,10 +14,10 @@ import site.devroad.softeer.src.user.model.LoginInfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class TestServiceTest {
+class ExamServiceExam {
 
     @Autowired
-    TestService testService;
+    ExamService examService;
     @Autowired
     UserRepo userRepo;
 
@@ -34,7 +35,7 @@ class TestServiceTest {
         Subject subject = subjectRepo.findById(1L).get();
         //when
         try {
-            Boolean result = testService.isUserPassedTest(subject.getId(), account.getId());
+            Boolean result = examService.isUserPassedTest(subject.getId(), account.getId());
 
             //then
             assertEquals(result, false);
