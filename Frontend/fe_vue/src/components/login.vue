@@ -3,22 +3,12 @@
     <form @submit.prevent="loginForm">
       <div class="mb-4 ps-5 pe-5">
         <label for="InputEmail" class="form-label">Email address</label>
-        <input
-          type="email"
-          class="form-control"
-          id="InputEmail"
-          v-model="formData.email"
-          aria-describedby="emailHelp"
-        />
+        <input type="email" class="form-control" id="InputEmail" v-model="formData.email"
+          aria-describedby="emailHelp" />
       </div>
       <div class="mb-4 ps-5 pe-5">
         <label for="InputPassword1" class="form-label">Password</label>
-        <input
-          type="password"
-          class="form-control"
-          v-model="formData.password"
-          id="InputPassword1"
-        />
+        <input type="password" class="form-control" v-model="formData.password" id="InputPassword1" />
       </div>
 
       <button type="submit" variant="primary">Submit</button>
@@ -48,18 +38,27 @@ export default {
         password: this.formData.password
       };
       await signinUser(userData)
-          .then((response) => {
-            if (response.data.success) {
-              this.$store.commit("setLoginStatus", true);
-              this.$store.commit("setJwtToken", response.data.jwt);
-              this.$router.push({ name: "UserHome" });
+        .then((response) => {
+          if (response.data.success) {
+            this.$store.commit("setLoginStatus", true);
+            this.$store.commit("setJwtToken", response.data.jwt);
+            if (response.data.admin) {
+              this.$store.commit("setIsAdmin", true);
+              this.$router.push({ name: "AdminHome" });
+
             } else {
-              console.log("login failed : " + response.data.success);
+              this.$router.push({ name: "UserHome" });
+
             }
-          });
-        
+          } else {
+            console.log("login failed : " + response.data.success);
+          }
+        });
+
     },
   },
 };
 </script>
-<style></style>
+<style>
+
+</style>

@@ -43,6 +43,14 @@ public class CourseService {
         return chapterRepo.findNextChapter(courseId, sequence + 1);
     }
 
+    public Chapter getChapter(Long chapterId) throws CustomException {
+        Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
+        if (chapterById.isEmpty()) {
+            throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
+        }
+        return chapterById.get();
+    }
+
     public Boolean getCourseFinished(Long chapterId) throws CustomException {
         Optional<Chapter> nextChapter = getNextChapter(chapterId);
         return nextChapter.isEmpty();
