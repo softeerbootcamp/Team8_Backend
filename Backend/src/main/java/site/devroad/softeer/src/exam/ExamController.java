@@ -3,12 +3,10 @@ package site.devroad.softeer.src.exam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import site.devroad.softeer.exceptions.CustomException;
-import site.devroad.softeer.src.exam.ExamRepo;
-import site.devroad.softeer.src.exam.ExamService;
 import site.devroad.softeer.src.exam.dto.GetExamDetailRes;
+import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
 import site.devroad.softeer.src.roadmap.RoadmapService;
 import site.devroad.softeer.src.user.UserService;
@@ -54,6 +52,21 @@ public class ExamController {
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
-
     }
+
+    @PostMapping("/api/exam/assignment")
+    public ResponseEntity<?> assignmentSubmit(@RequestHeader String jwt, @RequestBody PostAssignSubmitReq req){
+        try{
+            jwtUtility.validateToken(jwt);
+            Long accountId = jwtUtility.getAccountId(jwt);
+            examService.checkExamPurchased(accountId, req.getExamId());
+            examService.submitAssignment(accountId, req);
+            return new ResponseEntity<>(Map.of("success", true), HttpStatus.CREATED);
+        } catch (CustomException e) {
+            return e.getResponseEntity();
+        }
+    }
+
+
+
 }

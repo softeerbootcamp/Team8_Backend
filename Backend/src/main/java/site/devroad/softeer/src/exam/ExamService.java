@@ -8,6 +8,7 @@ import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.course.model.Subject;
 import site.devroad.softeer.src.course.repository.SubjectRepo;
+import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
 import site.devroad.softeer.src.exam.model.SubmissionType;
 import site.devroad.softeer.src.exam.model.Exam;
@@ -78,5 +79,9 @@ public class ExamService {
             throw new CustomException(ExceptionType.EXAM_NOT_FOUND);
         }
         return new ExamDetail(exam.get());
+    }
+
+    public void submitAssignment(Long accountId, PostAssignSubmitReq req) throws CustomException{
+        examRepo.addExamSubmission(accountId, req.getExamId(), req.getUrl(), req.getDescription());
     }
 }
