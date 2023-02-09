@@ -9,6 +9,7 @@ import RoadMapFactory from "@/view/roadmapFactory.vue"
 import AdminHome from "@/view/adminHome.vue"
 import ExamView from "@/view/examView.vue"
 import ExamSubmitView from "@/view/examSubmitView.vue"
+import ExamPurchaseView from "@/view/examPurchaseView.vue"
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
@@ -68,6 +69,11 @@ const routes = [
     path: "/login",
     name: "LogIn",
     component: LogIn,
+  },
+  {
+    path: "/exampurchaseview/:examId",
+    name: "ExamPurchaseView",
+    component: ExamPurchaseView,
   },
 ];
 
