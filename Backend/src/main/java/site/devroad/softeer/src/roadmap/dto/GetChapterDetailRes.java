@@ -7,6 +7,7 @@ public class GetChapterDetailRes {
     private ChapterDetail chapterDetail;
 
     public GetChapterDetailRes(ChapterDetail chapterDetail) {
+        this.success = true;
         this.chapterDetail = chapterDetail;
     }
 
