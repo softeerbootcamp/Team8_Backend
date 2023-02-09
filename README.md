@@ -32,11 +32,10 @@
   <br>
 </div>
 
-
 # 팀원 소개
-- 유준민(FullStack) : @jun-min1623
-- 장민호(FullStack) : @2roum
-- 노현욱(FullStack) : @rohsik2
+- 유준민(FullStack) : [#jun-min1623](https://github.com/jun-min1623)
+- 장민호(FullStack) : [#2roum](https://github.com/2roum)
+- 노현욱(FullStack) : [#rohsik2](https://github.com/rohsik2)
 
 # 기능 소개
 설문조사를 통해서 자신에게 맞는 개발자 로드맵을 받아보세요.

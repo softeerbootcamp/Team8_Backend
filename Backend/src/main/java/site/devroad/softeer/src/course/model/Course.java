@@ -6,7 +6,7 @@ public class Course {
     String tutorName;
     String thumbnailUrl;
     String courseName;
-    String explain;
+    String description;
     Long languageId;
     String type;
 
@@ -50,12 +50,12 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public String getExplain() {
-        return explain;
+    public String getDescription() {
+        return description;
     }
 
-    public void setExplain(String explain) {
-        this.explain = explain;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getLanguageId() {

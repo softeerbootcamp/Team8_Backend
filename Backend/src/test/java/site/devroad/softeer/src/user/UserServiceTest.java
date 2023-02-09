@@ -1,11 +1,11 @@
 package site.devroad.softeer.src.user;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.user.dto.PostSignInReq;
@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
+@Transactional
 class UserServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
     @Autowired
@@ -42,7 +43,6 @@ class UserServiceTest {
         }
         Optional<LoginInfo> optionalLoginInfo = userRepo.findByEmail(email);
         Optional<Account> optionalAccount = userRepo.findByPhone(phone);
-        deleteUser(email, phone);
         assertThat(optionalLoginInfo).isPresent();
         assertThat(optionalAccount).isPresent();
     }
@@ -50,19 +50,18 @@ class UserServiceTest {
     @Test
     void duplicateEmailTest() {
         //given
-        String dupEmail = "dupEmail@naver.com";
-        String phone = "54321";
-        createUser(dupEmail, "test", phone, "1234");
-        PostSignUpReq postSignUpReq = new PostSignUpReq(dupEmail, "test1", "12345", "1234");
+        String dupEmail = "dupdupEmail@naver.com";
+        String phone = "01040402020";
+        PostSignUpReq postSignUpReq1 = new PostSignUpReq(dupEmail, "test1", phone, "1234");
+        PostSignUpReq postSignUpReq2 = new PostSignUpReq(dupEmail, "test1", "01020202020", "1234");
         //when
         try {
-            userService.join(postSignUpReq);
+            userService.join(postSignUpReq1);
+            userService.join(postSignUpReq2);
         }
         //then
         catch (CustomException e) {
             assertThat(e.getExceptionType()).isEqualTo(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED);
-        } finally {
-            deleteUser(dupEmail, phone);
         }
     }
 
@@ -71,18 +70,18 @@ class UserServiceTest {
         //given
         String dupPhone = "01000000000";
         String email = "test@gmail.com";
-        createUser(email, "dupTest", dupPhone, "1234");
-        PostSignUpReq postSignUpReq = new PostSignUpReq("hello@hanmail.net", "test1", dupPhone, "1234");
+
+        PostSignUpReq postSignUpReq1 = new PostSignUpReq(email, "test1", dupPhone, "1234");
+        PostSignUpReq postSignUpReq2 = new PostSignUpReq("hello@hanmail.net", "test2", dupPhone, "1234");
 
         //when
         try {
-            userService.join(postSignUpReq);
+            userService.join(postSignUpReq1);
+            userService.join(postSignUpReq2);
         }
         //then
         catch (CustomException e) {
             assertThat(e.getExceptionType()).isEqualTo(ExceptionType.POST_ACCOUNT_PHONE_DUPLICATED);
-        } finally {
-            deleteUser(email, dupPhone);
         }
     }
 
@@ -96,21 +95,5 @@ class UserServiceTest {
         } catch (CustomException e) {
             logger.warn(e.getMessage());
         }
-    }
-
-    void createUser(String email, String name, String phone, String password) {
-        PostSignUpReq req = new PostSignUpReq(email, name, phone, password);
-        try {
-            userService.join(req);
-        } catch (CustomException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void deleteUser(String email, String phone) {
-        Optional<LoginInfo> optionalLoginInfo = userRepo.findByEmail(email);
-        Optional<Account> optionalAccount = userRepo.findByPhone(phone);
-        userRepo.deleteLoginInfoById(optionalLoginInfo.get().getId());
-        userRepo.deleteAccountById(optionalAccount.get().getId());
     }
 }
