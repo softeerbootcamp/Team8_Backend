@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
 import site.devroad.softeer.src.exam.model.Exam;
 
 import javax.sql.DataSource;
@@ -34,6 +35,24 @@ public class ExamRepo {
     public Optional<Exam> findExamById(Long examId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where id = ?", examRowMapper(), examId));
+        }
+        catch(DataAccessException e){
+            return Optional.empty();
+        }
+    }
+
+    public Optional<ExamDetail> findExamDetailById(Long examId) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT \n" +
+                            "s.name AS subject_name \n" +
+                            "e.url AS url, \n" +
+                            "e.name AS name,\n" +
+                            "e.desciption AS description\n" +
+                            "FROM Subject s\n" +
+                            "JOIN Exam e \n" +
+                            "ON s.id = e.subject_id\n" +
+                            "WHERE id = ?",
+                    examDetailRowMapper(), examId));
         }
         catch(DataAccessException e){
             return Optional.empty();
@@ -73,6 +92,16 @@ public class ExamRepo {
             String description = rs.getString("description");
             Integer price = rs.getInt("price");
             return new Exam(id, subject_id, url, name, description, price);
+        };
+    }
+
+    RowMapper<ExamDetail> examDetailRowMapper(){
+        return (rs, rowNum) -> {
+            String subjectName = rs.getString("subject_name");
+            String url = rs.getString("url");
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+            return new ExamDetail(subjectName, url, name, description);
         };
     }
 }
