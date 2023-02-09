@@ -64,6 +64,6 @@ jobs:
       run: |
         cd Frontend/fe_vue
         npm install
-        npm build
+        npm run build
       if: github.ref == 'refs/heads/dev'
 
