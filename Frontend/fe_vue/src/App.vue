@@ -1,6 +1,4 @@
 <template>
-
-  <head></head>
   <Header class="header"></Header>
 
   <router-view> </router-view>

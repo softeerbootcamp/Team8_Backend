@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">{{ chapter.chapterName }}</h5>
-          <p class="card-text">{{ chapter.explain }}</p>
+          <p class="card-text">{{ chapter.description }}</p>
         </div>
       </div>
     </div>

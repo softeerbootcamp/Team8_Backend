@@ -1,20 +1,21 @@
 package site.devroad.softeer.src.roadmap.dto;
 
-import site.devroad.softeer.src.course.model.Chapter;
+import site.devroad.softeer.src.roadmap.dto.subdto.ChapterDetail;
 
 public class GetChapterDetailRes {
     private boolean success;
-    private Chapter chapter;
+    private ChapterDetail chapterDetail;
 
-    public GetChapterDetailRes(Chapter chapter) {
-        this.chapter = chapter;
+    public GetChapterDetailRes(ChapterDetail chapterDetail) {
+        this.success = true;
+        this.chapterDetail = chapterDetail;
     }
 
     public boolean isSuccess() {
         return success;
     }
 
-    public Chapter getChapter() {
-        return chapter;
+    public ChapterDetail getChapterDetail() {
+        return chapterDetail;
     }
 }
