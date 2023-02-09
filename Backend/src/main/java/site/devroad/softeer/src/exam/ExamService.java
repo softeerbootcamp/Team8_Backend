@@ -85,4 +85,13 @@ public class ExamService {
     public void submitAssignment(Long accountId, PostAssignSubmitReq req) throws CustomException{
         examRepo.addExamSubmission(accountId, req.getExamId(), req.getUrl(), req.getDescription());
     }
+    public void makePurchasedByTossOrderId(String orderId) throws CustomException{
+        //   orderId : accountId + "_" + examId + "_" + randomStr,
+        String[] parsedOrderId = orderId.split("_");
+        Long accountId = Long.valueOf(parsedOrderId[0]);
+        Long examId = Long.valueOf(parsedOrderId[1]);
+        purchaseExam(accountId,examId);
+
+    }
+
 }
