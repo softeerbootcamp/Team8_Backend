@@ -68,7 +68,7 @@ public class ExamRepo {
 
     public void addExamSubmission(Long accountId, Long examId, String url, String description) throws CustomException {
         try {
-            jdbcTemplate.update("insert into TestSubmission(account_id, test_id, url, is_passed, description) " +
+            jdbcTemplate.update("insert into ExamSubmission(account_id, exam_id, url, is_passed, description) " +
                     "values(?, ?, ?, 3, ?)", accountId, examId, url, description);
         } catch (DataAccessException e) {
             e.printStackTrace();
