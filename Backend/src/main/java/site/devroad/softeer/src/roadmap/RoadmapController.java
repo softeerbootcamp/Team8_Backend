@@ -104,8 +104,8 @@ public class RoadmapController {
         try {
             jwtUtility.validateToken(jwt);
             Long chapterIdL = Long.valueOf(chapterId);
-            ChapterDetail chapterDetail = courseService.getChapterDetail(chapterIdL);
-            return new ResponseEntity<>(new GetChapterDetailRes(chapterDetail), HttpStatus.OK);
+            Chapter chapter = courseService.getChapter(chapterIdL);
+            return new ResponseEntity<>(new GetChapterDetailRes(chapter), HttpStatus.OK);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }

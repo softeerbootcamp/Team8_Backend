@@ -24,7 +24,12 @@ public class CourseService {
     }
 
     public List<ChapterDetail> getChapterDetails(Long courseId) throws CustomException {
-        return chapterRepo.findChapterDetailByCourseId(courseId);
+        List<Chapter> chapters = chapterRepo.findChapterByCourseId(courseId);
+        ArrayList<ChapterDetail> chapterDetails = new ArrayList<>();
+        for (Chapter chapter : chapters) {
+            chapterDetails.add(new ChapterDetail(chapter));
+        }
+        return chapterDetails;
     }
 
     public Optional<Chapter> getNextChapter(Long chapterId) throws CustomException {
@@ -40,14 +45,6 @@ public class CourseService {
 
     public Chapter getChapter(Long chapterId) throws CustomException {
         Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
-        if (chapterById.isEmpty()) {
-            throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
-        }
-        return chapterById.get();
-    }
-
-    public ChapterDetail getChapterDetail(Long chapterId) throws CustomException {
-        Optional<ChapterDetail> chapterById = chapterRepo.findChapterDetailById(chapterId);
         if (chapterById.isEmpty()) {
             throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
         }
