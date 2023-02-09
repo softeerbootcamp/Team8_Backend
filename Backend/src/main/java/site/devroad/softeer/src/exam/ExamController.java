@@ -90,6 +90,13 @@ public class ExamController {
         }
 
     }
+    @GetMapping("/api/exam/purchase/fail")
+    public ResponseEntity<?> purchaseFail(){
+            MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
+            map.add("Location","/roadmap");
+            return new ResponseEntity<>("",map,HttpStatus.TEMPORARY_REDIRECT);
+
+    }
 
 
 }
