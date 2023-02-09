@@ -57,4 +57,4 @@
 
 
 # 더 자세히 알아보기
-[Wiki로 협업과정 보러가기!] (https://github.com/softeerbootcamp/Team8_FullStack/wiki)
+ <a href = "https://github.com/softeerbootcamp/Team8_FullStack/wiki" target=_blnak>Wiki로 협업과정 보러가기!</a>
