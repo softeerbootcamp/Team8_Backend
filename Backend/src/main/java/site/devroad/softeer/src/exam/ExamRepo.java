@@ -44,14 +44,14 @@ public class ExamRepo {
     public Optional<ExamDetail> findExamDetailById(Long examId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT \n" +
-                            "s.name AS subject_name \n" +
+                            "s.name AS subject_name,\n" +
                             "e.url AS url, \n" +
                             "e.name AS name,\n" +
-                            "e.desciption AS description\n" +
+                            "e.description AS description\n" +
                             "FROM Subject s\n" +
                             "JOIN Exam e \n" +
                             "ON s.id = e.subject_id\n" +
-                            "WHERE id = ?",
+                            "WHERE e.id = ?",
                     examDetailRowMapper(), examId));
         }
         catch(DataAccessException e){
