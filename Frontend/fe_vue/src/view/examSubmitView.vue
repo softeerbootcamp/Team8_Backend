@@ -3,7 +3,7 @@
 
         <div class="card text-center" style="width: 500px;">
             <div class="card-header bg-primary text-white">
-                {{ subjectName }}
+                <!-- {{ subjectName }} --> 시험지
             </div>
             <div class="card-body">
                 <p class="card-title">
@@ -13,7 +13,7 @@
                 <form>
                     <div class="form-group">
                         <label for="inputAnswer">정답</label>
-                        <textarea class="form-control" id="inputAnswer" v-model="submitForm.explain" rows="10"
+                        <textarea class="form-control" id="inputAnswer" v-model="submitForm.description" rows="10"
                             style="resize:none; font-size: 1.2rem;"></textarea>
                     </div>
                 </form>
@@ -39,7 +39,7 @@ export default {
             examId: "",
             submitForm: {
                 url: "",
-                explain: "// 프로젝트에 대한 간단한 설명\n"
+                description: "// 프로젝트에 대한 간단한 설명\n"
                     + "// 각각의 파일이 무슨일을 하는지 적어주세요.\n"
                     + "// 해당 시험 진행하면서 어려웠던 점이나 고민했던 부분을 적어주세요.\n"
                     + "// 해당 과정을 들으면서 본인이 무엇을 배웠고 얼마나 성장했는지 적어주세요\n",
@@ -48,7 +48,6 @@ export default {
         }
     },
     mounted() {
-        this.subjectName = this.$route.params.subjectName;
         this.examId = this.$route.params.examId;
     },
     methods: {
@@ -60,7 +59,7 @@ export default {
             };
             const params = {
                 url: this.submitForm.url,
-                explain: this.submitForm.explain,
+                description: this.submitForm.description,
                 examId: this.examId
             };
             await postAssignMentData(config, params)

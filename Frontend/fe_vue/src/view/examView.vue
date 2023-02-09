@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
         <div class="card text-center" style="width: 500px;">
             <div class="card-header bg-primary text-white">
-                {{ subjectName }} 시험지
+                <!-- {{ subjectName }} 시험지 --> 시험지
             </div>
             <div class="card-body">
                 <p class="card-title">{{ examTitle }}</p>
@@ -14,7 +14,10 @@
             </div>
             <div class="card-footer">
                 <a v-bind:href="examUrl">템플릿 코드를 다운로드하는 곳</a>
-                <router-link to="/examsubmitview">
+                <router-link :to="{
+                    name: 'ExamSubmitView',
+                    params: { examId: getExamId() }
+                }">
                     <button class="btn btn-primary mt-2">제출하러가기</button>
                 </router-link>
                 <!-- <router-link :to="{ name: 'home' }" class="btn btn-secondary">Back</router-link> -->
@@ -28,17 +31,23 @@ export default {
     name: 'ExamView',
     data() {
         return {
-            subjectName: "",
+            //subjectName: "",
             examUrl: "",
             examTitle: "",
-            examExplain: ""
+            examExplain: "",
+            examId: ""
         }
     },
     mounted() {
         this.getExamDetail();
-        this.subjectName = this.$route.params.subjectName;
+        this.examId = this.$route.params.examId;
+
     },
     methods: {
+        getExamId() {
+            return this.$route.params.examId;
+        },
+
         async getExamDetail() {
             const params = this.$route.params.examId;
             const config = {

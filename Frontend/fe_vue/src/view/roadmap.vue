@@ -10,10 +10,15 @@
         , setCurrentSubjectId(course)]">
           {{ course[0] }}
         </button>
+        <router-link :to="{
+          name: 'ExamView',
+          params: { examId: course[3] }
+        }" style="text-decoration: none; color:black;">
+          <button :class="getButtonClass(course[2])" type="button">
+            <span class="bi bi-file-text"></span>
+          </button>
+        </router-link>
 
-        <button :class="getButtonClass(course[2])" type="button">
-          <span class="bi bi-file-text"></span>
-        </button>
       </span>
     </div>
   </div>

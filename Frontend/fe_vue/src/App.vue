@@ -1,8 +1,4 @@
 <template>
-
-  <head>
-    <title>asdf</title>
-  </head>
   <Header class="header"></Header>
 
   <router-view> </router-view>

@@ -1,8 +1,12 @@
 import axios from 'axios';
+import store from '@/store'
 
 const axiosService = axios.create({
  baseURL: 'https://backend.devroad.site/',
- headers: 'Content-Type: application/json'
+ headers: {
+  "Content-Type": 'application/json',
+  "jwt" : store.state.jwt
+}
 });
 
 function signinUser(userData) {
@@ -20,7 +24,7 @@ function getRoadmap(config){
 function getSubjectDetail(param,config){
   return axiosService.get('api/subject'+"/"+param,config);
 }
-function getCourceData(param,config){
+function getCourseData(param,config){
   return axiosService.get('api/course'+"/"+param,config);
 }
 function getAllSubjectData(){
@@ -33,13 +37,13 @@ function getNoRoadmapUserData(config){
     return axiosService.get('api/user/noRoadmap',config);
 }
 function getExamDetailData(config,param){
-  return axiosService.get('api/exam/',param,config);
+  return axiosService.get('api/exam/'+param,config);
 }
 function postAssignMentData(config, param){
-  return axiosService.post('api/exam/assignment',param,config);
+  return axiosService.post('api/exam/assignment/',param,config);
 
 }
-export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourceData
+export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourseData
 ,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData,getExamDetailData,
 postAssignMentData
  };
