@@ -31,7 +31,7 @@ public enum ExceptionType {
     //Test Related Exceptions
     EXAM_NOT_FOUND(HttpStatus.NOT_FOUND, "Exam not exist", 1301),
     EXAM_NOT_PURCHASED(HttpStatus.BAD_REQUEST, "Exam not purchased", 1302),
-
+    TOSS_PURCHASE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Toss purchase io error",1303),
 
     //Last Exceptions
     DATABASE_NOT_CONNECTED(HttpStatus.INTERNAL_SERVER_ERROR, "Database not connected", 2001);
