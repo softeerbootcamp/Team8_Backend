@@ -1,22 +1,16 @@
 package site.devroad.softeer.src.exam.dto.subdto;
 
-import site.devroad.softeer.src.exam.model.Exam;
-
 public class ExamDetail {
+    String subjectName;
     String url;
     String name;
-    String explain;
+    String description;
 
-    public ExamDetail(Exam exam){
-        this.url = exam.getUrl();
-        this.name = exam.getName();
-        this.explain = exam.getDescription();
-    }
-
-    public ExamDetail(String url, String title, String explain) {
+    public ExamDetail(String subjectName, String url, String title, String description) {
+        this.subjectName = subjectName;
         this.url = url;
         this.name = title;
-        this.explain = explain;
+        this.description = description;
     }
 
     public String getUrl() {
@@ -27,7 +21,7 @@ public class ExamDetail {
         return name;
     }
 
-    public String getExplain() {
-        return explain;
+    public String getDescription() {
+        return description;
     }
 }
