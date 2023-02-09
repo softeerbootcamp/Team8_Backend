@@ -10,14 +10,13 @@ public class ChapterDetail {
     private String explain;
     private Boolean finish;
 
-    public ChapterDetail(Chapter chapter) {
-        this.chapterId = chapter.getId();
-        this.chapterName = chapter.getTitle();
-        this.chapterUrl = chapter.getChapterUrl();
-        this.thumbnailUrl = chapter.getThumbnailUrl();
-        this.explain = chapter.getDescription();
-        //TODO : chapter가 끝났는지 받아와야함.
-        this.finish = true;
+    public ChapterDetail(Long chapterId, String chapterName, String chapterUrl, String thumbnailUrl, String explain, Boolean finish) {
+        this.chapterId = chapterId;
+        this.chapterName = chapterName;
+        this.chapterUrl = chapterUrl;
+        this.thumbnailUrl = thumbnailUrl;
+        this.explain = explain;
+        this.finish = finish;
     }
 
     public Long getChapterId() {

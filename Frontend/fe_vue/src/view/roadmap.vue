@@ -10,14 +10,9 @@
         , setCurrentSubjectId(course)]">
           {{ course[0] }}
         </button>
-        <router-link :to="{
-          name: 'ExamView',
-          params: { examId: course[3] }
-        }" style="text-decoration: none; color:black;">
-          <button :class="getButtonClass(course[2])" type="button">
+          <button :class="getButtonClass(course[2])" type="button" @click="switchRouterByState(course[2], course[3])">
             <span class="bi bi-file-text"></span>
           </button>
-        </router-link>
 
       </span>
     </div>
@@ -67,6 +62,28 @@ export default {
           return 'btn btn-light btn-sm';
       }
     },
+    switchRouterByState(state, examId) {
+      // switch(state) {
+      //   case 'NONE':
+      //     return 'btn btn-light btn-sm';
+      //   case 'PURCHASED':
+          
+      //   case 'SUBMITTED':
+      //     return 'btn btn-warning btn-sm';
+      //   case 'PASSED':
+      //     return 'btn btn-success btn-sm';
+      //   case 'FAILED':
+      //     return 'btn btn-danger btn-sm';
+      //   break:
+      //     return 'btn btn-light btn-sm';
+      // }
+      if (state === 'PURCHASED') {
+      //   this.$router.push({name:"ExamView", params:{examId:examId}});
+      // }
+      // if (state === 'NONE') {
+        this.$router.push({name:"ExamPurchaseView", params:{examId:examId}});
+      }
+    }
   }
 };
 </script>
