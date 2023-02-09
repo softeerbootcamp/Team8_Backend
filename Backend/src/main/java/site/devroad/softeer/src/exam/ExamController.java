@@ -76,7 +76,7 @@ public class ExamController {
 
     }
 
-    @GetMapping("/api/exam/purchase/success")
+    @GetMapping("/api/purchase/exam/success")
     public ResponseEntity<?> purchaseSuccess(@RequestParam String orderId, @RequestParam String paymentKey, @RequestParam Integer amount) {
         try {
             tossUtility.validateTossParams(orderId, paymentKey, amount);
@@ -90,7 +90,7 @@ public class ExamController {
         }
 
     }
-    @GetMapping("/api/exam/purchase/fail")
+    @GetMapping("/api/purchase/exam/fail")
     public ResponseEntity<?> purchaseFail(){
             MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
             map.add("Location","/roadmap");
