@@ -45,7 +45,7 @@ public class CourseRepo {
             Long subjectId = rs.getLong("subject_id");
             String tutorName = rs.getString("tutor_name");
             String thumbnailUrl = rs.getString("thumbnail_url");
-            String explain = rs.getString("explain");
+            String description = rs.getString("description");
             Long languageId = rs.getLong("language_id");
             String type = rs.getString("type");
             String courseName = rs.getString("course_name");
@@ -54,7 +54,7 @@ public class CourseRepo {
             course.setSubjectId(subjectId);
             course.setTutorName(tutorName);
             course.setThumbnailUrl(thumbnailUrl);
-            course.setExplain(explain);
+            course.setDescription(description);
             course.setLanguageId(languageId);
             course.setType(type);
             course.setCourseName(courseName);

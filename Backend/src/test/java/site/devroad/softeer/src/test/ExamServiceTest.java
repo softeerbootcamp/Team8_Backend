@@ -35,10 +35,10 @@ class ExamServiceTest {
         Subject subject = subjectRepo.findById(1L).get();
         //when
         try {
-            Boolean result = examService.isUserPassedTest(subject.getId(), account.getId());
+            Boolean result = examService.isUserPassedExam(subject.getId(), account.getId());
 
             //then
-            assertEquals(result, false);
+            assertEquals(result, true);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
