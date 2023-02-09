@@ -81,7 +81,7 @@ public class ExamController {
         try {
             tossUtility.validateTossParams(orderId, paymentKey, amount);
             MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
-            map.add("Location","/roadmap");
+            map.add("Location","https://devroad.site/roadmap");
             examService.makePurchasedByTossOrderId(orderId);
             return new ResponseEntity<>("",map,HttpStatus.TEMPORARY_REDIRECT);
 
