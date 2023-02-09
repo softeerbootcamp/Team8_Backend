@@ -62,7 +62,7 @@ jobs:
         
     - name : Run npm build Test
       run: |
-        cd ../Frontend/fe_vue
+        cd Frontend/fe_vue
         npm install
         npm build
       if: github.ref == 'refs/heads/dev'
