@@ -41,6 +41,7 @@ export default {
         .then((response) => {
           if (response.data.success) {
             this.$store.commit("setLoginStatus", true);
+            console.log("isLogin store status when login success! : " + this.$store.state.isLogin)
             this.$store.commit("setJwtToken", response.data.jwt);
             if (response.data.admin) {
               this.$store.commit("setIsAdmin", true);
