@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.exam.model.Exam;
+import site.devroad.softeer.src.exam.model.ExamSubmission;
+import site.devroad.softeer.src.exam.model.SubmissionType;
 
 import javax.sql.DataSource;
 import java.util.Optional;
@@ -64,6 +66,26 @@ public class ExamRepo {
     }
 
 
+    public void addExamSubmission(Long accountId, Long examId, String url, String description) throws CustomException {
+        try {
+            jdbcTemplate.update("insert into TestSubmission(account_id, test_id, url, is_passed, description) " +
+                    "values(?, ?, ?, 3, ?)", accountId, examId, url, description);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            throw new CustomException(ExceptionType.DATABASE_ERROR);
+        }
+    }
+    RowMapper<ExamSubmission> examSubmissionRowMapper(){
+        return (rs, rowNum) -> {
+            Long id = rs.getLong("id");
+            Long accountId = rs.getLong("account_id");
+            Long examId = rs.getLong("test_id");
+            String url = rs.getString("url");
+            SubmissionType submissionType = SubmissionType.getType(rs.getInt("is_passed"));
+            String explain = rs.getString("description");
+            return new ExamSubmission(id, accountId, examId, url, submissionType, explain);
+        };
+    }
     RowMapper<Exam> examRowMapper(){
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
@@ -75,4 +97,5 @@ public class ExamRepo {
             return new Exam(id, subject_id, url, name, explain, price);
         };
     }
+
 }
