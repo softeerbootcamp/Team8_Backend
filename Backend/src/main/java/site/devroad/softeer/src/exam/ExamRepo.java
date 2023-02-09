@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
 import site.devroad.softeer.src.exam.model.Exam;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
 import site.devroad.softeer.src.exam.model.SubmissionType;
@@ -36,6 +37,24 @@ public class ExamRepo {
     public Optional<Exam> findExamById(Long examId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where id = ?", examRowMapper(), examId));
+        }
+        catch(DataAccessException e){
+            return Optional.empty();
+        }
+    }
+
+    public Optional<ExamDetail> findExamDetailById(Long examId) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT \n" +
+                            "s.name AS subject_name,\n" +
+                            "e.url AS url, \n" +
+                            "e.name AS name,\n" +
+                            "e.description AS description\n" +
+                            "FROM Subject s\n" +
+                            "JOIN Exam e \n" +
+                            "ON s.id = e.subject_id\n" +
+                            "WHERE e.id = ?",
+                    examDetailRowMapper(), examId));
         }
         catch(DataAccessException e){
             return Optional.empty();
@@ -75,6 +94,7 @@ public class ExamRepo {
             throw new CustomException(ExceptionType.DATABASE_ERROR);
         }
     }
+    
     RowMapper<ExamSubmission> examSubmissionRowMapper(){
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
@@ -86,6 +106,7 @@ public class ExamRepo {
             return new ExamSubmission(id, accountId, examId, url, submissionType, explain);
         };
     }
+    
     RowMapper<Exam> examRowMapper(){
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
@@ -98,4 +119,13 @@ public class ExamRepo {
         };
     }
 
+    RowMapper<ExamDetail> examDetailRowMapper(){
+        return (rs, rowNum) -> {
+            String subjectName = rs.getString("subject_name");
+            String url = rs.getString("url");
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+            return new ExamDetail(subjectName, url, name, description);
+        };
+    }
 }
