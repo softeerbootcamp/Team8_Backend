@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/api/user")
-    public ResponseEntity<?> getMockUserDetail(@RequestHeader(value = "jwt") String jwt) {
+    public ResponseEntity<?> getMockUserDetail(@RequestAttribute(value = "jwt") Long accountId) {
         GetDetailRes getDetailRes = new GetDetailRes();
         getDetailRes.setUserId(1L);
         getDetailRes.setUserName("hello");
@@ -69,10 +69,8 @@ public class UserController {
     }
 
     @GetMapping("/api/user/noRoadmap")
-    public ResponseEntity<?> getNoRoadmapUser(@RequestHeader(value = "jwt") String jwt) {
+    public ResponseEntity<?> getNoRoadmapUser(@RequestAttribute(value = "accountId") Long accountId) {
         try {
-            jwtUtility.validateToken(jwt);
-            Long accountId = jwtUtility.getAccountId(jwt);
             boolean isAdmin = userService.validateAdmin(accountId);
             if (isAdmin) {
                 return new ResponseEntity<>(new GetNoUserRes(true, userService.getNoRoadmapUsers()), HttpStatus.OK);

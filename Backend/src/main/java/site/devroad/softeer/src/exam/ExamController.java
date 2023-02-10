@@ -37,10 +37,8 @@ public class ExamController {
     }
 
     @PostMapping("/api/exam/{examId}")
-    public ResponseEntity<?> purchaseExam(@PathVariable("examId") Long examId, @RequestHeader String jwt) {
+    public ResponseEntity<?> purchaseExam(@PathVariable("examId") Long examId, @RequestAttribute Long accountId) {
         try {
-            jwtUtility.validateToken(jwt);
-            Long accountId = jwtUtility.getAccountId(jwt);
             examService.purchaseExam(accountId, examId);
             return new ResponseEntity<>(Map.of("success", true), HttpStatus.OK);
         } catch (CustomException e) {
@@ -49,10 +47,8 @@ public class ExamController {
     }
 
     @GetMapping("/api/exam/{examId}")
-    public ResponseEntity<?> getExamDetail(@PathVariable("examId") Long examId, @RequestHeader String jwt) {
+    public ResponseEntity<?> getExamDetail(@PathVariable("examId") Long examId, @RequestAttribute Long accountId) {
         try {
-            jwtUtility.validateToken(jwt);
-            Long accountId = jwtUtility.getAccountId(jwt);
             examService.checkExamPurchased(accountId, examId);
             ExamDetail examDetail = examService.getExamDetail(examId);
             return new ResponseEntity<>(new GetExamDetailRes(true, examDetail), HttpStatus.OK);
@@ -62,10 +58,8 @@ public class ExamController {
     }
 
     @PostMapping("/api/exam/assignment")
-    public ResponseEntity<?> assignmentSubmit(@RequestHeader String jwt, @RequestBody PostAssignSubmitReq req) {
+    public ResponseEntity<?> assignmentSubmit(@RequestAttribute Long accountId, @RequestBody PostAssignSubmitReq req) {
         try {
-            jwtUtility.validateToken(jwt);
-            Long accountId = jwtUtility.getAccountId(jwt);
             examService.checkExamPurchased(accountId, req.getExamId());
             examService.submitAssignment(accountId, req);
             return new ResponseEntity<>(Map.of("success", true), HttpStatus.CREATED);
