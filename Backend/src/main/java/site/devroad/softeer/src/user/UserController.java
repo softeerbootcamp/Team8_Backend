@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/api/user")
-    public ResponseEntity<?> getMockUserDetail(@RequestHeader(value = "jwt") String jwt) {
+    public ResponseEntity<?> getMockUserDetail(@RequestAttribute(value = "jwt") Long accountId) {
         GetDetailRes getDetailRes = new GetDetailRes();
         getDetailRes.setUserId(1L);
         getDetailRes.setUserName("hello");
