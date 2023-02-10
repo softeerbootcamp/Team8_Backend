@@ -7,15 +7,15 @@ public class GetDetailRes {
     private Long roadmapId;
     private Long totalSubjectIdx;
     private Long curSubjectIdx;
-    private Long totalChapterIdx;
-    private Long curChapterIdx;
-
-    public GetDetailRes() {
-        this.success = true;
-    }
+    private Float chapterPercent;
+    private Long nextChapterPK;
 
     public boolean isSuccess() {
         return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public Long getUserId() {
@@ -58,19 +58,19 @@ public class GetDetailRes {
         this.curSubjectIdx = curSubjectIdx;
     }
 
-    public Long getTotalChapterIdx() {
-        return totalChapterIdx;
+    public Float getChapterPercent() {
+        return chapterPercent;
     }
 
-    public void setTotalChapterIdx(Long totalChapterIdx) {
-        this.totalChapterIdx = totalChapterIdx;
+    public void setChapterPercent(Float chapterPercent) {
+        this.chapterPercent = chapterPercent;
     }
 
-    public Long getCurChapterIdx() {
-        return curChapterIdx;
+    public Long getNextChapterPK() {
+        return nextChapterPK;
     }
 
-    public void setCurChapterIdx(Long curChapterIdx) {
-        this.curChapterIdx = curChapterIdx;
+    public void setNextChapterPK(Long nextChapterPK) {
+        this.nextChapterPK = nextChapterPK;
     }
 }
