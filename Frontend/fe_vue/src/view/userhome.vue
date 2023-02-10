@@ -6,9 +6,10 @@
     </div>
   </div>
 
-  <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted">
+  <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted" style="text-decoration: none;">
     <!-- <router-link :to="{ name: 'RoadMap' }" v-if="isRoadmapStarted"> -->
-    <button @click="getSubData" v-if="!roadMapShowClicked">
+    <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" @click="getSubData"
+      v-if="!roadMapShowClicked">
       로드맵 시작하기!?
     </button>
   </router-link>

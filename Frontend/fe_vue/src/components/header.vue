@@ -11,6 +11,9 @@
       <a v-if="isLogin">
         <router-link to="/" @click="logout">로그아웃</router-link>
       </a>
+      <a v-if="isLogin">
+        <router-link to="/userhome">로드맵으로!</router-link>
+      </a>
     </div>
     <div class="menu" v-if="isAdmin">
       <a v-if="isLogin">
@@ -57,7 +60,6 @@ export default {
   background: black;
   padding: 10px;
   border-radius: 5px;
-  margin-right: 10px;
 
 }
 
