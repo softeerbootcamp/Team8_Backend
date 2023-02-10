@@ -1,6 +1,6 @@
 package site.devroad.softeer.src.roadmap.dto.subdto;
 
-import site.devroad.softeer.src.course.model.Course;
+import site.devroad.softeer.src.roadmap.course.Course;
 
 public class CourseDetail {
     private Long id;
