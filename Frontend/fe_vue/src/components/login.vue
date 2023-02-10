@@ -1,18 +1,23 @@
 <template>
-  <div>
-    <form @submit.prevent="loginForm">
-      <div class="mb-4 ps-5 pe-5">
-        <label for="InputEmail" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="InputEmail" v-model="formData.email"
-          aria-describedby="emailHelp" />
+  <div class="container center">
+    <div class="row">
+      <div class="offset-3 col-6 mt-4">
+        <form @submit.prevent="loginForm" class="col-12">
+          <div class="col-12 mb-4">
+            <label for="InputEmail" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="InputEmail" v-model="formData.email"
+              aria-describedby="emailHelp" />
+          </div>
+          <div class="col-12 mb-4">
+            <label for="InputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" v-model="formData.password" id="InputPassword1" />
+          </div>
+          <div class="offset-3 col-6">
+            <button type="submit" class="btn btn-dark d-grid gap-2 mx-auto" variant="primary">Submit</button>
+          </div>
+        </form>
       </div>
-      <div class="mb-4 ps-5 pe-5">
-        <label for="InputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" v-model="formData.password" id="InputPassword1" />
-      </div>
-
-      <button type="submit" variant="primary">Submit</button>
-    </form>
+    </div>
   </div>
 </template>
 

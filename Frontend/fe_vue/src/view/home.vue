@@ -1,6 +1,8 @@
 <template>
-  <h1 class="homeTilte">
-    본인만의 커리어를 만들어보세요!
+  <h1 class="homeTitle center">
+    본인만의 커리어를 만들어보세요!<br>
+
+
   </h1>
   <div class="d-flex justify-content-center">
     <div class="highway d-flex align-items-center">
@@ -27,7 +29,9 @@
       </div>
     </div>
   </div>
-
+  <h3>
+    <button type="button" class="btn btn-dark d-grid gap-2 col-1 mt-4 mx-auto" @click="startBtnClickEvent">출발!</button>
+  </h3>
 </template>
 <script>
 export default {
@@ -45,20 +49,31 @@ export default {
   },
   methods: {
     moveCar() {
-      this.carPosition += 5;
-      this.$refs.car.style.left = `${this.carPosition}px`;
-      if (this.carPosition >= window.innerWidth) {
-        this.carPosition = -50;
+      if (this.$refs.car) {
+        this.carPosition += 5;
+        this.$refs.car.style.left = `${this.carPosition}px`;
+        if (this.carPosition >= window.innerWidth) {
+          this.carPosition = -50;
+        }
+        requestAnimationFrame(this.moveCar);
       }
-      requestAnimationFrame(this.moveCar);
     },
     moveCar2() {
-      this.car2Position -= 7;
-      this.$refs.car2.style.left = `${this.car2Position}px`;
-      if (this.car2Position <= -50) {
-        this.car2Position = window.innerWidth;
+      if (this.$refs.car2) {
+        this.car2Position -= 7;
+        this.$refs.car2.style.left = `${this.car2Position}px`;
+        if (this.car2Position <= -50) {
+          this.car2Position = window.innerWidth;
+        }
+        requestAnimationFrame(this.moveCar2);
       }
-      requestAnimationFrame(this.moveCar2);
+    },
+    startBtnClickEvent() {
+      if (!this.$store.state.isLogin) {
+        this.$router.push('/login');
+      } else {
+        this.$router.push('/');
+      }
     }
   },
   computed: {}
@@ -66,10 +81,11 @@ export default {
 </script>
 <style>
 .homeTitle {
-  width: 50%;
-  left: 50%;
+  padding-top: 150px;
+  text-align: center;
 
 }
+
 
 .highway {
   width: 100%;
