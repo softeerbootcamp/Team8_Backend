@@ -1,7 +1,10 @@
 <template>
-  <Header class="header"></Header>
+  <div class="background">
+    <Header></Header>
 
-  <router-view> </router-view>
+    <router-view> </router-view>
+  </div>
+
 </template>
 
 <script>
@@ -20,9 +23,17 @@ body {
   margin: 0
 }
 
-div {
-  box-sizing: border-box;
+.background {
+  background-color: white;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  // background-image: url("./assets/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
 
 .black-bg {
   width: 100%;

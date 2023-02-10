@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar sticky-top navbar-light bg-light">
+  <nav class="navbar sticky-top">
     <router-link to="/" class="mainLogo">DevRoad</router-link>
     <div class="menu" v-if="!isAdmin">
       <a v-if="!isLogin">
@@ -15,6 +15,12 @@
     <div class="menu" v-if="isAdmin">
       <a v-if="isLogin">
         <router-link to="/" @click="[logout(), adminLogout()]">로그아웃</router-link>
+      </a>
+      <a v-if="isLogin">
+        <router-link to="/adminhome">로드맵 작성 관리</router-link>
+      </a>
+      <a v-if="isLogin">
+        <router-link to="/adminuserview">전체 유저 관리</router-link>
       </a>
     </div>
   </nav>
@@ -43,15 +49,20 @@ export default {
 </script>
 
 <style>
+.navbar {
+  background-color: white;
+}
+
 .menu {
-  background: darkslateblue;
+  background: black;
   padding: 10px;
   border-radius: 5px;
   margin-right: 10px;
+
 }
 
 .mainLogo {
-  color: darkslateblue;
+  color: black;
   text-align: left;
   font-size: 30px;
   text-decoration: none;

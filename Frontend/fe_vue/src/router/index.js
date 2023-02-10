@@ -10,6 +10,7 @@ import AdminHome from "@/view/adminHome.vue"
 import ExamView from "@/view/examView.vue"
 import ExamSubmitView from "@/view/examSubmitView.vue"
 import ExamPurchaseView from "@/view/examPurchaseView.vue"
+import AdminUserView from "@/view/adminUserView"
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
@@ -23,6 +24,10 @@ const routes = [
     path: "/examview/:examId",
     name: "ExamView",
     component: ExamView,
+  },{
+    path: "/adminuserview",
+    name: "AdminUserView",
+    component: AdminUserView,
   },
   {
     path: "/examsubmitview/:examId",

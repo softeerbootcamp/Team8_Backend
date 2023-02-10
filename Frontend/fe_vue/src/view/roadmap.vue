@@ -10,9 +10,9 @@
         , setCurrentSubjectId(course)]">
           {{ course[0] }}
         </button>
-          <button :class="getButtonClass(course[2])" type="button" @click="switchRouterByState(course[2], course[3])">
-            <span class="bi bi-file-text"></span>
-          </button>
+        <button :class="getButtonClass(course[2])" type="button" @click="switchRouterByState(course[2], course[3])">
+          <span class="bi bi-file-text"></span>
+        </button>
 
       </span>
     </div>
@@ -67,7 +67,7 @@ export default {
       //   case 'NONE':
       //     return 'btn btn-light btn-sm';
       //   case 'PURCHASED':
-          
+
       //   case 'SUBMITTED':
       //     return 'btn btn-warning btn-sm';
       //   case 'PASSED':
@@ -78,10 +78,10 @@ export default {
       //     return 'btn btn-light btn-sm';
       // }
       if (state === 'PURCHASED') {
-      //   this.$router.push({name:"ExamView", params:{examId:examId}});
-      // }
-      // if (state === 'NONE') {
-        this.$router.push({name:"ExamPurchaseView", params:{examId:examId}});
+        //   this.$router.push({name:"ExamView", params:{examId:examId}});
+        // }
+        // if (state === 'NONE') {
+        this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
       }
     }
   }

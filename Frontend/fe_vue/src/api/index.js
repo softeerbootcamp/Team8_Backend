@@ -8,7 +8,9 @@ const axiosService = axios.create({
   "jwt" : store.state.jwt
 }
 });
-
+function adminUser(config){
+  return axiosService.get('api/admin/users',config);
+}
 function signinUser(userData) {
   return axiosService.post('api/user/signin', userData);
 }
@@ -43,7 +45,7 @@ function postAssignMentData(config, param){
   return axiosService.post('api/exam/assignment/',param,config);
 
 }
-export { signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourseData
+export { adminUser,signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourseData
 ,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData,getExamDetailData,
 postAssignMentData
  };

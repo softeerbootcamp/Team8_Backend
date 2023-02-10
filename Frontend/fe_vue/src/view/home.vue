@@ -1,6 +1,8 @@
 <template>
-  <h1 class="homeTilte">
-    본인만의 커리어를 만들어보세요!
+  <h1 class="homeTitle center">
+    본인만의 커리어를 만들어보세요!<br>
+
+
   </h1>
   <div class="d-flex justify-content-center">
     <div class="highway d-flex align-items-center">
@@ -27,7 +29,9 @@
       </div>
     </div>
   </div>
-
+  <h3>
+    <button type="button" class="btn btn-dark d-grid gap-2 col-1 mx-auto">출발!</button>
+  </h3>
 </template>
 <script>
 export default {
@@ -66,10 +70,11 @@ export default {
 </script>
 <style>
 .homeTitle {
-  width: 50%;
-  left: 50%;
+  padding-top: 150px;
+  text-align: center;
 
 }
+
 
 .highway {
   width: 100%;
