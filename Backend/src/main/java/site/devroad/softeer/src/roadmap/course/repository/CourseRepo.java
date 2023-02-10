@@ -1,11 +1,11 @@
-package site.devroad.softeer.src.course.repository;
+package site.devroad.softeer.src.roadmap.course.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.course.model.Course;
+import site.devroad.softeer.src.roadmap.course.model.Course;
 
 import javax.sql.DataSource;
 import java.util.Collections;

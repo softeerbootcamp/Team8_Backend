@@ -1,4 +1,4 @@
-package site.devroad.softeer.src.course.model;
+package site.devroad.softeer.src.roadmap.course.model;
 
 public class Subject {
     private Long id;
