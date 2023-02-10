@@ -7,4 +7,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import store from "./store";
 import LoadScript from "vue-plugin-load-script";
 
+
+
 createApp(App).use(router).use(store).use(LoadScript).mount("#app");
