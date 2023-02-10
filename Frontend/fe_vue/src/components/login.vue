@@ -1,18 +1,18 @@
 <template>
   <div class="container center">
     <div class="row">
-      <div class="offset-3 col-6">
+      <div class="offset-3 col-6 mt-4">
         <form @submit.prevent="loginForm" class="col-12">
-          <div class="col-12">
+          <div class="col-12 mb-4">
             <label for="InputEmail" class="form-label">Email address</label>
             <input type="email" class="form-control" id="InputEmail" v-model="formData.email"
               aria-describedby="emailHelp" />
           </div>
-          <div class="col-12">
+          <div class="col-12 mb-4">
             <label for="InputPassword1" class="form-label">Password</label>
             <input type="password" class="form-control" v-model="formData.password" id="InputPassword1" />
           </div>
-          <div class="offset-3 col-6 mt-3">
+          <div class="offset-3 col-6">
             <button type="submit" class="btn btn-dark d-grid gap-2 mx-auto" variant="primary">Submit</button>
           </div>
         </form>
