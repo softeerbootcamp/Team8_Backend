@@ -1,16 +1,17 @@
 <template>
-  <div class="d-grid gap-2 col-6 mx-auto">
+  <div class="d-grid gap-2 col-6 mx-auto mt-4">
     <div v-for="subject in getsubjects" :key="subject">
       <!-- subject안에는 여러 course들이 존재한다 -->
       <span v-for="course in subject" :key="course">
-        <button class="btn btn-primary ms-3" @click="[
+        <button class="btn btn-primary ms-3 mt-4" @click="[
         $router.push({
           name: 'CourseView',
         })
         , setCurrentSubjectId(course)]">
           {{ course[0] }}
         </button>
-        <button :class="getButtonClass(course[2])" type="button" @click="switchRouterByState(course[2], course[3])">
+        <button class="btn mt-4" :class="getButtonClass(course[2])" type="button"
+          @click="switchRouterByState(course[2], course[3])">
           <span class="bi bi-file-text"></span>
         </button>
 
