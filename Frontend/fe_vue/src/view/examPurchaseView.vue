@@ -10,9 +10,9 @@ export default {
   name: "ExamPurchaseView",
   data() {
     return {
-      clientKey: 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq',
+      clientKey: 'test_ck_N5OWRapdA8d6BZvDzDPVo1zEqZKL',
       tossPayments: null,
-      backendURL: "127.0.0.1:5000",
+      backendURL: "https://backend.devroad.site",
     };
   },
   methods: {
@@ -25,8 +25,8 @@ export default {
         orderId: accountId + "_" + examId + "_" + randomStr,
         orderName: examId,
         customerName: accountId,
-        successUrl: 'http://' + this.backendURL + '/api/exam/purchase/success',
-        failUrl: 'http://' + this.backendURL + '/api/exam/purchase/fail',
+        successUrl: this.backendURL + '/api/purchase/exam/success',
+        failUrl: this.backendURL + '/api/purchase/exam/fail',
       };
       return payMentBody;
     },
@@ -37,7 +37,7 @@ export default {
       const tossPayment = await loadTossPayments(this.clientKey);
       // TODO : 13, 27, 16000이 아니라 각각에 대한 정보를 가져올것.
       // 필요하면 백엔드에서 jwt, examId로 다 가져올수 있도록 제공가능함.
-      tossPayment.requestPayment('카드', this.sendOrderToToss(13, 27, 16000));
+      tossPayment.requestPayment('카드', this.sendOrderToToss(13, 1, 16000));
     }
   }
 }

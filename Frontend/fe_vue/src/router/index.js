@@ -10,6 +10,8 @@ import AdminHome from "@/view/adminHome.vue"
 import ExamView from "@/view/examView.vue"
 import ExamSubmitView from "@/view/examSubmitView.vue"
 import ExamPurchaseView from "@/view/examPurchaseView.vue"
+import AdminUserView from "@/view/adminUserView"
+import Store from "@/store"
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
@@ -23,6 +25,10 @@ const routes = [
     path: "/examview/:examId",
     name: "ExamView",
     component: ExamView,
+  },{
+    path: "/adminuserview",
+    name: "AdminUserView",
+    component: AdminUserView,
   },
   {
     path: "/examsubmitview/:examId",
@@ -80,6 +86,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = Store.state.isLogin;
+
+  if (to.path === "/login" && isLoggedIn) {
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;
