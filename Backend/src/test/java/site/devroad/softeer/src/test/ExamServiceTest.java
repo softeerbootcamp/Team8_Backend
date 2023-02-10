@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.course.model.Subject;
 import site.devroad.softeer.src.course.repository.SubjectRepo;
@@ -17,6 +18,7 @@ import site.devroad.softeer.src.user.model.LoginInfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@Transactional
 class ExamServiceTest {
 
     @Autowired
