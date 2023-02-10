@@ -56,7 +56,7 @@ class ExamServiceTest {
     void examSubmissionTest(){
         try {
             //given
-            Account account = userRepo.createAccountInfo("hi", "01000000092", "Student");
+            Account account = userRepo.createAccountInfo("hi", "010000000092", "Student");
             examService.purchaseExam(account.getId(), 1L);
 
             //when
