@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.course.model.Subject;
 import site.devroad.softeer.src.course.repository.SubjectRepo;
@@ -17,6 +18,7 @@ import site.devroad.softeer.src.user.model.LoginInfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@Transactional
 class ExamServiceTest {
 
     @Autowired
@@ -56,7 +58,7 @@ class ExamServiceTest {
     void examSubmissionTest(){
         try {
             //given
-            Account account = userRepo.createAccountInfo("hi", "010000000092", "Student");
+            Account account = userRepo.createAccountInfo("hi", "0100000092", "Student");
             examService.purchaseExam(account.getId(), 1L);
 
             //when
