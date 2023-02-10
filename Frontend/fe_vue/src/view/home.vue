@@ -30,7 +30,7 @@
     </div>
   </div>
   <h3>
-    <button type="button" class="btn btn-dark d-grid gap-2 col-1 mx-auto">출발!</button>
+    <button type="button" class="btn btn-dark d-grid gap-2 col-1 mt-4 mx-auto" @click="startBtnClickEvent">출발!</button>
   </h3>
 </template>
 <script>
@@ -49,20 +49,31 @@ export default {
   },
   methods: {
     moveCar() {
-      this.carPosition += 5;
-      this.$refs.car.style.left = `${this.carPosition}px`;
-      if (this.carPosition >= window.innerWidth) {
-        this.carPosition = -50;
+      if (this.$refs.car) {
+        this.carPosition += 5;
+        this.$refs.car.style.left = `${this.carPosition}px`;
+        if (this.carPosition >= window.innerWidth) {
+          this.carPosition = -50;
+        }
+        requestAnimationFrame(this.moveCar);
       }
-      requestAnimationFrame(this.moveCar);
     },
     moveCar2() {
-      this.car2Position -= 7;
-      this.$refs.car2.style.left = `${this.car2Position}px`;
-      if (this.car2Position <= -50) {
-        this.car2Position = window.innerWidth;
+      if (this.$refs.car2) {
+        this.car2Position -= 7;
+        this.$refs.car2.style.left = `${this.car2Position}px`;
+        if (this.car2Position <= -50) {
+          this.car2Position = window.innerWidth;
+        }
+        requestAnimationFrame(this.moveCar2);
       }
-      requestAnimationFrame(this.moveCar2);
+    },
+    startBtnClickEvent() {
+      if (!this.$store.state.isLogin) {
+        this.$router.push('/login');
+      } else {
+        this.$router.push('/');
+      }
     }
   },
   computed: {}
