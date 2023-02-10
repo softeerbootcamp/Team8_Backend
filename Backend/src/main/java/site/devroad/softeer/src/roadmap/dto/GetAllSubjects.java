@@ -1,6 +1,6 @@
 package site.devroad.softeer.src.roadmap.dto;
 
-import site.devroad.softeer.src.roadmap.course.model.Subject;
+import site.devroad.softeer.src.roadmap.subject.Subject;
 
 import java.util.List;
 

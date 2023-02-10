@@ -1,4 +1,4 @@
-package site.devroad.softeer.src.roadmap.course.model;
+package site.devroad.softeer.src.roadmap.chapter;
 
 public class Chapter {
     private final Long id;
