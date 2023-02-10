@@ -26,7 +26,7 @@ jobs:
       if: github.ref == 'refs/heads/main'
 
 
-  test:
+  backend-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,10 +41,29 @@ jobs:
         
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
-    
+  
     - name: Execute Gradle build
       run: |
         cd Backend
         echo "${{ secrets.APP_YML }}" > src/main/resources/application.yml
         ./gradlew test
       if: github.ref == 'refs/heads/dev'
+  
+  frontend-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name : Setup npm
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        
+    - name : Run npm build Test
+      run: |
+        cd Frontend/fe_vue
+        npm install
+        npm run build
+      if: github.ref == 'refs/heads/dev'
+
