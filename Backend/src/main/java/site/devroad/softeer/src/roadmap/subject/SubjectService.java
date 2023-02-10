@@ -1,12 +1,10 @@
-package site.devroad.softeer.src.course.service;
+package site.devroad.softeer.src.roadmap.subject;
 
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
-import site.devroad.softeer.src.course.model.Course;
-import site.devroad.softeer.src.course.model.Subject;
-import site.devroad.softeer.src.course.repository.CourseRepo;
-import site.devroad.softeer.src.course.repository.SubjectRepo;
+import site.devroad.softeer.src.roadmap.course.Course;
+import site.devroad.softeer.src.roadmap.course.CourseRepo;
 import site.devroad.softeer.src.roadmap.RoadmapRepo;
 import site.devroad.softeer.src.roadmap.dto.subdto.CourseDetail;
 import site.devroad.softeer.src.roadmap.model.Roadmap;

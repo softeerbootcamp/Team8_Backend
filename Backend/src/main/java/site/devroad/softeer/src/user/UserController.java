@@ -48,11 +48,11 @@ public class UserController {
         GetDetailRes getDetailRes = new GetDetailRes();
         getDetailRes.setUserId(1L);
         getDetailRes.setUserName("hello");
-        getDetailRes.setCurChapterIdx(4L);
-        getDetailRes.setTotalChapterIdx(0L);
         getDetailRes.setRoadmapId(1L);
         getDetailRes.setCurSubjectIdx(2L);
         getDetailRes.setTotalSubjectIdx(4L);
+        getDetailRes.setChapterPercent(0.25F);
+        getDetailRes.setNextChapterPK(1L);
         return new ResponseEntity<>(getDetailRes, HttpStatus.OK);
     }
 
