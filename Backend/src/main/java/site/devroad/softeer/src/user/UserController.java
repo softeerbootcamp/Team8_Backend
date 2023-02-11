@@ -32,10 +32,11 @@ public class UserController {
 
 
     @PostMapping("/api/user/signin")
-    public ResponseEntity<?> postSignUp(@RequestBody PostSignInReq postSignInReq) {
+    public ResponseEntity<?> postSignIn(@RequestBody PostSignInReq postSignInReq) {
         try {
-            String jwt = jwtUtility.makeJwtToken(userService.signIn(postSignInReq));
-            if (postSignInReq.getEmail().equals("admin@naver.com"))
+            Long accountId = userService.signIn(postSignInReq);
+            String jwt = jwtUtility.makeJwtToken(accountId);
+            if (userService.validateAdmin(accountId))
                 return new ResponseEntity<>(new PostSignInRes(jwt, true), HttpStatus.OK);
             return new ResponseEntity<>(new PostSignInRes(jwt, false), HttpStatus.OK);
         } catch (CustomException e) {
