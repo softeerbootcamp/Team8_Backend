@@ -1,4 +1,4 @@
-package site.devroad.softeer.src.roadmap.dto.subdto;
+package site.devroad.softeer.src.roadmap.dto.domain;
 
 public class ChapterDetail {
     private Long chapterId;

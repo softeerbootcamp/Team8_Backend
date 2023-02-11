@@ -6,7 +6,7 @@ import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.course.Course;
 import site.devroad.softeer.src.roadmap.course.CourseRepo;
 import site.devroad.softeer.src.roadmap.RoadmapRepo;
-import site.devroad.softeer.src.roadmap.dto.subdto.CourseDetail;
+import site.devroad.softeer.src.roadmap.dto.domain.CourseDetail;
 import site.devroad.softeer.src.roadmap.model.Roadmap;
 
 import java.util.ArrayList;

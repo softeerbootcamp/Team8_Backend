@@ -8,14 +8,14 @@ public class GetUserDetailRes {
     private Long totalSubjectIdx;
     private Long curSubjectIdx;
     private Float chapterPercent;
-    private Long nextChapterPK;
+    private Long curChapterPK;
+
+    public GetUserDetailRes() {
+        this.success = true;
+    }
 
     public boolean isSuccess() {
         return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 
     public Long getUserId() {
@@ -66,11 +66,11 @@ public class GetUserDetailRes {
         this.chapterPercent = chapterPercent;
     }
 
-    public Long getNextChapterPK() {
-        return nextChapterPK;
+    public Long getCurChapterPK() {
+        return curChapterPK;
     }
 
-    public void setNextChapterPK(Long nextChapterPK) {
-        this.nextChapterPK = nextChapterPK;
+    public void setCurChapterPK(Long curChapterPK) {
+        this.curChapterPK = curChapterPK;
     }
 }

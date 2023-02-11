@@ -1,4 +1,4 @@
-package site.devroad.softeer.src.exam.dto.subdto;
+package site.devroad.softeer.src.exam.dto.domain;
 
 public class ExamDetail {
     String subjectName;

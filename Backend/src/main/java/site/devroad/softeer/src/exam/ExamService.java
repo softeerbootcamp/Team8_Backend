@@ -9,7 +9,7 @@ import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
-import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
+import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.model.Exam;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
 import site.devroad.softeer.src.exam.model.SubmissionType;

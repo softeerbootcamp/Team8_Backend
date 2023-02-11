@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.exam.dto.GetExamDetailRes;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
-import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
-import site.devroad.softeer.src.exam.model.Exam;
+import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.roadmap.RoadmapService;
 import site.devroad.softeer.src.user.UserService;
 import site.devroad.softeer.utility.JwtUtility;
 import site.devroad.softeer.utility.TossUtility;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController

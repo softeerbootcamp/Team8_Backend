@@ -4,8 +4,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.roadmap.chapter.Chapter;
-import site.devroad.softeer.src.roadmap.dto.subdto.ChapterDetail;
+import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,7 +46,7 @@ public class ChapterRepo {
         }
     }
 
-    public List<Chapter> findChapterByCourseId(Long courseId) {
+    public List<Chapter> findChaptersByCourseId(Long courseId) {
         try {
             return jdbcTemplate.query("SELECT * FROM Chapter WHERE course_id = ? ORDER BY sequence"
                     , chapterRowMapper(), courseId);

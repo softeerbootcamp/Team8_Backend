@@ -4,13 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.devroad.softeer.exceptions.CustomException;
-import site.devroad.softeer.src.roadmap.RoadmapService;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.course.CourseService;
 import site.devroad.softeer.src.roadmap.subject.SubjectService;
 import site.devroad.softeer.src.roadmap.dto.*;
-import site.devroad.softeer.src.roadmap.dto.subdto.ChapterDetail;
-import site.devroad.softeer.src.roadmap.dto.subdto.CourseDetail;
+import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
+import site.devroad.softeer.src.roadmap.dto.domain.CourseDetail;
 
 import java.util.List;
 import java.util.Map;

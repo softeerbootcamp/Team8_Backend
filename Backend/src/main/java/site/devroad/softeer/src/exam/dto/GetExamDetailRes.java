@@ -1,6 +1,6 @@
 package site.devroad.softeer.src.exam.dto;
 
-import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
+import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 
 public class GetExamDetailRes {
     Boolean success;

@@ -45,12 +45,10 @@ public class UserController {
     }
 
     @GetMapping("/api/user")
-    public ResponseEntity<?> getUserDetail(@RequestHeader(value = "jwt") String jwt) {
+    public ResponseEntity<?> getUserDetail(@RequestAttribute(value = "accountId") Long accountId) {
         try {
-            jwtUtility.validateToken(jwt);
-            Long accountId = jwtUtility.getAccountId(jwt);
-            GetDetailRes getDetailRes = new GetDetailRes();
-            return new ResponseEntity<>(getDetailRes, HttpStatus.OK);
+            GetUserDetailRes getUserDetailRes = userService.getUserDetail(accountId);
+            return new ResponseEntity<>(getUserDetailRes, HttpStatus.OK);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
