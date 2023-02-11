@@ -5,8 +5,7 @@ import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.chapter.Chapter;
 import site.devroad.softeer.src.roadmap.chapter.ChapterRepo;
-import site.devroad.softeer.src.roadmap.course.CourseRepo;
-import site.devroad.softeer.src.roadmap.dto.subdto.ChapterDetail;
+import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,14 +36,6 @@ public class CourseService {
         return chapterRepo.findNextChapter(courseId, sequence + 1);
     }
 
-    public Chapter getChapter(Long chapterId) throws CustomException {
-        Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
-        if (chapterById.isEmpty()) {
-            throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
-        }
-        return chapterById.get();
-    }
-
     public ChapterDetail getChapterDetail(Long chapterId) throws CustomException {
         Optional<ChapterDetail> chapterById = chapterRepo.findChapterDetailById(chapterId);
         if (chapterById.isEmpty()) {
@@ -64,5 +55,10 @@ public class CourseService {
             return nextChapter.get().getId();
         }
         return FINISHED;
+    }
+
+    public int getChapterCountByCourseId(Long courseId) {
+        List<Chapter> chapters = chapterRepo.findChaptersByCourseId(courseId);
+        return chapters.size();
     }
 }
