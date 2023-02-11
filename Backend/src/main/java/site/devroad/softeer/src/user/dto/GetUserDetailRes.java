@@ -1,6 +1,6 @@
 package site.devroad.softeer.src.user.dto;
 
-public class GetDetailRes {
+public class GetUserDetailRes {
     private boolean success;
     private Long userId;
     private String userName;
