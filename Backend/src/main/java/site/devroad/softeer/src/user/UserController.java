@@ -45,19 +45,6 @@ public class UserController {
     }
 
     @GetMapping("/api/user")
-    public ResponseEntity<?> getMockUserDetail(@RequestAttribute(value = "jwt") Long accountId) {
-        GetDetailRes getDetailRes = new GetDetailRes();
-        getDetailRes.setUserId(1L);
-        getDetailRes.setUserName("hello");
-        getDetailRes.setRoadmapId(1L);
-        getDetailRes.setCurSubjectIdx(2L);
-        getDetailRes.setTotalSubjectIdx(4L);
-        getDetailRes.setChapterPercent(0.25F);
-        getDetailRes.setNextChapterPK(1L);
-        return new ResponseEntity<>(getDetailRes, HttpStatus.OK);
-    }
-
-    @GetMapping("/api/user/real")
     public ResponseEntity<?> getUserDetail(@RequestHeader(value = "jwt") String jwt) {
         try {
             jwtUtility.validateToken(jwt);
