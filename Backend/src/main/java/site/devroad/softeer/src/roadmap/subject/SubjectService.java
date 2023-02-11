@@ -3,9 +3,9 @@ package site.devroad.softeer.src.roadmap.subject;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.roadmap.RoadmapRepo;
 import site.devroad.softeer.src.roadmap.course.Course;
 import site.devroad.softeer.src.roadmap.course.CourseRepo;
-import site.devroad.softeer.src.roadmap.RoadmapRepo;
 import site.devroad.softeer.src.roadmap.dto.domain.CourseDetail;
 import site.devroad.softeer.src.roadmap.model.Roadmap;
 
@@ -30,12 +30,9 @@ public class SubjectService {
         if (roadmapById.isEmpty()) {
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
         }
-        Long chapterId = roadmapById.get().getChapterId();
         List<Course> courses = courseRepo.findBySubjectId(subjectId);
         ArrayList<CourseDetail> courseDetails = new ArrayList<>();
         for (Course course : courses) {
-            Long courseId = course.getId();
-
             courseDetails.add(createCourseDetail(course));
         }
         return courseDetails;

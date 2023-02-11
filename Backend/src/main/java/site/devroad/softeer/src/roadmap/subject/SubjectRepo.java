@@ -43,4 +43,12 @@ public class SubjectRepo {
             return Collections.emptyList();
         }
     }
+
+    public List<Subject> findSubjectsByRoadmapId(Long roadmapId) {
+        return jdbcTemplate.query("SELECT s.* FROM subject s " +
+                        "JOIN roadmap_subject rs " +
+                        "ON s.id = rs.subject_id " +
+                        "WHERE rs.roadmap_id = ?",
+                subjectRowMapper(), roadmapId);
+    }
 }
