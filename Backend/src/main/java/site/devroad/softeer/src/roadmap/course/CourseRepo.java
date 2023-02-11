@@ -5,7 +5,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.roadmap.course.Course;
 
 import javax.sql.DataSource;
 import java.util.Collections;
@@ -31,11 +30,22 @@ public class CourseRepo {
         }
     }
 
-    public List<Course> findBySubjectId(Long subjectId) {
+    public List<Course> findCoursesBySubjectId(Long subjectId) {
         try {
             return jdbcTemplate.query("SELECT * FROM Course WHERE subject_id = ?", courseRowMapper(), subjectId);
         } catch (DataAccessException e) {
             return Collections.emptyList();
+        }
+    }
+
+    public Optional<Course> findCourseByChapterId(Long chapterId) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(
+                    "SELECT co.* FROM Chapter ch JOIN Course co ON ch.course_id = co.id WHERE ch.id = ?",
+                    courseRowMapper(),
+                    chapterId));
+        } catch (DataAccessException e) {
+            return Optional.empty();
         }
     }
 
