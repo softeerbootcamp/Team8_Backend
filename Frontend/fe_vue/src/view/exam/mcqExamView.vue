@@ -79,6 +79,8 @@ export default {
                 .then((response) => {
                     if (response.data.success) {
                         console.log("테스트 제출 성공")
+                        // 현재는 테스트 결과에 상관 없이 roadmap 으로 반환한다. 라우터 링크.
+                        // this.$router.push('/roadmap');
                     } else {
                         console.log("테스트 실패")
                     }
