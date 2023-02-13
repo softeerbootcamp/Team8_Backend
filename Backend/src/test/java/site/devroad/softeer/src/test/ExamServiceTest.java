@@ -40,7 +40,7 @@ class ExamServiceTest {
     @DisplayName("사용자가 실제로 해당 테스트를 패스 했는지 성공여부를 확인.")
     void checkIfExamPassed() {
         //given
-        LoginInfo loginInfo = userRepo.findByEmail("jm1234@naver.com").get();
+        LoginInfo loginInfo = userRepo.findLoginInfoByEmail("jm1234@naver.com").get();
         Account account = userRepo.findAccountById(loginInfo.getAccountId());
 
         Subject subject = subjectRepo.findById(1L).get();

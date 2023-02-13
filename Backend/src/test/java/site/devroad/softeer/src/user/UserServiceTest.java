@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
-import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.user.dto.PostSignInReq;
 import site.devroad.softeer.src.user.dto.PostSignUpReq;
 import site.devroad.softeer.src.user.model.Account;
@@ -45,7 +44,7 @@ class UserServiceTest {
         } catch (CustomException e) {
             e.printStackTrace();
         }
-        Optional<LoginInfo> optionalLoginInfo = userRepo.findByEmail(email);
+        Optional<LoginInfo> optionalLoginInfo = userRepo.findLoginInfoByEmail(email);
         Optional<Account> optionalAccount = userRepo.findByPhone(phone);
         assertThat(optionalLoginInfo).isPresent();
         assertThat(optionalAccount).isPresent();

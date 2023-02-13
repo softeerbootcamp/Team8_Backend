@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.user.dto.domain.UserDetail;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
 
@@ -19,8 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-@Transactional(readOnly = false)
+@Repository @Transactional(readOnly = false)
 public class UserRepo {
     private JdbcTemplate jdbcTemplate;
 
@@ -46,14 +46,22 @@ public class UserRepo {
         return jdbcTemplate.queryForObject("SELECT * FROM Account WHERE id = ?", accountRowMapper(), id);
     }
 
-    public Optional<LoginInfo> findByEmail(String email) {
+
+    public Optional<LoginInfo> findLoginInfoByEmail(String email) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM LoginInfo WHERE email = ?", loginInfoRowMapper(), email));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
-
+    public List<UserDetail> findAllUser(){
+        try{
+            return jdbcTemplate.query("SELECT * FROM LoginInfo l JOIN Account a " +
+                    "ON l.account_id = a.id AND a.type = 'Student'",allUserRowMapper());
+        }catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
+        }
+    }
     public List<LoginInfo> findNoRoadmapUser() {
         try {
             return jdbcTemplate.query("SELECT l.* FROM LoginInfo l JOIN Account a " +
@@ -76,24 +84,26 @@ public class UserRepo {
                 "select end_at from Subscribe where account_id = ?", Timestamp.class, accountId
         );
         return ends.after(new Date());
+
     }
+
 
 
     public void setRoadmap(Long id, Long roadmapId) {
         jdbcTemplate.update("UPDATE Account SET roadmap_id = ? WHERE id=?", roadmapId, id);
     }
 
-    public void doSubscribe(Long accountId) {
-        jdbcTemplate.update("INSERT Subscribe(account_id) VALUES (?)", accountId);
-        extendSubscribeEndDate(accountId, 31);
+    public void doSubscribe(Long accountId){
+            jdbcTemplate.update("INSERT Subscribe(account_id) VALUES (?)", accountId);
+            extendSubscribeEndDate(accountId, 31);
     }
 
     public void extendSubscribeEndDate(Long accountId, Integer date) {
-        try {
+        try{
             jdbcTemplate.update("UPDATE Subscribe \n" +
                     "SET end_at = ADDDATE(IF(NOW() > end_at, NOW(), end_at), INTERVAL ? DAY)\n" +
                     "where account_id = ?", date, accountId);
-        } catch (DataAccessException e) {
+        }catch(DataAccessException e){
             e.printStackTrace();
             throw new CustomException(ExceptionType.DATABASE_ERROR);
         }
@@ -107,6 +117,16 @@ public class UserRepo {
             String password = (rs.getString("password"));
             Long accountId = (rs.getLong("account_id"));
             return new LoginInfo(id, email, password, accountId);
+        });
+    }
+
+    private RowMapper<UserDetail> allUserRowMapper(){
+        return ((rs,rowNum)->{
+            Long id = (rs.getLong("id"));
+            String email = (rs.getString("email"));
+            Long roadmapId = (rs.getLong("roadmap_id"));
+            String userName = (rs.getString("name"));
+            return new UserDetail(id, email, roadmapId, userName);
         });
     }
 
