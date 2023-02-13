@@ -7,11 +7,12 @@ import UserHome from "@/view/user/userhome.vue";
 import ChapterView from "@/view/user/chapterView.vue";
 import RoadMapFactory from "@/view/admin/roadmapFactory.vue"
 import AdminHome from "@/view/admin/adminHome.vue"
-import ExamView from "@/view/exam/examView.vue"
-import ExamSubmitView from "@/view/exam/examSubmitView.vue"
+import FrqExamView from "@/view/exam/frqExamView.vue"
+import FrqExamSubmitView from "@/view/exam/frqExamSubmitView.vue"
 import ExamPurchaseView from "@/view/exam/examPurchaseView.vue"
 import AdminUserView from "@/view/admin/adminUserView"
 import UserPendingView from "@/view/user/userPendingView"
+import McqExamView from "@/view/exam/mcqExamView"
 import Store from "@/store"
 // path: '/',
 //     redirect: "/login",
@@ -23,18 +24,25 @@ const routes = [
     component: () => import("../view/home.vue"),
   },
   {
-    path: "/examview/:examId",
-    name: "ExamView",
-    component: ExamView,
-  },{
+    path: "/mcqexamview/:examId",
+    name: "McqExamView",
+    component: McqExamView,
+  }, 
+  {
+    path: "/frqexamview/:examId",
+    name: "FrqExamView",
+    component: FrqExamView,
+  },
+  {
     path: "/adminuserview",
     name: "AdminUserView",
     component: AdminUserView,
   },
+ 
   {
-    path: "/examsubmitview/:examId",
-    name: "ExamSubmitView",
-    component: ExamSubmitView,
+    path: "/frqexamsubmitview/:examId",
+    name: "FrqExamSubmitView",
+    component: FrqExamSubmitView,
   },
   {
     path: "/adminhome",

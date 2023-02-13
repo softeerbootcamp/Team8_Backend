@@ -10,6 +10,7 @@ export default new Vuex.Store({
     isAdmin: false,
     accountId:"",
     isRoadmap:"-1",
+    passingScore : 80,
   },
   mutations: {
 

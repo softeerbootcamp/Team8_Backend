@@ -43,9 +43,12 @@ function getExamDetailData(config,param){
 }
 function postAssignMentData(config, param){
   return axiosService.post('api/exam/assignment/',param,config);
+}
+function sendExamResult(config,param){
+    return axiosService.put('api/exam/result/',param,config);
 
 }
 export { adminUser,signinUser,signupUser,userData,getRoadmap,getSubjectDetail,getCourseData
 ,getAllSubjectData,postRoadmapToUserByEmail,getNoRoadmapUserData,getExamDetailData,
-postAssignMentData
+postAssignMentData,sendExamResult
  };
