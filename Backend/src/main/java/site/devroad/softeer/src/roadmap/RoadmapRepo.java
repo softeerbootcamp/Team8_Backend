@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import site.devroad.softeer.exceptions.CustomException;
-import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.model.Roadmap;
 import site.devroad.softeer.src.roadmap.model.SubjectToRoadmap;
 
@@ -35,6 +34,7 @@ public class RoadmapRepo {
     public void updateCurChapterId(Long roadmapId, Long curChapterId) {
         jdbcTemplate.update("UPDATE Roadmap SET chapter_id = ? WHERE id = ?", curChapterId, roadmapId);
     }
+
     public Optional<Roadmap> findRoadmapByAccountId(Long accountId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT r.* FROM Account a JOIN Roadmap r " +
@@ -53,22 +53,21 @@ public class RoadmapRepo {
         }
     }
 
-    public void addSubjectToRoadMap(Long roadmapId, Long subjectId, Integer seq) throws CustomException{
+    public void addSubjectToRoadMap(Long roadmapId, Long subjectId, Integer seq) throws CustomException {
         //roadmap id 하나 받아서 seq해서 넣기.
         jdbcTemplate.update("insert into SubjectToRoadmap(roadmap_id, subject_id, sequence) values(?, ?, ?)", roadmapId, subjectId, seq);
 
     }
 
-    public void deleteRoadmap(Long roadmapId){
-        try{
+    public void deleteRoadmap(Long roadmapId) {
+        try {
             jdbcTemplate.update("update Account set roadmap_id = null where roadmap_id = ?", roadmapId);
             jdbcTemplate.update("delete from SubjectToRoadmap where roadmap_id = ?", roadmapId);
             jdbcTemplate.update("delete from Roadmap where id = ?", roadmapId);
-        }catch(DataAccessException e){
+        } catch (DataAccessException e) {
             e.printStackTrace();
         }
     }
-
 
     public Long createRoadmap(String roadmapName) throws CustomException {
         jdbcTemplate.update("insert into Roadmap(name) values(?)", roadmapName);

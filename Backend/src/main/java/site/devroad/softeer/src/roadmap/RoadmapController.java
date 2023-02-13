@@ -3,14 +3,12 @@ package site.devroad.softeer.src.roadmap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.devroad.softeer.exceptions.CustomException;
-import site.devroad.softeer.src.roadmap.RoadmapService;
-import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.course.CourseService;
-import site.devroad.softeer.src.roadmap.subject.SubjectService;
 import site.devroad.softeer.src.roadmap.dto.*;
-import site.devroad.softeer.src.roadmap.dto.subdto.ChapterDetail;
-import site.devroad.softeer.src.roadmap.dto.subdto.CourseDetail;
+import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
+import site.devroad.softeer.src.roadmap.dto.domain.CourseDetail;
+import site.devroad.softeer.src.roadmap.subject.Subject;
+import site.devroad.softeer.src.roadmap.subject.SubjectService;
 
 import java.util.List;
 import java.util.Map;
@@ -54,16 +52,16 @@ public class RoadmapController {
     }
 
     @PutMapping("/api/chapter/{chapterId}")
-    public ResponseEntity<?> finishChapter(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("chapterId") String chapterId) throws CustomException {
+    public ResponseEntity<?> finishChapter(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("chapterId") String chapterId) {
         Long chapterIdL = Long.valueOf(chapterId);
-        roadmapService.setCurChapterId(accountId, chapterIdL);
-        Long nextChapterId = courseService.getNextChapterId(chapterIdL);
-        Boolean courseFinished = courseService.getCourseFinished(chapterIdL);
+        Long nextChapterId = courseService.getNextChapterId(accountId, chapterIdL);
+        roadmapService.setCurChapterId(accountId, nextChapterId);
+        Boolean courseFinished = nextChapterId.equals(-1L);
         return new ResponseEntity<>(new PutChapterFinishRes(courseFinished, nextChapterId), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/api/roadmap")
-    public ResponseEntity<?> createRoadmap(@RequestBody PostRoadmapReq roadmapReq){
+    public ResponseEntity<?> createRoadmap(@RequestBody PostRoadmapReq roadmapReq) {
         roadmapService.createRoadmap(roadmapReq);
         return new ResponseEntity<>(new PostRoadmapRes(true), HttpStatus.CREATED);
     }
