@@ -40,6 +40,9 @@ export default {
             subjects: []
         };
     },
+    mounted() {
+        this.selectedSubjects = []
+    },
     methods: {
         addRoadmapSubjectCnt() {
             this.roadmapSubjectCnt = this.roadmapSubjectCnt + 1;
