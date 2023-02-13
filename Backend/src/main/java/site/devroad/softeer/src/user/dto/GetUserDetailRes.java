@@ -1,6 +1,6 @@
 package site.devroad.softeer.src.user.dto;
 
-public class GetDetailRes {
+public class GetUserDetailRes {
     private boolean success;
     private Long userId;
     private String userName;
@@ -8,14 +8,43 @@ public class GetDetailRes {
     private Long totalSubjectIdx;
     private Long curSubjectIdx;
     private Float chapterPercent;
-    private Long nextChapterPK;
+    private Long curChapterPK;
+    private Boolean subscribe;
+
+    private GetUserDetailRes(Long userId, String userName, Boolean subscribe) {
+        this.subscribe = subscribe;
+        this.success = true;
+        this.userId = userId;
+        this.userName = userName;
+        this.roadmapId = -1L;
+        this.totalSubjectIdx = 0L;
+        this.curSubjectIdx = 0L;
+        this.chapterPercent = 0F;
+        this.curChapterPK = -1L;
+    }
+
+    private GetUserDetailRes() {
+        this.success = true;
+    }
+
+    public static GetUserDetailRes createNoRoadmapUserDetail(Long userId, String userName, Boolean subscribe) {
+        return new GetUserDetailRes(userId, userName, subscribe);
+    }
+
+    public static GetUserDetailRes createUserDetail() {
+        return new GetUserDetailRes();
+    }
+
+    public Boolean getSubscribe() {
+        return subscribe;
+    }
+
+    public void setSubscribe(Boolean subscribe) {
+        this.subscribe = subscribe;
+    }
 
     public boolean isSuccess() {
         return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 
     public Long getUserId() {
@@ -66,11 +95,11 @@ public class GetDetailRes {
         this.chapterPercent = chapterPercent;
     }
 
-    public Long getNextChapterPK() {
-        return nextChapterPK;
+    public Long getCurChapterPK() {
+        return curChapterPK;
     }
 
-    public void setNextChapterPK(Long nextChapterPK) {
-        this.nextChapterPK = nextChapterPK;
+    public void setCurChapterPK(Long curChapterPK) {
+        this.curChapterPK = curChapterPK;
     }
 }

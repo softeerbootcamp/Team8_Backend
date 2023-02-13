@@ -1,11 +1,11 @@
 package site.devroad.softeer.src.roadmap.chapter;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.roadmap.chapter.Chapter;
-import site.devroad.softeer.src.roadmap.dto.subdto.ChapterDetail;
+import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ChapterRepo {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Chapter WHERE id = ?"
                     , chapterRowMapper(), id));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -42,16 +42,16 @@ public class ChapterRepo {
                             "ON c.id = cc.chapter_id\n" +
                             "WHERE c.id = ?"
                     , chapterDetailRowMapper(), chapterId));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    public List<Chapter> findChapterByCourseId(Long courseId) {
+    public List<Chapter> findChaptersByCourseId(Long courseId) {
         try {
             return jdbcTemplate.query("SELECT * FROM Chapter WHERE course_id = ? ORDER BY sequence"
                     , chapterRowMapper(), courseId);
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
     }
@@ -70,7 +70,7 @@ public class ChapterRepo {
                             "ON c.id = cc.chapter_id\n" +
                             "WHERE c.course_id = ?"
                     , chapterDetailRowMapper(), courseId);
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
     }
@@ -79,7 +79,7 @@ public class ChapterRepo {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Chapter WHERE course_id = ? and sequence = ?"
                     , chapterRowMapper(), courseId, sequence));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }

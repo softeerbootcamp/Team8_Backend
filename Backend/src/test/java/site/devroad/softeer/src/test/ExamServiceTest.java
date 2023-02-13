@@ -2,6 +2,8 @@ package site.devroad.softeer.src.test;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Transactional
 class ExamServiceTest {
+    private static Logger logger = LoggerFactory.getLogger(ExamService.class);
 
     @Autowired
     ExamService examService;
@@ -37,7 +40,7 @@ class ExamServiceTest {
     @DisplayName("사용자가 실제로 해당 테스트를 패스 했는지 성공여부를 확인.")
     void checkIfExamPassed() {
         //given
-        LoginInfo loginInfo = userRepo.findByEmail("jm1234@naver.com").get();
+        LoginInfo loginInfo = userRepo.findLoginInfoByEmail("jm1234@naver.com").get();
         Account account = userRepo.findAccountById(loginInfo.getAccountId());
 
         Subject subject = subjectRepo.findById(1L).get();
@@ -59,7 +62,7 @@ class ExamServiceTest {
         try {
             //given
             Account account = userRepo.createAccountInfo("hi", "0100000092", "Student");
-            examService.purchaseExam(account.getId(), 1L);
+            userRepo.doSubscribe(account.getId());
 
             //when
             examService.submitAssignment(1L, new PostAssignSubmitReq("wow.naver.com", "test_passed", 1L));
@@ -67,6 +70,8 @@ class ExamServiceTest {
             //then
             assertEquals(subjectRepo.findById(1L).isPresent(), true);
         }catch (CustomException e){
+            logger.warn(e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException();
         }
     }
