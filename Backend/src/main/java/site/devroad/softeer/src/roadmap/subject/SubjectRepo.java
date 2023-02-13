@@ -4,7 +4,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.roadmap.subject.Subject;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,8 +44,8 @@ public class SubjectRepo {
     }
 
     public List<Subject> findSubjectsByRoadmapId(Long roadmapId) {
-        return jdbcTemplate.query("SELECT s.* FROM subject s " +
-                        "JOIN roadmap_subject rs " +
+        return jdbcTemplate.query("SELECT s.* FROM Subject s " +
+                        "JOIN SubjectToRoadmap rs " +
                         "ON s.id = rs.subject_id " +
                         "WHERE rs.roadmap_id = ?",
                 subjectRowMapper(), roadmapId);

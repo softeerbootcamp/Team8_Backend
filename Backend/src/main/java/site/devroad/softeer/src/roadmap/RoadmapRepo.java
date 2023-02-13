@@ -74,7 +74,7 @@ public class RoadmapRepo {
 
     public Long createRoadmap(String roadmapName) throws CustomException {
         try{
-            jdbcTemplate.update("insert into Roadmap(name) values(?)", roadmapName);
+            jdbcTemplate.update("insert into Roadmap(name, chapter_id) values(?, ?)", roadmapName, -1);
             return jdbcTemplate.queryForObject("select max(id) from Roadmap", Long.class);
         }
         catch(DataAccessException e){

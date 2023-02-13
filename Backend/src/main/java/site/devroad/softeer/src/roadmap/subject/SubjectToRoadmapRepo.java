@@ -19,7 +19,7 @@ public class SubjectToRoadmapRepo {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public Optional<SubjectToRoadmap> findSTR(Long roadmapId, Long subjectId) {
+    public Optional<SubjectToRoadmap> findSTRByIds(Long roadmapId, Long subjectId) {
         try {
             return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM SubjectToRoadmap " +
                             "WHERE roadmap_id = ? AND subject_id = ?",

@@ -19,7 +19,7 @@ public class SubjectService {
     private final CourseRepo courseRepo;
     private final RoadmapRepo roadmapRepo;
 
-    public SubjectService(SubjectRepo subjectRepo, CourseRepo courseRepo, RoadmapRepo roadmapRepo) {
+    public SubjectService(SubjectRepo subjectRepo, CourseRepo courseRepo, RoadmapRepo roadmapRepo, SubjectToRoadmapRepo subjectToRoadmapRepo) {
         this.subjectRepo = subjectRepo;
         this.courseRepo = courseRepo;
         this.roadmapRepo = roadmapRepo;
@@ -30,7 +30,7 @@ public class SubjectService {
         if (roadmapById.isEmpty()) {
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
         }
-        List<Course> courses = courseRepo.findBySubjectId(subjectId);
+        List<Course> courses = courseRepo.findCoursesBySubjectId(subjectId);
         ArrayList<CourseDetail> courseDetails = new ArrayList<>();
         for (Course course : courses) {
             courseDetails.add(createCourseDetail(course));

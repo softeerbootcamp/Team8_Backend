@@ -65,15 +65,15 @@ public class RoadmapController {
     }
 
     @PutMapping("/api/chapter/{chapterId}")
-    public ResponseEntity<?> finishChapter(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("chapterId") String chapterId) throws CustomException {
+    public ResponseEntity<?> finishChapter(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("chapterId") String chapterId) {
         try {
             Long chapterIdL = Long.valueOf(chapterId);
-            roadmapService.setCurChapterId(accountId, chapterIdL);
-            Long nextChapterId = courseService.getNextChapterId(chapterIdL);
-            Boolean courseFinished = courseService.getCourseFinished(chapterIdL);
+            Long nextChapterId = courseService.getNextChapterId(accountId, chapterIdL);
+            roadmapService.setCurChapterId(accountId, nextChapterId);
+            Boolean courseFinished = nextChapterId.equals(-1L);
             return new ResponseEntity<>(new PutChapterFinishRes(courseFinished, nextChapterId), HttpStatus.ACCEPTED);
         } catch (CustomException e) {
-            throw e;
+            return e.getResponseEntity();
         }
     }
 
