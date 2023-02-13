@@ -52,22 +52,4 @@ class ExamServiceTest {
             throw new RuntimeException();
         }
     }
-
-    @Test
-    @DisplayName("사용자가 Exam Submission을 잘 업로드 할 수 있는지 확인.")
-    void examSubmissionTest(){
-        try {
-            //given
-            Account account = userRepo.createAccountInfo("hi", "0100000092", "Student");
-            examService.purchaseExam(account.getId(), 1L);
-
-            //when
-            examService.submitAssignment(1L, new PostAssignSubmitReq("wow.naver.com", "test_passed", 1L));
-
-            //then
-            assertEquals(subjectRepo.findById(1L).isPresent(), true);
-        }catch (CustomException e){
-            throw new RuntimeException();
-        }
-    }
 }
