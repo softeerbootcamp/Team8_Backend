@@ -25,9 +25,9 @@ public class ExamRepo {
     }
 
 
-    public Optional<Exam> findExamBySubjectId(Long subjectId) {
+    public Optional<Exam> findExamBySubjectId(Long subjectId, String examType) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where subject_id = ?", examRowMapper(), subjectId));
+            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where subject_id = ? and type LIKE ?", examRowMapper(), subjectId, examType));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
