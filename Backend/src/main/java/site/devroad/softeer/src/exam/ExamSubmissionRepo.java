@@ -6,10 +6,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.exam.model.SubmissionType;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
+import site.devroad.softeer.src.exam.model.SubmissionType;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,36 +19,40 @@ public class ExamSubmissionRepo {
 
     JdbcTemplate jdbcTemplate;
 
-    public ExamSubmissionRepo(DataSource dataSource){
+    public ExamSubmissionRepo(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
-    public Optional<ExamSubmission> findById(Long id){
-        try{
+    public Optional<ExamSubmission> findById(Long id) {
+        try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from ExamSubmission where id = ?",
                     examSubmissionRowMapper(), id));
-        }catch
-        (DataAccessException e){
+        } catch
+        (DataAccessException e) {
             return Optional.empty();
         }
     }
 
     public Optional<ExamSubmission> findByExamIdAndAccountId(Long examId, Long accountId) {
-        try{
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "select * from ExamSubmission where exam_id = ? and account_id = ? order by id desc limit 1",
-                    examSubmissionRowMapper(),
-                    examId, accountId
-            ));
-        }
-        catch(DataAccessException e){
-            return Optional.empty();
-        }
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+                "select * from ExamSubmission where exam_id = ? and account_id = ? order by id desc limit 1",
+                examSubmissionRowMapper(),
+                examId, accountId
+        ));
+    }
+
+    public List<ExamSubmission> findByRoadmapIdAndAccountId(Long roadmapId, Long accountID) {
+        return jdbcTemplate.query("SELECT es.*\n" +
+                "FROM ExamSubmission es\n" +
+                "JOIN Exam e ON es.exam_id = e.id\n" +
+                "JOIN SubjectToRoadmap str ON e.subject_id = str.subject_id\n" +
+                "WHERE str.roadmap_id = ?\n" +
+                "AND es.account_id = ?", examSubmissionRowMapper(), roadmapId, accountID);
     }
 
 
-    public RowMapper<ExamSubmission> examSubmissionRowMapper(){
+    public RowMapper<ExamSubmission> examSubmissionRowMapper() {
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long accountId = rs.getLong("account_id");
