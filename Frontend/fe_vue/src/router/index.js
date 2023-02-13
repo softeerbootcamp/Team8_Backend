@@ -11,6 +11,7 @@ import ExamView from "@/view/examView.vue"
 import ExamSubmitView from "@/view/examSubmitView.vue"
 import ExamPurchaseView from "@/view/examPurchaseView.vue"
 import AdminUserView from "@/view/adminUserView"
+import UserPendingView from "@/view/userPendingView"
 import Store from "@/store"
 // path: '/',
 //     redirect: "/login",
@@ -40,7 +41,11 @@ const routes = [
     name: "AdminHome",
     component: AdminHome,
   },
-
+  {
+    path: "/userpendingview",
+    name: "UserPendingView",
+    component: UserPendingView,
+  },
   {
     path: "/roadmapFactory/:userEmail",
     name: "RoadMapFactory",
@@ -90,12 +95,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isLoggedIn = Store.state.isLogin;
+  const isRoadmapExist = Store.state.isRoadmap;
 
   if (to.path === "/login" && isLoggedIn) {
     next("/");
-  } else {
+  }else if(to.path === "/userpendingview" && isRoadmapExist){
+    next("/")
+  }else {
     next();
   }
+
 });
 
 export default router;

@@ -8,11 +8,12 @@ export default new Vuex.Store({
     jwt: "",
     curSubjectId:"",
     isAdmin: false,
-    accountId:""
+    accountId:"",
+    
   },
   mutations: {
     setAccountId(state,status){
-state.accountId = status;
+      state.accountId = status;
     },
     setIsAdmin(state, status) {
       state.isAdmin = status;
