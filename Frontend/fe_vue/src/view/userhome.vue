@@ -33,8 +33,8 @@ export default {
       roadmapId: "1",
       totalSubjectIdx: 0,
       curSubjectIdx: 0,
-      totalChapterIdx: 0,
-      curChapterIdx: 0,
+      chapterPercent: 0,
+      nextChapterPK: 0,
       jwt: null,
     };
   },
@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     isRoadmapStarted() {
-      if (this.totalChapterIdx != 0) {
+      if (this.chapterPercent != 0) {
         return true;
       }
       return false;
@@ -60,13 +60,23 @@ export default {
       };
       await userData(config)
         .then((response) => {
+          console.log("user data jwt : " + config);
+          this.$store.commit('setAccountId', response.data.userId);
+          //       "success" : "true",
+          // "userId" : "id",
+          // "userName" : "name",
+          // "roadmapId" : "roadmapId",
+          // "totalSubjectIdx" : "4",
+          // "curSubjectIdx" : "1",
+          // "chapterPercent" : 0.25,
+          // "nextChapterPK" : 1001
           this.userId = response.data.userId;
           this.userName = response.data.userName;
           this.roadmapId = response.data.roadmapId;
           this.totalSubjectIdx = response.data.totalSubjectIdx;
           this.curSubjectIdx = response.data.curSubjectIdx;
-          this.totalChapterIdx = response.data.totalChapterIdx;
-          this.curChapterIdx = response.data.curChapterIdx;
+          this.chapterPercent = response.data.chapterPercent;
+          this.nextChapterPK = response.data.nextChapterPK;
           this.setProgressbar();
         })
         .catch(function (error) {
@@ -76,12 +86,12 @@ export default {
 
     },
     setProgressbar() {
-      if (this.totalChapterIdx == 0) {
+      if (this.chapterPercent == 0) {
         this.roadmapPercentage = 0;
         return;
       }
       this.roadmapPercentage = parseInt(
-        (this.curChapterIdx / this.totalChapterIdx) * 100
+        (this.chapterPercent) * 100
       );
     },
     async getSubData() {
@@ -93,6 +103,11 @@ export default {
       var vm = this;
       await getRoadmap(config)
         .then((response) => {
+          console.log("Getroadmap!!data : " + response.data.success)
+          if (!response.data.success) {
+            this.$router.push('/');
+          }
+
           vm.isSuccess = response.data.success;
           vm.subjects = response.data.subjects;
           this.$store.commit("setSubjectsStatus", response.data.subjects);
