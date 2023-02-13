@@ -64,8 +64,6 @@ public class ExamController {
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
-
-
     }
 
     @GetMapping("/api/purchase/exam/success")
@@ -80,7 +78,6 @@ public class ExamController {
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
-
     }
     @GetMapping("/api/purchase/exam/fail")
     public ResponseEntity<?> purchaseFail(){
@@ -89,6 +86,4 @@ public class ExamController {
             return new ResponseEntity<>("",map,HttpStatus.TEMPORARY_REDIRECT);
 
     }
-
-
 }
