@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
-public class CustomException extends Exception {
+public class CustomException extends RuntimeException {
     private final ExceptionType exceptionType;
 
     public CustomException(ExceptionType response) {

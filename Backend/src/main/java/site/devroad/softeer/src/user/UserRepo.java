@@ -2,19 +2,24 @@ package site.devroad.softeer.src.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import site.devroad.softeer.exceptions.CustomException;
+import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Repository @Transactional(readOnly = false)
 public class UserRepo {
     private JdbcTemplate jdbcTemplate;
 
@@ -35,22 +40,16 @@ public class UserRepo {
         return jdbcTemplate.queryForObject("SELECT * FROM Account WHERE phone = ?", accountRowMapper(), phone);
     }
 
-    public void deleteLoginInfoById(Long id) {
-        jdbcTemplate.update("DELETE FROM LoginInfo where id = ?", id);
-    }
 
     public Account findAccountById(Long id) {
         return jdbcTemplate.queryForObject("SELECT * FROM Account WHERE id = ?", accountRowMapper(), id);
     }
 
-    public void deleteAccountById(Long id) {
-        jdbcTemplate.update("DELETE FROM Account where id = ?", id);
-    }
 
     public Optional<LoginInfo> findByEmail(String email) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM LoginInfo WHERE email = ?", loginInfoRowMapper(), email));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -59,7 +58,7 @@ public class UserRepo {
         try {
             return jdbcTemplate.query("SELECT l.* FROM LoginInfo l JOIN Account a " +
                     "ON l.account_id = a.id AND a.roadmap_id IS NULL", loginInfoRowMapper());
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
     }
@@ -67,10 +66,41 @@ public class UserRepo {
     public Optional<Account> findByPhone(String phone) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Account WHERE phone = ?", accountRowMapper(), phone));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
+
+    public Boolean isUserSubscribed(Long accountId) throws CustomException {
+        Timestamp ends = jdbcTemplate.queryForObject(
+                "select end_at from Subscribe where account_id = ?", Timestamp.class, accountId
+        );
+        return ends.after(new Date());
+
+    }
+
+
+
+    public void setRoadmap(Long id, Long roadmapId) {
+        jdbcTemplate.update("UPDATE Account SET roadmap_id = ? WHERE id=?", roadmapId, id);
+    }
+
+    public void doSubscribe(Long accountId){
+            jdbcTemplate.update("INSERT Subscribe(account_id) VALUES (?)", accountId);
+            extendSubscribeEndDate(accountId, 31);
+    }
+
+    public void extendSubscribeEndDate(Long accountId, Integer date) {
+        try{
+            jdbcTemplate.update("UPDATE Subscribe \n" +
+                    "SET end_at = ADDDATE(IF(NOW() > end_at, NOW(), end_at), INTERVAL ? DAY)\n" +
+                    "where account_id = ?", date, accountId);
+        }catch(DataAccessException e){
+            e.printStackTrace();
+            throw new CustomException(ExceptionType.DATABASE_ERROR);
+        }
+    }
+
 
     private RowMapper<LoginInfo> loginInfoRowMapper() {
         return ((rs, rowNum) -> {
@@ -80,11 +110,6 @@ public class UserRepo {
             Long accountId = (rs.getLong("account_id"));
             return new LoginInfo(id, email, password, accountId);
         });
-    }
-
-
-    public void setRoadmap(Long id, Long roadmapId) {
-        jdbcTemplate.update("UPDATE Account SET roadmap_id = ? WHERE id=?", roadmapId, id);
     }
 
     private RowMapper<Account> accountRowMapper() {

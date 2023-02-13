@@ -1,10 +1,10 @@
 package site.devroad.softeer.src.roadmap.subject;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.src.roadmap.subject.Subject;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +31,7 @@ public class SubjectRepo {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Subject WHERE id = ?"
                     , subjectRowMapper(), subjectId));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -39,8 +39,16 @@ public class SubjectRepo {
     public List<Subject> findAll() {
         try {
             return jdbcTemplate.query("SELECT * FROM Subject", subjectRowMapper());
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
+    }
+
+    public List<Subject> findSubjectsByRoadmapId(Long roadmapId) {
+        return jdbcTemplate.query("SELECT s.* FROM Subject s " +
+                        "JOIN SubjectToRoadmap rs " +
+                        "ON s.id = rs.subject_id " +
+                        "WHERE rs.roadmap_id = ?",
+                subjectRowMapper(), roadmapId);
     }
 }
