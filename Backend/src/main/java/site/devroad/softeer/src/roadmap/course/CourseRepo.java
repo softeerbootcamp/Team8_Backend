@@ -2,6 +2,7 @@ package site.devroad.softeer.src.roadmap.course;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,7 @@ public class CourseRepo {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Course WHERE id = ?"
                     , courseRowMapper(), id));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -34,7 +35,7 @@ public class CourseRepo {
     public List<Course> findBySubjectId(Long subjectId) {
         try {
             return jdbcTemplate.query("SELECT * FROM Course WHERE subject_id = ?", courseRowMapper(), subjectId);
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
     }

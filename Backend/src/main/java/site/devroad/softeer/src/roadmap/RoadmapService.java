@@ -30,7 +30,7 @@ public class RoadmapService {
         this.userRepo = userRepo;
     }
 
-    public Map<String, List<List<Object>>> getSubjects(Long accountId) throws CustomException {
+    public Map<String, List<List<Object>>> getSubjects(Long accountId){
         Long roadMapId = userRepo.findAccountById(accountId).getRoadMapId();
         Optional<Roadmap> roadmapById = roadmapRepo.findRoadmapById(roadMapId);
         if (roadmapById.isEmpty()) {
@@ -51,14 +51,14 @@ public class RoadmapService {
         return subjects;
     }
 
-    public Long getCurChapterId(Long accountId) throws CustomException {
+    public Long getCurChapterId(Long accountId){
         Optional<Roadmap> roadmapByAccountId = roadmapRepo.findRoadmapByAccountId(accountId);
         if (roadmapByAccountId.isEmpty())
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
         return roadmapByAccountId.get().getChapterId();
     }
 
-    public void setCurChapterId(Long accountId, Long curChapterId) throws CustomException {
+    public void setCurChapterId(Long accountId, Long curChapterId){
         Optional<Roadmap> roadmapByAccountId = roadmapRepo.findRoadmapByAccountId(accountId);
         if (roadmapByAccountId.isEmpty())
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);

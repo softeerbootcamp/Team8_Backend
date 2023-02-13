@@ -35,7 +35,7 @@ public class ExamService {
         this.userRepo = userRepo;
     }
 
-    public Boolean isUserPassedExam(Long subjectId, Long accountId) throws CustomException {
+    public Boolean isUserPassedExam(Long subjectId, Long accountId){
 
         //subjectId -> subject
         Optional<Subject> optionalSubject = subjectRepo.findById(subjectId);
@@ -62,19 +62,14 @@ public class ExamService {
 
     }
 
-    public void purchaseExam(Long accountId, Long examId) throws CustomException {
-        Account account = userRepo.findAccountById(accountId);
-        Optional<Exam> exam = examRepo.findExamById(examId);
-        examRepo.addExamToAccount(accountId, examId);
-    }
 
-    public void checkExamPurchased(Long accountId, Long examId) throws CustomException {
-        if (!examRepo.isExamPurchased(accountId, examId)) {
+    public void checkExamPurchased(Long accountId){
+        if (!userRepo.isUserSubscribed(accountId)) {
             throw new CustomException(ExceptionType.EXAM_NOT_PURCHASED);
         }
     }
 
-    public ExamDetail getExamDetail(Long examId) throws CustomException {
+    public ExamDetail getExamDetail(Long examId){
         Optional<ExamDetail> examDetailById = examRepo.findExamDetailById(examId);
         if (examDetailById.isEmpty()) {
             throw new CustomException(ExceptionType.EXAM_NOT_FOUND);
@@ -89,9 +84,11 @@ public class ExamService {
         //   orderId : accountId + "_" + examId + "_" + randomStr,
         String[] parsedOrderId = orderId.split("_");
         Long accountId = Long.valueOf(parsedOrderId[0]);
-        Long examId = Long.valueOf(parsedOrderId[1]);
-        purchaseExam(accountId,examId);
-
+        if (userRepo.isUserSubscribed(accountId)) {
+            throw new CustomException(ExceptionType.EXAM_ALREADY_PURCHASED);
+        }
+        userRepo.extendSubscribeEndDate(accountId, 31);
     }
+
 
 }

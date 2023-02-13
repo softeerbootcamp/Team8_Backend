@@ -21,14 +21,14 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public Long join(PostSignUpReq req) throws CustomException {
+    public Long join(PostSignUpReq req){
         validateSignUp(req);
         Account student = userRepo.createAccountInfo(req.getName(), req.getPhone(), "Student");
         String hashPassword = BCrypt.hashpw(req.getPassword(), BCrypt.gensalt());
         return userRepo.createLoginInfo(req.getEmail(), hashPassword, student.getId()).getId();
     }
 
-    public Long signIn(PostSignInReq req) throws CustomException {
+    public Long signIn(PostSignInReq req){
         String email = req.getEmail();
         Optional<LoginInfo> loginInfo = userRepo.findByEmail(email);
         if (loginInfo.isEmpty()) {
@@ -42,7 +42,7 @@ public class UserService {
         throw new CustomException(ExceptionType.AUTHENTICATION_FAILED);
     }
 
-    public void validateSignUp(PostSignUpReq req) throws CustomException {
+    public void validateSignUp(PostSignUpReq req){
         String phone = req.getPhone();
         String email = req.getEmail();
         if (userRepo.findByPhone(phone).isPresent())
@@ -51,17 +51,21 @@ public class UserService {
             throw new CustomException(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED);
     }
 
-    public boolean validateAdmin(Long accountId) throws CustomException {
+    public boolean validateAdmin(Long accountId){
         Account accountById = userRepo.findAccountById(accountId);
         return accountById.getType().equals("Admin");
     }
 
-    public List<String> getNoRoadmapUsers() throws CustomException {
+    public List<String> getNoRoadmapUsers(){
         List<LoginInfo> noRoadmapUser = userRepo.findNoRoadmapUser();
         List<String> users = new ArrayList<>();
         for (LoginInfo loginInfo : noRoadmapUser) {
             users.add(loginInfo.getEmail());
         }
         return users;
+    }
+
+    public Boolean isUserSubscribe(Long accountId){
+        return userRepo.isUserSubscribed(accountId);
     }
 }

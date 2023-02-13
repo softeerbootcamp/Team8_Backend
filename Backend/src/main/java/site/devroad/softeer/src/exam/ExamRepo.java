@@ -2,6 +2,7 @@ package site.devroad.softeer.src.exam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,7 @@ public class ExamRepo {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where subject_id = ?", examRowMapper(), subjectId));
         }
-        catch(DataAccessException e){
+        catch(EmptyResultDataAccessException e){
             return Optional.empty();
         }
     }
@@ -38,7 +39,7 @@ public class ExamRepo {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where id = ?", examRowMapper(), examId));
         }
-        catch(DataAccessException e){
+        catch(EmptyResultDataAccessException e){
             return Optional.empty();
         }
     }
@@ -56,7 +57,7 @@ public class ExamRepo {
                             "WHERE e.id = ?",
                     examDetailRowMapper(), examId));
         }
-        catch(DataAccessException e){
+        catch(EmptyResultDataAccessException e){
             return Optional.empty();
         }
     }
@@ -66,33 +67,16 @@ public class ExamRepo {
     }
 
 
-    public void addExamToAccount(Long accountId, Long examId) throws CustomException {
-        try{
-            jdbcTemplate.update("insert into PurchasedExam(account_id, exam_id) values(?, ?)", accountId, examId);
-        }catch(DataAccessException e){
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
+    public void subscribeExam(Long accountId, Long examId) throws CustomException {
+        jdbcTemplate.update("insert into PurchasedExam(account_id, exam_id) values(?, ?)", accountId, examId);
     }
 
-    public Boolean isExamPurchased(Long accountId, Long examId) throws CustomException{
-        try{
-            Long result  = jdbcTemplate.queryForObject(
-                    "select count(*) from PurchasedExam where account_id = ? and exam_id = ?", Long.class, accountId, examId);
-            return result == 1L;
-        }catch(DataAccessException e){
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
-    }
 
 
     public void addExamSubmission(Long accountId, Long examId, String url, String description) throws CustomException {
-        try {
             jdbcTemplate.update("insert into ExamSubmission(account_id, exam_id, url, is_passed, description) " +
                     "values(?, ?, ?, 3, ?)", accountId, examId, url, description);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
+
     }
     RowMapper<ExamSubmission> examSubmissionRowMapper(){
         return (rs, rowNum) -> {

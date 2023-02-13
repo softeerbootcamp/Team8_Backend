@@ -2,6 +2,7 @@ package site.devroad.softeer.src.roadmap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,7 @@ public class RoadmapRepo {
     public Optional<Roadmap> findRoadmapById(Long id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Roadmap WHERE id = ?", roadmapRowMapper(), id));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -38,7 +39,7 @@ public class RoadmapRepo {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT r.* FROM Account a JOIN Roadmap r " +
                     "ON a.roadmap_id = r.id WHERE a.id = ?", roadmapRowMapper(), accountId));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -47,18 +48,15 @@ public class RoadmapRepo {
         try {
             return Optional.of(jdbcTemplate.query("SELECT * FROM SubjectToRoadmap WHERE roadmap_id = ?"
                     , subjectToRoadmapRowMapper(), roadmapId));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
     public void addSubjectToRoadMap(Long roadmapId, Long subjectId, Integer seq) throws CustomException{
-        try{
-            //roadmap id 하나 받아서 seq해서 넣기.
-            jdbcTemplate.update("insert into SubjectToRoadmap(roadmap_id, subject_id, sequence) values(?, ?, ?)", roadmapId, subjectId, seq);
-        }catch (DataAccessException e){
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
+        //roadmap id 하나 받아서 seq해서 넣기.
+        jdbcTemplate.update("insert into SubjectToRoadmap(roadmap_id, subject_id, sequence) values(?, ?, ?)", roadmapId, subjectId, seq);
+
     }
 
     public void deleteRoadmap(Long roadmapId){
@@ -73,13 +71,8 @@ public class RoadmapRepo {
 
 
     public Long createRoadmap(String roadmapName) throws CustomException {
-        try{
-            jdbcTemplate.update("insert into Roadmap(name) values(?)", roadmapName);
-            return jdbcTemplate.queryForObject("select max(id) from Roadmap", Long.class);
-        }
-        catch(DataAccessException e){
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
+        jdbcTemplate.update("insert into Roadmap(name) values(?)", roadmapName);
+        return jdbcTemplate.queryForObject("select max(id) from Roadmap", Long.class);
     }
 
     private RowMapper<Roadmap> roadmapRowMapper() {
