@@ -1,5 +1,6 @@
 package site.devroad.softeer.src.user;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.user.dto.PostSignInReq;
 import site.devroad.softeer.src.user.dto.PostSignUpReq;
 import site.devroad.softeer.src.user.model.Account;
@@ -17,6 +19,8 @@ import site.devroad.softeer.utility.JwtUtility;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
@@ -94,6 +98,26 @@ class UserServiceTest {
             assertThat(userId).isInstanceOf(Long.class);
         } catch (CustomException e) {
             logger.warn(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("사용자가 Exam을 올바르게 구매할 수 있는지 확인.")
+    void examSubmissionTest(){
+        try {
+            //given
+            Account account = userRepo.createAccountInfo("hi", "0100000092", "Student");
+            userRepo.doSubscribe(account.getId());
+
+            //when
+            Boolean result = userRepo.isUserSubscribed(account.getId());
+
+            //then
+            assertTrue(result);
+        }catch (CustomException e){
+            logger.warn(e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 }
