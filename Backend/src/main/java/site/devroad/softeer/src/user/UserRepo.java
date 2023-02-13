@@ -30,7 +30,7 @@ public class UserRepo {
     }
 
     public Account createAccountInfo(String name, String phone, String type) {
-        jdbcTemplate.update("INSERT INTO Account (name, phone, type) VALUES (?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO Account (name, phone, type, roadmap_id) VALUES (?, ?, ?)",
                 name, phone, type);
         return jdbcTemplate.queryForObject("SELECT * FROM Account WHERE phone = ?", accountRowMapper(), phone);
     }
