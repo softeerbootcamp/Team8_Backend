@@ -13,6 +13,7 @@ import ExamPurchaseView from "@/view/exam/examPurchaseView.vue"
 import AdminUserView from "@/view/admin/adminUserView"
 import UserPendingView from "@/view/user/userPendingView"
 import McqExamView from "@/view/exam/mcqExamView"
+import ChapterFrame from "@/view/user/chapterFrame"
 import Store from "@/store"
 // path: '/',
 //     redirect: "/login",
@@ -38,7 +39,11 @@ const routes = [
     name: "AdminUserView",
     component: AdminUserView,
   },
- 
+  {
+  path:"/chapterframe/:chapterId",
+  name:"ChapterFrame",
+  component:ChapterFrame,
+  },
   {
     path: "/frqexamsubmitview/:examId",
     name: "FrqExamSubmitView",
