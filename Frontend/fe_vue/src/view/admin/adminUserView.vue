@@ -7,6 +7,7 @@
                     <th scope="col">이름</th>
                     <th scope="col">Email</th>
                     <th scope="col">로드맵 관리</th>
+                    <th scope="col">코드 관리</th>
 
                 </tr>
             </thead>
@@ -17,8 +18,15 @@
                     <td>{{ user.email }}</td>
                     <td>
                         <!-- <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;"> -->
-                        <button>
+                        <button class="btn btn-dark">
                             로드맵 관리
+                        </button>
+                        <!-- </router-link> -->
+                    </td>
+                    <td>
+                        <!-- <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;"> -->
+                        <button class="btn btn-dark">
+                            코드 관리
                         </button>
                         <!-- </router-link> -->
                     </td>
@@ -52,7 +60,7 @@ export default {
             await adminUser(config)
                 .then((response) => {
                     this.success = response.data.success;
-                    this.allUserData = response.data.users;
+                    this.allUserData = response.data.userDetailList;
                 })
                 .catch(function (error) {
                     console.log(error);

@@ -28,6 +28,13 @@ export default {
       curCourseId: "",
       chapters: [],
       curChapterId: "",
+      /* chapters
+         "chapterName" : "자료형", 
+         "chapterId" : 10011, 
+         "chapterUrl" : "http://toa/lec/10011", 
+         "thumbnailUrl":"url", 
+         "description" : "자료형의 종류는 무엇이 있을까용?",
+         "finish" : true*/
     };
   },
   computed: {
