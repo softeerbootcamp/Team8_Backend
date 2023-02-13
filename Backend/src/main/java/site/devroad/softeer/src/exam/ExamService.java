@@ -62,14 +62,9 @@ public class ExamService {
 
     }
 
-    public void purchaseExam(Long accountId, Long examId) throws CustomException {
-        Account account = userRepo.findAccountById(accountId);
-        Optional<Exam> exam = examRepo.findExamById(examId);
-        examRepo.addExamToAccount(accountId, examId);
-    }
 
-    public void checkExamPurchased(Long accountId, Long examId) throws CustomException {
-        if (!examRepo.isExamPurchased(accountId, examId)) {
+    public void checkExamPurchased(Long accountId) throws CustomException {
+        if (!userRepo.isUserSubscribed(accountId)) {
             throw new CustomException(ExceptionType.EXAM_NOT_PURCHASED);
         }
     }
@@ -89,9 +84,11 @@ public class ExamService {
         //   orderId : accountId + "_" + examId + "_" + randomStr,
         String[] parsedOrderId = orderId.split("_");
         Long accountId = Long.valueOf(parsedOrderId[0]);
-        Long examId = Long.valueOf(parsedOrderId[1]);
-        purchaseExam(accountId,examId);
-
+        if (userRepo.isUserSubscribed(accountId)) {
+            throw new CustomException(ExceptionType.EXAM_ALREADY_PURCHASED);
+        }
+        userRepo.extendSubscribeEndDate(accountId, 31);
     }
+
 
 }

@@ -64,4 +64,8 @@ public class UserService {
         }
         return users;
     }
+
+    public Boolean isUserSubscribe(Long accountId) throws CustomException {
+        return userRepo.isUserSubscribed(accountId);
+    }
 }
