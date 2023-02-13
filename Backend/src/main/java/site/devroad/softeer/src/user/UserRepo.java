@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.user.dto.domain.UserDetail;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
 
@@ -46,14 +47,21 @@ public class UserRepo {
     }
 
 
-    public Optional<LoginInfo> findByEmail(String email) {
+    public Optional<LoginInfo> findLoginInfoByEmail(String email) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM LoginInfo WHERE email = ?", loginInfoRowMapper(), email));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
-
+    public List<UserDetail> findAllUser(){
+        try{
+            return jdbcTemplate.query("SELECT * FROM LoginInfo l JOIN Account a " +
+                    "ON l.account_id = a.id AND a.type = 'Student'",allUserRowMapper());
+        }catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
+        }
+    }
     public List<LoginInfo> findNoRoadmapUser() {
         try {
             return jdbcTemplate.query("SELECT l.* FROM LoginInfo l JOIN Account a " +
@@ -109,6 +117,16 @@ public class UserRepo {
             String password = (rs.getString("password"));
             Long accountId = (rs.getLong("account_id"));
             return new LoginInfo(id, email, password, accountId);
+        });
+    }
+
+    private RowMapper<UserDetail> allUserRowMapper(){
+        return ((rs,rowNum)->{
+            Long id = (rs.getLong("id"));
+            String email = (rs.getString("email"));
+            Long roadmapId = (rs.getLong("roadmap_id"));
+            String userName = (rs.getString("name"));
+            return new UserDetail(id, email, roadmapId, userName);
         });
     }
 

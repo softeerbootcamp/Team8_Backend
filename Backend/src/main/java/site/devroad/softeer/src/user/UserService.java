@@ -1,5 +1,6 @@
 package site.devroad.softeer.src.user;
 
+import org.apache.catalina.User;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
@@ -13,9 +14,11 @@ import site.devroad.softeer.src.roadmap.completedchapter.CompletedChapterRepo;
 import site.devroad.softeer.src.roadmap.course.CourseRepo;
 import site.devroad.softeer.src.roadmap.model.Roadmap;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
+import site.devroad.softeer.src.user.dto.GetAllUserRes;
 import site.devroad.softeer.src.user.dto.GetUserDetailRes;
 import site.devroad.softeer.src.user.dto.PostSignInReq;
 import site.devroad.softeer.src.user.dto.PostSignUpReq;
+import site.devroad.softeer.src.user.dto.domain.UserDetail;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
 
@@ -52,7 +55,7 @@ public class UserService {
 
     public Long signIn(PostSignInReq req){
         String email = req.getEmail();
-        Optional<LoginInfo> loginInfo = userRepo.findByEmail(email);
+        Optional<LoginInfo> loginInfo = userRepo.findLoginInfoByEmail(email);
         if (loginInfo.isEmpty()) {
             throw new CustomException(ExceptionType.ACCOUNT_NOT_FOUND);
         }
@@ -69,7 +72,7 @@ public class UserService {
         String email = req.getEmail();
         if (userRepo.findByPhone(phone).isPresent())
             throw new CustomException(ExceptionType.POST_ACCOUNT_PHONE_DUPLICATED);
-        if (userRepo.findByEmail(email).isPresent())
+        if (userRepo.findLoginInfoByEmail(email).isPresent())
             throw new CustomException(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED);
     }
 
@@ -123,5 +126,10 @@ public class UserService {
         int completedChapterCnt = completedChapterRepo.readCompletedChapters(accountId, courseId).size();
         getUserDetailRes.setChapterPercent(completedChapterCnt / (float) totalChapterCnt);
         return getUserDetailRes;
+    }
+
+    public List<UserDetail> getAllUser(Long accountId){
+        List<UserDetail> allUser = userRepo.findAllUser();
+        return allUser;
     }
 }
