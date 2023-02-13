@@ -1,14 +1,14 @@
 package site.devroad.softeer.src.roadmap.completedchapter;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 public class CompletedChapter {
     private final Long id;
     private final Long accountId;
     private final Long chapterId;
-    private final LocalDateTime createAt;
+    private final Date createAt;
 
-    public CompletedChapter(Long id, Long accountId, Long chapterId, LocalDateTime createAt) {
+    public CompletedChapter(Long id, Long accountId, Long chapterId, Date createAt) {
         this.id = id;
         this.accountId = accountId;
         this.chapterId = chapterId;
@@ -27,7 +27,7 @@ public class CompletedChapter {
         return chapterId;
     }
 
-    public LocalDateTime getCreateAt() {
+    public Date getCreateAt() {
         return createAt;
     }
 }
