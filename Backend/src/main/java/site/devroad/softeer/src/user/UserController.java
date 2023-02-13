@@ -62,4 +62,12 @@ public class UserController {
         }
         return new CustomException(ExceptionType.NO_ADMIN_USER).getResponseEntity();
     }
+    @GetMapping("/api/admin/users")
+    public ResponseEntity<?> getAllUser(@RequestAttribute(value = "accountId") Long accountId){
+        boolean isAdmin = userService.validateAdmin(accountId);
+        if (!isAdmin) {
+            return new CustomException(ExceptionType.NO_ADMIN_USER).getResponseEntity();
+        }
+        return new ResponseEntity<>(new GetAllUserRes(true,userService.getAllUser(accountId)),HttpStatus.OK);
+    }
 }
