@@ -11,7 +11,6 @@ import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class RoadmapController {
@@ -28,8 +27,7 @@ public class RoadmapController {
 
     @GetMapping("/api/roadmap")
     public ResponseEntity<?> getRoadmapSubjects(@RequestAttribute(value = "accountId") Long accountId) {
-        Map<String, List<List<Object>>> subjects = roadmapService.getSubjects(accountId);
-        return new ResponseEntity<>(new GetRoadmapDetailRes(subjects), HttpStatus.OK);
+        return new ResponseEntity<>(new GetRoadmapDetailRes(roadmapService.getSubjects(accountId)), HttpStatus.OK);
     }
 
     @GetMapping("/api/subject")

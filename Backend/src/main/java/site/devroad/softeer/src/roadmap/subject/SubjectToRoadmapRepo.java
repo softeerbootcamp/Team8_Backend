@@ -21,7 +21,7 @@ public class SubjectToRoadmapRepo {
 
     public Optional<SubjectToRoadmap> findSTRByIds(Long roadmapId, Long subjectId) {
         try {
-            return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM SubjectToRoadmap " +
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM SubjectToRoadmap " +
                             "WHERE roadmap_id = ? AND subject_id = ?",
                     subjectToRoadmapRepoRowMapper(), roadmapId, subjectId));
         } catch (DataAccessException e) {
