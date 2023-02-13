@@ -35,7 +35,7 @@ public class ExamService {
         this.userRepo = userRepo;
     }
 
-    public Boolean isUserPassedExam(Long subjectId, Long accountId) throws CustomException {
+    public Boolean isUserPassedExam(Long subjectId, Long accountId){
 
         //subjectId -> subject
         Optional<Subject> optionalSubject = subjectRepo.findById(subjectId);
@@ -63,13 +63,13 @@ public class ExamService {
     }
 
 
-    public void checkExamPurchased(Long accountId) throws CustomException {
+    public void checkExamPurchased(Long accountId){
         if (!userRepo.isUserSubscribed(accountId)) {
             throw new CustomException(ExceptionType.EXAM_NOT_PURCHASED);
         }
     }
 
-    public ExamDetail getExamDetail(Long examId) throws CustomException {
+    public ExamDetail getExamDetail(Long examId){
         Optional<ExamDetail> examDetailById = examRepo.findExamDetailById(examId);
         if (examDetailById.isEmpty()) {
             throw new CustomException(ExceptionType.EXAM_NOT_FOUND);

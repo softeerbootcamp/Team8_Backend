@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.exam.dto.GetExamDetailRes;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
@@ -36,39 +35,27 @@ public class ExamController {
 
     @GetMapping("/api/exam/{examId}")
     public ResponseEntity<?> getExamDetail(@PathVariable("examId") Long examId, @RequestAttribute Long accountId) {
-        try {
-            examService.checkExamPurchased(accountId);
-            ExamDetail examDetail = examService.getExamDetail(examId);
-            return new ResponseEntity<>(new GetExamDetailRes(true, examDetail), HttpStatus.OK);
-        } catch (CustomException e) {
-            return e.getResponseEntity();
-        }
+
+        examService.checkExamPurchased(accountId);
+        ExamDetail examDetail = examService.getExamDetail(examId);
+        return new ResponseEntity<>(new GetExamDetailRes(true, examDetail), HttpStatus.OK);
     }
 
     @PostMapping("/api/exam/assignment")
     public ResponseEntity<?> assignmentSubmit(@RequestAttribute Long accountId, @RequestBody PostAssignSubmitReq req) {
-        try {
-            examService.checkExamPurchased(accountId);
-            examService.submitAssignment(accountId, req);
-            return new ResponseEntity<>(Map.of("success", true), HttpStatus.CREATED);
-        } catch (CustomException e) {
-            return e.getResponseEntity();
-        }
+
+        examService.checkExamPurchased(accountId);
+        examService.submitAssignment(accountId, req);
+        return new ResponseEntity<>(Map.of("success", true), HttpStatus.CREATED);
     }
 
     @GetMapping("/api/purchase/exam/success")
     public ResponseEntity<?> purchaseSuccess(@RequestParam String orderId, @RequestParam String paymentKey, @RequestParam Integer amount) {
-        try {
-            tossUtility.validateTossParams(orderId, paymentKey, amount);
-            examService.makePurchasedByTossOrderId(orderId);
-            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-            map.add("Location", "https://devroad.site/roadmap");
-            return new ResponseEntity<>("", map, HttpStatus.TEMPORARY_REDIRECT);
-
-        } catch (CustomException e) {
-            return e.getResponseEntity();
-        }
-
+        tossUtility.validateTossParams(orderId, paymentKey, amount);
+        examService.makePurchasedByTossOrderId(orderId);
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("Location", "https://devroad.site/roadmap");
+        return new ResponseEntity<>("", map, HttpStatus.TEMPORARY_REDIRECT);
     }
 
     @GetMapping("/api/purchase/exam/fail")

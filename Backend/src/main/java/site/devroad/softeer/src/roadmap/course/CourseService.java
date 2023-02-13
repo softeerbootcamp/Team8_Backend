@@ -22,11 +22,11 @@ public class CourseService {
         this.courseRepo = courseRepo;
     }
 
-    public List<ChapterDetail> getChapterDetails(Long courseId) throws CustomException {
+    public List<ChapterDetail> getChapterDetails(Long courseId){
         return chapterRepo.findChapterDetailByCourseId(courseId);
     }
 
-    public Optional<Chapter> getNextChapter(Long chapterId) throws CustomException {
+    public Optional<Chapter> getNextChapter(Long chapterId){
         Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
         if (chapterById.isEmpty()) {
             throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
@@ -37,7 +37,7 @@ public class CourseService {
         return chapterRepo.findNextChapter(courseId, sequence + 1);
     }
 
-    public Chapter getChapter(Long chapterId) throws CustomException {
+    public Chapter getChapter(Long chapterId){
         Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
         if (chapterById.isEmpty()) {
             throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
@@ -45,7 +45,7 @@ public class CourseService {
         return chapterById.get();
     }
 
-    public ChapterDetail getChapterDetail(Long chapterId) throws CustomException {
+    public ChapterDetail getChapterDetail(Long chapterId){
         Optional<ChapterDetail> chapterById = chapterRepo.findChapterDetailById(chapterId);
         if (chapterById.isEmpty()) {
             throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
@@ -53,12 +53,12 @@ public class CourseService {
         return chapterById.get();
     }
 
-    public Boolean getCourseFinished(Long chapterId) throws CustomException {
+    public Boolean getCourseFinished(Long chapterId){
         Optional<Chapter> nextChapter = getNextChapter(chapterId);
         return nextChapter.isEmpty();
     }
 
-    public Long getNextChapterId(Long chapterId) throws CustomException {
+    public Long getNextChapterId(Long chapterId){
         Optional<Chapter> nextChapter = getNextChapter(chapterId);
         if (nextChapter.isPresent()) {
             return nextChapter.get().getId();

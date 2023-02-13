@@ -70,14 +70,10 @@ public class UserController {
 
     @GetMapping("/api/user/noRoadmap")
     public ResponseEntity<?> getNoRoadmapUser(@RequestAttribute(value = "accountId") Long accountId) {
-        try {
-            boolean isAdmin = userService.validateAdmin(accountId);
-            if (isAdmin) {
-                return new ResponseEntity<>(new GetNoUserRes(true, userService.getNoRoadmapUsers()), HttpStatus.OK);
-            }
-            return new CustomException(ExceptionType.NO_ADMIN_USER).getResponseEntity();
-        } catch (CustomException e) {
-            throw new RuntimeException(e);
+        boolean isAdmin = userService.validateAdmin(accountId);
+        if (isAdmin) {
+            return new ResponseEntity<>(new GetNoUserRes(true, userService.getNoRoadmapUsers()), HttpStatus.OK);
         }
+        return new CustomException(ExceptionType.NO_ADMIN_USER).getResponseEntity();
     }
 }

@@ -2,9 +2,11 @@ package site.devroad.softeer.src.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.user.model.Account;
@@ -17,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Repository @Transactional(readOnly = false)
 public class UserRepo {
     private JdbcTemplate jdbcTemplate;
 
@@ -53,7 +55,7 @@ public class UserRepo {
     public Optional<LoginInfo> findByEmail(String email) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM LoginInfo WHERE email = ?", loginInfoRowMapper(), email));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -62,7 +64,7 @@ public class UserRepo {
         try {
             return jdbcTemplate.query("SELECT l.* FROM LoginInfo l JOIN Account a " +
                     "ON l.account_id = a.id AND a.roadmap_id IS NULL", loginInfoRowMapper());
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
     }
@@ -70,43 +72,28 @@ public class UserRepo {
     public Optional<Account> findByPhone(String phone) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Account WHERE phone = ?", accountRowMapper(), phone));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
     public Boolean isUserSubscribed(Long accountId) throws CustomException {
-        try{
-            Timestamp ends = jdbcTemplate.queryForObject(
-                    "select end_at from Subscribe where account_id = ?", Timestamp.class, accountId
-            );
-            return ends.after(new Date());
-        }catch(DataAccessException e){
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
+        Timestamp ends = jdbcTemplate.queryForObject(
+                "select end_at from Subscribe where account_id = ?", Timestamp.class, accountId
+        );
+        return ends.after(new Date());
+
     }
 
 
 
     public void setRoadmap(Long id, Long roadmapId) {
-        try {
-            jdbcTemplate.update("UPDATE Account SET roadmap_id = ? WHERE id=?", roadmapId, id);
-        }
-        catch(DataAccessException e){
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
+        jdbcTemplate.update("UPDATE Account SET roadmap_id = ? WHERE id=?", roadmapId, id);
     }
 
     public void doSubscribe(Long accountId){
-        try{
             jdbcTemplate.update("INSERT Subscribe(account_id) VALUES (?)", accountId);
             extendSubscribeEndDate(accountId, 31);
-        }
-        catch(DataAccessException e){
-            e.printStackTrace();
-
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
     }
 
     public void extendSubscribeEndDate(Long accountId, Integer date) {

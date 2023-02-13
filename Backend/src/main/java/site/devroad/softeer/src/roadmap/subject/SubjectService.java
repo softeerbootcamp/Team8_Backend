@@ -25,7 +25,7 @@ public class SubjectService {
         this.roadmapRepo = roadmapRepo;
     }
 
-    public List<CourseDetail> getCourseDetails(Long subjectId, Long accountId) throws CustomException {
+    public List<CourseDetail> getCourseDetails(Long subjectId, Long accountId){
         Optional<Roadmap> roadmapById = roadmapRepo.findRoadmapByAccountId(accountId);
         if (roadmapById.isEmpty()) {
             throw new CustomException(ExceptionType.ROADMAP_NOT_FOUND);
