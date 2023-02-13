@@ -10,13 +10,11 @@ import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.exam.dto.GetExamDetailRes;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.exam.dto.subdto.ExamDetail;
-import site.devroad.softeer.src.exam.model.Exam;
 import site.devroad.softeer.src.roadmap.RoadmapService;
 import site.devroad.softeer.src.user.UserService;
 import site.devroad.softeer.utility.JwtUtility;
 import site.devroad.softeer.utility.TossUtility;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -36,20 +34,10 @@ public class ExamController {
         this.tossUtility = tossUtility;
     }
 
-    @PostMapping("/api/exam/{examId}")
-    public ResponseEntity<?> purchaseExam(@PathVariable("examId") Long examId, @RequestAttribute Long accountId) {
-        try {
-            examService.purchaseExam(accountId, examId);
-            return new ResponseEntity<>(Map.of("success", true), HttpStatus.OK);
-        } catch (CustomException e) {
-            return e.getResponseEntity();
-        }
-    }
-
     @GetMapping("/api/exam/{examId}")
     public ResponseEntity<?> getExamDetail(@PathVariable("examId") Long examId, @RequestAttribute Long accountId) {
         try {
-            examService.checkExamPurchased(accountId, examId);
+            examService.checkExamPurchased(accountId);
             ExamDetail examDetail = examService.getExamDetail(examId);
             return new ResponseEntity<>(new GetExamDetailRes(true, examDetail), HttpStatus.OK);
         } catch (CustomException e) {
@@ -60,36 +48,34 @@ public class ExamController {
     @PostMapping("/api/exam/assignment")
     public ResponseEntity<?> assignmentSubmit(@RequestAttribute Long accountId, @RequestBody PostAssignSubmitReq req) {
         try {
-            examService.checkExamPurchased(accountId, req.getExamId());
+            examService.checkExamPurchased(accountId);
             examService.submitAssignment(accountId, req);
             return new ResponseEntity<>(Map.of("success", true), HttpStatus.CREATED);
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
-
-
     }
 
     @GetMapping("/api/purchase/exam/success")
     public ResponseEntity<?> purchaseSuccess(@RequestParam String orderId, @RequestParam String paymentKey, @RequestParam Integer amount) {
         try {
             tossUtility.validateTossParams(orderId, paymentKey, amount);
-            MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
-            map.add("Location","https://devroad.site/roadmap");
             examService.makePurchasedByTossOrderId(orderId);
-            return new ResponseEntity<>("",map,HttpStatus.TEMPORARY_REDIRECT);
+            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+            map.add("Location", "https://devroad.site/roadmap");
+            return new ResponseEntity<>("", map, HttpStatus.TEMPORARY_REDIRECT);
 
         } catch (CustomException e) {
             return e.getResponseEntity();
         }
 
     }
-    @GetMapping("/api/purchase/exam/fail")
-    public ResponseEntity<?> purchaseFail(){
-            MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
-            map.add("Location","/roadmap");
-            return new ResponseEntity<>("",map,HttpStatus.TEMPORARY_REDIRECT);
 
+    @GetMapping("/api/purchase/exam/fail")
+    public ResponseEntity<?> purchaseFail() {
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("Location", "/roadmap");
+        return new ResponseEntity<>("", map, HttpStatus.TEMPORARY_REDIRECT);
     }
 
 

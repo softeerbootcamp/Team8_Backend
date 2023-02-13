@@ -66,7 +66,7 @@ public class ExamRepo {
     }
 
 
-    public void addExamToAccount(Long accountId, Long examId) throws CustomException {
+    public void subscribeExam(Long accountId, Long examId) throws CustomException {
         try{
             jdbcTemplate.update("insert into PurchasedExam(account_id, exam_id) values(?, ?)", accountId, examId);
         }catch(DataAccessException e){
@@ -74,15 +74,6 @@ public class ExamRepo {
         }
     }
 
-    public Boolean isExamPurchased(Long accountId, Long examId) throws CustomException{
-        try{
-            Long result  = jdbcTemplate.queryForObject(
-                    "select count(*) from PurchasedExam where account_id = ? and exam_id = ?", Long.class, accountId, examId);
-            return result == 1L;
-        }catch(DataAccessException e){
-            throw new CustomException(ExceptionType.DATABASE_ERROR);
-        }
-    }
 
 
     public void addExamSubmission(Long accountId, Long examId, String url, String description) throws CustomException {
