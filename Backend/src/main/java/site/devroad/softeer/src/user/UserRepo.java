@@ -19,7 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Repository @Transactional(readOnly = false)
+@Repository
+@Transactional(readOnly = false)
 public class UserRepo {
     private JdbcTemplate jdbcTemplate;
 
@@ -44,7 +45,6 @@ public class UserRepo {
     public Account findAccountById(Long id) {
         return jdbcTemplate.queryForObject("SELECT * FROM Account WHERE id = ?", accountRowMapper(), id);
     }
-
 
     public Optional<LoginInfo> findByEmail(String email) {
         try {
@@ -76,26 +76,24 @@ public class UserRepo {
                 "select end_at from Subscribe where account_id = ?", Timestamp.class, accountId
         );
         return ends.after(new Date());
-
     }
-
 
 
     public void setRoadmap(Long id, Long roadmapId) {
         jdbcTemplate.update("UPDATE Account SET roadmap_id = ? WHERE id=?", roadmapId, id);
     }
 
-    public void doSubscribe(Long accountId){
-            jdbcTemplate.update("INSERT Subscribe(account_id) VALUES (?)", accountId);
-            extendSubscribeEndDate(accountId, 31);
+    public void doSubscribe(Long accountId) {
+        jdbcTemplate.update("INSERT Subscribe(account_id) VALUES (?)", accountId);
+        extendSubscribeEndDate(accountId, 31);
     }
 
     public void extendSubscribeEndDate(Long accountId, Integer date) {
-        try{
+        try {
             jdbcTemplate.update("UPDATE Subscribe \n" +
                     "SET end_at = ADDDATE(IF(NOW() > end_at, NOW(), end_at), INTERVAL ? DAY)\n" +
                     "where account_id = ?", date, accountId);
-        }catch(DataAccessException e){
+        } catch (DataAccessException e) {
             e.printStackTrace();
             throw new CustomException(ExceptionType.DATABASE_ERROR);
         }
