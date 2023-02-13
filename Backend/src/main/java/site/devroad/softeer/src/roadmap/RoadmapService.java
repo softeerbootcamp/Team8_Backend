@@ -67,7 +67,7 @@ public class RoadmapService {
     }
 
     public void createRoadmap(PostRoadmapReq roadmapReq) throws CustomException{
-        Optional<LoginInfo> loginInfo = userRepo.findByEmail(roadmapReq.getEmail());
+        Optional<LoginInfo> loginInfo = userRepo.findLoginInfoByEmail(roadmapReq.getEmail());
         if(loginInfo.isEmpty()){
             throw new CustomException(ExceptionType.ACCOUNT_NOT_FOUND);
         }
