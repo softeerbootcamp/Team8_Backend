@@ -62,14 +62,6 @@ export default {
         .then((response) => {
           console.log("user data jwt : " + config);
           this.$store.commit('setAccountId', response.data.userId);
-          //       "success" : "true",
-          // "userId" : "id",
-          // "userName" : "name",
-          // "roadmapId" : "roadmapId",
-          // "totalSubjectIdx" : "4",
-          // "curSubjectIdx" : "1",
-          // "chapterPercent" : 0.25,
-          // "nextChapterPK" : 1001
           this.userId = response.data.userId;
           this.userName = response.data.userName;
           this.roadmapId = response.data.roadmapId;

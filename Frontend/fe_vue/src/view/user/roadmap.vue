@@ -11,7 +11,11 @@
           {{ course[0] }}
         </button>
         <button class="btn mt-4" :class="getButtonClass(course[2])" type="button"
-          @click="switchRouterByState(course[2], course[3])">
+          @click="switchRouterByState(course[2], course[4], 'MCQ')">
+          <span class="bi bi-file-text"></span>
+        </button>
+        <button class="btn mt-4" :class="getButtonClass(course[3])" type="button"
+          @click="switchRouterByState(course[2], course[5], 'FRQ')">
           <span class="bi bi-file-text"></span>
         </button>
 
@@ -63,7 +67,7 @@ export default {
           return 'btn btn-light btn-sm';
       }
     },
-    switchRouterByState(state, examId) {
+    switchRouterByState(state, examId, isMcqOrFrq) {
       // switch(state) {
       //   case 'NONE':
       //     return 'btn btn-light btn-sm';
@@ -78,10 +82,15 @@ export default {
       //   break:
       //     return 'btn btn-light btn-sm';
       // }
+
       if (state === 'PURCHASED') {
-        //   this.$router.push({name:"ExamView", params:{examId:examId}});
-        // }
-        // if (state === 'NONE') {
+        if (isMcqOrFrq === 'MCQ') {
+          this.$router.push({ name: "McqExamView", params: { examId: examId } });
+        } else {
+          this.$router.push({ name: "FrqExamView", params: { examId: examId } });
+        }
+      }
+      if (state === 'NONE') {
         this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
       }
     }

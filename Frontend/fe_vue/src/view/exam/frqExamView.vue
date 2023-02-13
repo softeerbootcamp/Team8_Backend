@@ -15,7 +15,7 @@
             <div class="card-footer">
                 <a v-bind:href="examUrl">템플릿 코드를 다운로드하는 곳</a>
                 <router-link :to="{
-                    name: 'ExamSubmitView',
+                    name: 'FrqExamSubmitView',
                     params: { examId: getExamId() }
                 }">
                     <button class="btn btn-primary mt-2">제출하러가기</button>
