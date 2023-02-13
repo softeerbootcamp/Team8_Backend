@@ -1,7 +1,5 @@
 package site.devroad.softeer.src.roadmap.dto.subdto;
 
-import site.devroad.softeer.src.course.model.Chapter;
-
 public class ChapterDetail {
     private Long chapterId;
     private String chapterName;
