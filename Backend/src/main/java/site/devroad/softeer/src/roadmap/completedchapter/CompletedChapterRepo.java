@@ -9,6 +9,7 @@ import site.devroad.softeer.exceptions.ExceptionType;
 
 import javax.sql.DataSource;
 import java.sql.Date;
+import java.util.List;
 
 @Repository
 public class CompletedChapterRepo {
@@ -18,15 +19,23 @@ public class CompletedChapterRepo {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void addCompletedChapter(Long accountId, Long chapterId) throws CustomException{
-        try{
-            jdbcTemplate.update("insert into CompletedChapter(account_id, chapter_id) values(?, ?, )", accountId, chapterId);
-        }catch (DataAccessException e){
+    public void createCompletedChapter(Long accountId, Long chapterId) throws CustomException {
+        try {
+            jdbcTemplate.update("insert into CompletedChapter(account_id, chapter_id) values(?, ?)", accountId, chapterId);
+        } catch (DataAccessException e) {
             throw new CustomException(ExceptionType.DATABASE_ERROR);
         }
     }
 
-    private RowMapper<CompletedChapter> chapterRowMapper() {
+    public List<CompletedChapter> readCompletedChapters(Long accountId, Long courseId) {
+        return jdbcTemplate.query("SELECT cc.*\n" +
+                "FROM CompletedChapter cc\n" +
+                "JOIN Chapter c ON cc.chapter_id = c.id\n" +
+                "WHERE c.course_id = ?\n" +
+                "AND cc.account_id = ?;\n", completedChapterRowMapper(), courseId, accountId);
+    }
+
+    private RowMapper<CompletedChapter> completedChapterRowMapper() {
         return (rs, rowNum) -> {
             long id = rs.getLong("id");
             long account_id = rs.getLong("account_id");
