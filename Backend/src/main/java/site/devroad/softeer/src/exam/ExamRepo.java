@@ -1,13 +1,11 @@
 package site.devroad.softeer.src.exam;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import site.devroad.softeer.exceptions.CustomException;
-import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.model.Exam;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
@@ -20,17 +18,26 @@ import java.util.Optional;
 public class ExamRepo {
 
     private JdbcTemplate jdbcTemplate;
+
     @Autowired
-    public ExamRepo(DataSource dataSource){
+    public ExamRepo(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
-    public Optional<Exam> findExamBySubjectId(Long subjectId){
+    public Optional<Exam> findExamBySubjectId(Long subjectId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where subject_id = ?", examRowMapper(), subjectId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
-        catch(EmptyResultDataAccessException e){
+    }
+
+    public Optional<Exam> findExamBySubjectIdAndType(Long subjectId, String type) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where subject_id = ? and type = ?"
+                    , examRowMapper(), subjectId, type));
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -38,8 +45,7 @@ public class ExamRepo {
     public Optional<Exam> findExamById(Long examId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from Exam where id = ?", examRowMapper(), examId));
-        }
-        catch(EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -56,13 +62,12 @@ public class ExamRepo {
                             "ON s.id = e.subject_id\n" +
                             "WHERE e.id = ?",
                     examDetailRowMapper(), examId));
-        }
-        catch(EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    public void delete(Long examId){
+    public void delete(Long examId) {
         jdbcTemplate.update("delete * from Exam where id = ?", examId);
     }
 
@@ -71,14 +76,13 @@ public class ExamRepo {
         jdbcTemplate.update("insert into PurchasedExam(account_id, exam_id) values(?, ?)", accountId, examId);
     }
 
-
-
     public void addExamSubmission(Long accountId, Long examId, String url, String description) throws CustomException {
-            jdbcTemplate.update("insert into ExamSubmission(account_id, exam_id, url, is_passed, description) " +
-                    "values(?, ?, ?, 3, ?)", accountId, examId, url, description);
+        jdbcTemplate.update("insert into ExamSubmission(account_id, exam_id, url, is_passed, description) " +
+                "values(?, ?, ?, 3, ?)", accountId, examId, url, description);
 
     }
-    RowMapper<ExamSubmission> examSubmissionRowMapper(){
+
+    RowMapper<ExamSubmission> examSubmissionRowMapper() {
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long accountId = rs.getLong("account_id");
@@ -89,7 +93,8 @@ public class ExamRepo {
             return new ExamSubmission(id, accountId, examId, url, submissionType, explain);
         };
     }
-    RowMapper<Exam> examRowMapper(){
+
+    RowMapper<Exam> examRowMapper() {
         return (rs, rowNum) -> {
             Long id = rs.getLong("id");
             Long subject_id = rs.getLong("subject_id");
@@ -101,7 +106,7 @@ public class ExamRepo {
         };
     }
 
-    RowMapper<ExamDetail> examDetailRowMapper(){
+    RowMapper<ExamDetail> examDetailRowMapper() {
         return (rs, rowNum) -> {
             String subjectName = rs.getString("subject_name");
             String url = rs.getString("url");
