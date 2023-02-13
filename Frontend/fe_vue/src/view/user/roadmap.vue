@@ -14,6 +14,10 @@
           @click="switchRouterByState(course[2], course[3])">
           <span class="bi bi-file-text"></span>
         </button>
+        <button class="btn mt-4" :class="getButtonClass(course[2])" type="button"
+          @click="switchRouterByState(course[2], course[3])">
+          <span class="bi bi-file-text"></span>
+        </button>
 
       </span>
     </div>

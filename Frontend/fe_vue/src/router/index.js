@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 import SignUp from "@/components/signup.vue";
 import LogIn from "@/components/login.vue";
-import RoadMap from "@/view/roadmap.vue";
-import CourseView from "@/view/courseView.vue";
-import UserHome from "@/view/userhome.vue";
-import ChapterView from "@/view/chapterView.vue";
-import RoadMapFactory from "@/view/roadmapFactory.vue"
-import AdminHome from "@/view/adminHome.vue"
-import ExamView from "@/view/examView.vue"
-import ExamSubmitView from "@/view/examSubmitView.vue"
-import ExamPurchaseView from "@/view/examPurchaseView.vue"
-import AdminUserView from "@/view/adminUserView"
-import UserPendingView from "@/view/userPendingView"
+import RoadMap from "@/view/user/roadmap.vue";
+import CourseView from "@/view/user/courseView.vue";
+import UserHome from "@/view/user/userhome.vue";
+import ChapterView from "@/view/user/chapterView.vue";
+import RoadMapFactory from "@/view/admin/roadmapFactory.vue"
+import AdminHome from "@/view/admin/adminHome.vue"
+import ExamView from "@/view/exam/examView.vue"
+import ExamSubmitView from "@/view/exam/examSubmitView.vue"
+import ExamPurchaseView from "@/view/exam/examPurchaseView.vue"
+import AdminUserView from "@/view/admin/adminUserView"
+import UserPendingView from "@/view/user/userPendingView"
 import Store from "@/store"
 // path: '/',
 //     redirect: "/login",

@@ -9,9 +9,11 @@ export default new Vuex.Store({
     curSubjectId:"",
     isAdmin: false,
     accountId:"",
-    
+    isRoadmap:"-1",
   },
   mutations: {
+
+
     setAccountId(state,status){
       state.accountId = status;
     },
