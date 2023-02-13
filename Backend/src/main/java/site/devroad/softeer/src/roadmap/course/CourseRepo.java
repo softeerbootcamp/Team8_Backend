@@ -18,7 +18,7 @@ public class CourseRepo {
 
     @Autowired
     public CourseRepo(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public Optional<Course> findCourseById(Long id) {
