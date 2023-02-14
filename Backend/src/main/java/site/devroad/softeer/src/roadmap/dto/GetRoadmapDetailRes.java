@@ -1,13 +1,14 @@
 package site.devroad.softeer.src.roadmap.dto;
 
+import site.devroad.softeer.src.roadmap.dto.domain.SubjectDetail;
+
 import java.util.List;
-import java.util.Map;
 
 public class GetRoadmapDetailRes {
     boolean success;
-    Map<String, List<List<Object>>> subjects;
+    List<SubjectDetail> subjects;
 
-    public GetRoadmapDetailRes(Map<String, List<List<Object>>> subjects) {
+    public GetRoadmapDetailRes(List<SubjectDetail> subjects) {
         this.success = true;
         this.subjects = subjects;
     }
@@ -16,7 +17,7 @@ public class GetRoadmapDetailRes {
         return success;
     }
 
-    public Map<String, List<List<Object>>> getSubjects() {
+    public List<SubjectDetail> getSubjects() {
         return subjects;
     }
 }

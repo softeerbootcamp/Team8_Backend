@@ -14,7 +14,7 @@
                     <td>{{ user }}</td>
                     <td>
                         <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;">
-                            <button>
+                            <button class="btn btn-dark">
                                 유저 로드맵 작성하기
                             </button>
                         </router-link>
