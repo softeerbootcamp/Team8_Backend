@@ -11,6 +11,7 @@ export default new Vuex.Store({
     accountId:"",
     isRoadmap:"-1",
     passingScore : 80,
+    username :"",
   },
   mutations: {
 
@@ -32,6 +33,10 @@ export default new Vuex.Store({
     },
     setJwtToken(state, token) {
       state.jwt = token;
+      
+    },
+    setUsername(state,username){
+      state.username = username;
     },
     ifTokenVal(state) {
       if (state.jwt === "") {

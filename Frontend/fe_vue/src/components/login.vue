@@ -26,6 +26,7 @@
 <script>
 // import axios from "axios";
 import { signinUser } from "@/api";
+import jwt_decode from "jwt-decode";
 
 export default {
   name: "Login",
@@ -64,6 +65,9 @@ export default {
             this.$store.commit("setLoginStatus", true);
             console.log("isLogin store status when login success! : " + this.$store.state.isLogin)
             this.$store.commit("setJwtToken", response.data.jwt);
+            this.setStoreUserNameByJwt(response.data.jwt);
+            console.log("username jwt setted  : " + this.$store.state.username);
+
             console.log("userpending view roadmap id : " + response.data.roadmapId);
 
             if (response.data.roadmapId === "-1") {
@@ -87,6 +91,15 @@ export default {
         });
 
     },
+    setStoreUserNameByJwt(jwt) {
+      var username = this.jwtDecoder(jwt).username;
+      this.$store.commit('setUsername', username)
+
+    },
+    jwtDecoder(jwt) {
+      var decoded = jwt_decode(jwt);
+      return decoded;
+    }
   },
 };
 </script>
