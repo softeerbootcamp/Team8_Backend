@@ -1,5 +1,9 @@
 <template>
   <div>
+    구독권 신청하기
+  </div>
+
+  <div>
     <button id="payment-button" @click="loadToss">15,000원 결제하기</button>
   </div>
 </template>
