@@ -10,10 +10,9 @@
       로드맵 시작하기!?
     </button>
   </router-link>
-  <router-link :to="{ name: 'ChapterFrame',params:{chapterId :curChapterPK } }" v-if="isRoadmapStarted"
-    style="text-decoration: none;">
-    <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
-  </router-link>
+  <div v-if="isRoadmapStarted">
+    <button @click="routeByCurChapterPK" class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
+  </div>
 </template>
 <script>
 import { userData } from '@/api'
@@ -28,7 +27,7 @@ export default {
       isSuccess: false,
       userId: null,
       userName: null,
-      roadmapId: "1",
+      roadmapId: "-1",
       totalSubjectIdx: 0,
       curSubjectIdx: 0,
       chapterPercent: 0,
@@ -51,6 +50,14 @@ export default {
     },
   },
   methods: {
+    routeByCurChapterPK() {
+      var cpk = this.curChapterPK;
+      if (cpk === -1) {
+        this.$router.push('/roadmap');
+      } else {
+        this.$router.push({ name: 'ChapterFrame', params: { chapterId: this.curChapterPK } })
+      }
+    },
     async getUserData() {
       const config = {
         headers: {
