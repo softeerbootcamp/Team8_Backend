@@ -85,7 +85,7 @@ public class ExamService {
         String[] parsedOrderId = orderId.split("_");
         Long accountId = Long.valueOf(parsedOrderId[0]);
         if (userRepo.isUserSubscribed(accountId)) {
-            throw new CustomException(ExceptionType.EXAM_ALREADY_PURCHASED);
+            userRepo.doSubscribe(accountId);
         }
         userRepo.extendSubscribeEndDate(accountId, 31);
     }
