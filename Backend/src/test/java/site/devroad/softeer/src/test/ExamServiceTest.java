@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
+import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
 import site.devroad.softeer.src.exam.ExamService;
@@ -18,6 +19,7 @@ import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
@@ -74,5 +76,28 @@ class ExamServiceTest {
             e.printStackTrace();
             throw new RuntimeException();
         }
+    }
+
+    @Test
+    @DisplayName("Make Purchased")
+    void makePurchase(){
+        //given
+        Account accountInfo = userRepo.createAccountInfo("hello", "01029846389", "Student");
+        Long id = accountInfo.getId();
+
+
+        try{
+            examService.checkExamPurchased(id);
+        }catch(CustomException e){
+            assertEquals(e.getExceptionType(), ExceptionType.EXAM_NOT_PURCHASED);
+        }
+        //when
+        examService.makePurchasedByTossOrderId(String.valueOf(id) + "_123_asdfasdfasdf");
+
+        //then
+        //if error occurs below code it will throw exception
+        examService.checkExamPurchased(id);
+
+
     }
 }

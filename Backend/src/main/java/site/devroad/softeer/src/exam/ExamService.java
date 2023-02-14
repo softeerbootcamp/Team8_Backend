@@ -77,14 +77,14 @@ public class ExamService {
         return examDetailById.get();
     }
 
-    public void submitAssignment(Long accountId, PostAssignSubmitReq req) throws CustomException{
+    public void submitAssignment(Long accountId, PostAssignSubmitReq req){
         examRepo.addExamSubmission(accountId, req.getExamId(), req.getUrl(), req.getDescription());
     }
-    public void makePurchasedByTossOrderId(String orderId) throws CustomException{
+    public void makePurchasedByTossOrderId(String orderId){
         //   orderId : accountId + "_" + examId + "_" + randomStr,
         String[] parsedOrderId = orderId.split("_");
         Long accountId = Long.valueOf(parsedOrderId[0]);
-        if (userRepo.isUserSubscribed(accountId)) {
+        if (!userRepo.isUserSubscribed(accountId)) {
             userRepo.doSubscribe(accountId);
         }
         userRepo.extendSubscribeEndDate(accountId, 31);
