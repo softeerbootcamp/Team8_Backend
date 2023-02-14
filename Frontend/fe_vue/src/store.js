@@ -4,20 +4,19 @@ import createPersistedState from "vuex-persistedstate";
 export default new Vuex.Store({
   state: {
     isLogin: false,
-    subjects: [],
     jwt: "",
-    curSubjectId:"",
+    curSubjectId: "",
     isAdmin: false,
-    accountId:"",
-    isRoadmap:"-1",
-    passingScore : 80,
-    username :"",
+    accountId: "",
+    isRoadmap: false,
+    passingScore: 80,
+    username: "",
   },
   mutations: {
-    setIsRoadmap(state,status){
-state.isRoadmap = status;
+    setIsRoadmap(state, status) {
+      state.isRoadmap = status;
     },
-    setAccountId(state,status){
+    setAccountId(state, status) {
       state.accountId = status;
     },
     setIsAdmin(state, status) {
@@ -29,14 +28,10 @@ state.isRoadmap = status;
     setLoginStatus(state, status) {
       state.isLogin = status;
     },
-    setSubjectsStatus(state, subjects) {
-      state.subjects = subjects;
-    },
     setJwtToken(state, token) {
       state.jwt = token;
-      
     },
-    setUsername(state,username){
+    setUsername(state, username) {
       state.username = username;
     },
     ifTokenVal(state) {
@@ -50,11 +45,12 @@ state.isRoadmap = status;
     logout(state) {
       state.jwt = "";
       state.isLogin = false;
-    },
-    adminLogout(state) {
-      state.jwt = "";
-      state.isLogin = false;
+      state.curSubjectId = "";
       state.isAdmin = false;
+      state.accountId = "";
+      state.isRoadmap = false;
+      state.passingScore = 80;
+      state.username = "";
     },
   },
   actions: {

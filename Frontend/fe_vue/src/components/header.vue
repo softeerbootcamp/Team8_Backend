@@ -20,7 +20,7 @@
     </div>
     <div class="menu" v-if="isAdmin">
       <a v-if="isLogin">
-        <router-link to="/" @click="[logout(), adminLogout()]">로그아웃</router-link>
+        <router-link to="/" @click="logout">로그아웃</router-link>
       </a>
       <a v-if="isLogin">
         <router-link to="/adminhome">로드맵 작성 관리</router-link>
@@ -54,9 +54,6 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout");
-    },
-    adminLogout() {
-      this.$store.dispatch("adminLogout");
     },
   },
 };

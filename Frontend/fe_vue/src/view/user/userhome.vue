@@ -67,7 +67,7 @@ export default {
           this.userName = response.data.userName;
           this.roadmapId = response.data.roadmapId;
           if (this.roadmapId != "-1") {
-            this.$store.commit('setIsRoadmap', response.data.roadmapId);
+            this.$store.commit('setIsRoadmap', true);
           }
           this.totalSubjectIdx = response.data.totalSubjectIdx;
           this.curSubjectIdx = response.data.curSubjectIdx;

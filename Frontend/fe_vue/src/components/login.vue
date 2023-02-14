@@ -66,16 +66,10 @@ export default {
             console.log("isLogin store status when login success! : " + this.$store.state.isLogin)
             this.$store.commit("setJwtToken", response.data.jwt);
             this.setStoreUserNameByJwt(response.data.jwt);
-            console.log("username jwt setted  : " + this.$store.state.username);
-
-            console.log("userpending view roadmap id : " + response.data.roadmapId);
-
             if (response.data.roadmapId === "-1") {
               console.log("userpending view roadmap id : " + response.data.roadmapId);
               this.$router.push({ name: "UserPendingView" });
             }
-
-
             if (response.data.admin) {
               this.$store.commit("setIsAdmin", true);
               this.$router.push({ name: "AdminHome" });
