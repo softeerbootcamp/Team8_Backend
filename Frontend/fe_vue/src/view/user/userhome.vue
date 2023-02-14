@@ -1,21 +1,43 @@
 <template>
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-3 col-sm-6">
-        강의 진행도
+  <!-- style="display:flex; margin-right:auto" -->
+  <div>
+    <div class="container mt-5" style="display:flex; width:40vw">
+      <div>
+        지금 듣고 계시는 강의는<br>
+        <img src="../assets/images/spring.svg" style="width:10vw" />
+      </div>
+      <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
+        <div class="col-md-3 col-sm-6" style="width:200px">
+          전체 진행도
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
+            angle: 90,
+            startColor: 'black',
+            stopColor: 'black'
+          
+          }" style="width:13vw" />
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-3 col-sm-6">
-        <div class="progress blue">
-          <span class="progress-left">
-            <span class="progress-bar"></span>
-          </span>
-          <span class="progress-right">
-            <span class="progress-bar"></span>
-          </span>
-          <div class="progress-value">{{ roadmapPercentage }}%</div>
+    <div class="container mt-5" style="display:flex; width:40vw">
+      <div class="row" style="display:flex;flex-direction:column;margin-right;:auto">
+        <div class="col-md-3 col-sm-6" style="width:200px">
+          강의 진행도
         </div>
+        <div class="col-md-3 col-sm-6">
+          <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
+            :gradient="{
+              angle: 90,
+              startColor: 'black',
+              stopColor: 'black'
+            }
+            " />
+        </div>
+      </div>
+      <div style="margin-left: auto;">
+        이다음 들어야 할 강의는<br>
+        <img src="../assets/images/tensorflow.svg" style="width:10vw;" />
       </div>
     </div>
   </div>
@@ -28,17 +50,19 @@
     <button @click="routeByCurChapterPK" class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
   </div>
 </template>
-
 <script>
+import "vue3-circle-progress/dist/circle-progress.css";
+import CircleProgress from "vue3-circle-progress";
 import { userData } from '@/api'
 
 export default {
+  components: { CircleProgress },
+
   name: "UserHome",
   data() {
     return {
       roadmapPercentage: 0,
       roadMapShowClicked: false,
-      subjects: [],
       isSuccess: false,
       userId: null,
       userName: null,
@@ -49,6 +73,7 @@ export default {
       curChapterPK: 0,
       subscribe: false,
       jwt: null,
+      subjectPercentage: 0,
     };
   },
   mounted() {
@@ -105,11 +130,16 @@ export default {
 
     },
     setProgressbar() {
-      if (this.chapterPercent === 0) {
+      if (this.chapterPercent == 0) {
         this.roadmapPercentage = 0;
-      } else {
-        this.roadmapPercentage = parseInt(this.chapterPercent * 100);
+        return;
       }
+      this.roadmapPercentage = parseInt(
+        (this.chapterPercent)
+      ) * 100;
+
+      this.subjectPercentage = (this.curSubjectIdx / this.totalSubjectIdx) * 100;
+      console.log("this subject percentage" + this.subjectPercentage);
     },
 
   },
@@ -117,165 +147,5 @@ export default {
 </script>
 
 <style>
-.progress {
-  width: 150px;
-  height: 150px !important;
-  line-height: 150px;
-  background: none;
-  margin: 0 auto;
-  box-shadow: none;
-  position: relative;
-  --bs-progress-bg: #ffffff !important;
-}
 
-.progress:after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 12px solid #fff;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.progress>span {
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  z-index: 1;
-}
-
-.progress .progress-left {
-  left: 0;
-}
-
-.progress .progress-bar {
-  width: 100%;
-  height: 100%;
-  background: none;
-  border-width: 12px;
-  border-style: solid;
-  position: absolute;
-  top: 0;
-}
-
-.progress .progress-left .progress-bar {
-  left: 100%;
-  border-top-right-radius: 80px;
-  border-bottom-right-radius: 80px;
-  border-left: 0;
-  -webkit-transform-origin: center left;
-  transform-origin: center left;
-}
-
-.progress .progress-right {
-  right: 0;
-
-}
-
-.progress .progress-right .progress-bar {
-  left: -100%;
-  border-top-left-radius: 80px;
-  border-bottom-left-radius: 80px;
-  border-right: 0;
-  -webkit-transform-origin: center right;
-  transform-origin: center right;
-  animation: loading-1 1.8s linear forwards;
-}
-
-.progress .progress-value {
-  width: 90%;
-  height: 90%;
-  border-radius: 50%;
-  background: #ffffff;
-  font-size: 24px;
-  color: #d10b4f;
-  line-height: 135px;
-  text-align: center;
-  position: absolute;
-  top: 5%;
-  left: 5%;
-}
-
-.progress.blue .progress-bar {
-  border-color: #d10b4f;
-}
-
-.progress.blue .progress-left .progress-bar {
-  animation: loading-2 1.5s linear forwards 1.8s;
-}
-
-
-
-
-
-
-@keyframes loading-1 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
-  }
-}
-
-@keyframes loading-2 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
-  }
-}
-
-@keyframes loading-3 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-  }
-}
-
-@keyframes loading-4 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(36deg);
-    transform: rotate(36deg);
-  }
-}
-
-@keyframes loading-5 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(126deg);
-    transform: rotate(126deg);
-  }
-}
-
-@media only screen and (max-width: 990px) {
-  .progress {
-    margin-bottom: 20px;
-  }
-}
 </style>

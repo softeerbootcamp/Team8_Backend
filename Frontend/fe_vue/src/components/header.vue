@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch("logout");
+      this.$store.commit('logout');
     },
   },
 };
