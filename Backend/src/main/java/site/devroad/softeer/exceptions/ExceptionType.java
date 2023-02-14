@@ -35,7 +35,8 @@ public enum ExceptionType {
     //Test Related Exceptions
     EXAM_NOT_FOUND(HttpStatus.NOT_FOUND, "Exam not exist", 1301),
     EXAM_NOT_PURCHASED(HttpStatus.BAD_REQUEST, "Exam not purchased", 1302),
-    TOSS_PURCHASE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Toss purchase io error",1303),
+    TOSS_ALREADY_PURCHASED(HttpStatus.BAD_REQUEST, "Toss purchase already done error",1303),
+    TOSS_PURCHASE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Toss purchase io exception done error",1304),
     EXAM_ALREADY_PURCHASED(HttpStatus.BAD_REQUEST, "Exam Already purchased", 1304),
 
     //Last Exceptions
