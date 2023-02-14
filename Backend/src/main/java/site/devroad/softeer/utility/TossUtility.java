@@ -7,10 +7,7 @@ import org.springframework.stereotype.Component;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
@@ -25,7 +22,8 @@ public class TossUtility {
             URL url = new URL("https://api.tosspayments.com/v1/payments/confirm");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
-            String encodedString = "Basic " + Base64.getEncoder().encodeToString(tossApiKey.getBytes());
+            String encodedString = "Basic " + tossApiKey;
+
 
             con.setRequestProperty("Authorization", encodedString);
             con.setRequestProperty("Content-Type", "application/json");
@@ -38,26 +36,33 @@ public class TossUtility {
             os.close();
 
             int responseCode = con.getResponseCode();
+
+            logger.info("encoded api key {}", encodedString);
             logger.info("payload is {}" , payload);
             logger.info("response code is {}", responseCode);
 
-            if(responseCode == 401){
-                return;
+            InputStream in = null;
+            if (responseCode >= 200 && responseCode < 300) {
+                in = con.getInputStream();
+            } else {
+                in = con.getErrorStream();
             }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            StringBuffer response = new StringBuffer();
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+                response.append('\r');
+            }
+            reader.close();
+
+            logger.info("response message is {}", response.toString());
 
             if(responseCode!=200){
-                throw new CustomException(ExceptionType.TOSS_PURCHASE_FAILED);
+                throw new CustomException(ExceptionType.TOSS_ALREADY_PURCHASED);
             }
-
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
         }catch (IOException e){
             e.printStackTrace();
             logger.warn("IOExcetion {}", "error occurs while getting result from toss server");
