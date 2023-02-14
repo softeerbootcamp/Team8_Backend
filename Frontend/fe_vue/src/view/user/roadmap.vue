@@ -1,26 +1,34 @@
 <template>
-  <div class="d-grid gap-2 col-6 mx-auto mt-4">
-    <div v-for="subject in getsubjects" :key="subject">
-      <button class="btn btn-primary ms-3 mt-4" @click="[
-      $router.push({
-        name: 'CourseView',
-      })
-      , setCurrentSubjectId(subject.subjectId)]">
-        {{ subject.name }}
-      </button>
-      <button class="btn mt-4" :class="getButtonClass(subject.mcqState)" type="button"
-        @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')">
-        <span class="bi bi-file-text"></span>
-      </button>
-      <button class="btn mt-4" :class="getButtonClass(subject.frqState)" type="button"
-        @click="switchRouterByState(subject.frqState, subject.frqExamId, 'FRQ')">
-        <span class="bi bi-file-text"></span>
-      </button>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="row" v-for="subject in subjects" :key="subject">
+        <div class="col col-md-7 offset-md-3
+                            text-center mt-5">
+          <button class="btn btn-dark" @click="[
+          $router.push({
+            name: 'CourseView',
+          })
+          , setCurrentSubjectId(subject.subjectId)]">
+            {{ subject.name }}
+          </button>
+          <button class="btn ml-3" :class="getButtonClass(subject.mcqState)" type="button"
+            @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')">
+            <span>객관식</span>
+            <span class="bi bi-file-text"></span>
+          </button>
+          <button class="btn ml-3" :class="getButtonClass(subject.frqState)" type="button"
+            @click="switchRouterByState(subject.frqState, subject.frqExamId, 'FRQ')">
+            <span>주관식</span>
+            <span class="bi bi-file-text"></span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getRoadmap } from '@/api'
 export default {
   name: "RoadMap",
 
@@ -29,32 +37,37 @@ export default {
       isCardOn: false,
       success: false,
       subDataSuccess: false,
+
+      isSuccess: false,
+      subjects: [],
     };
   },
-
-  computed: {
-    // 여기서 course 는 클릭한 현재 sub 이다.
-    /**
-     * {
-        "success" : "true",
-        "subjects" : 
-        [
-            {
-              "name": "파이썬 기초",
-              "subjectId": "2001",
-              "mcqState": "PASSED",
-              "frqState": "PURCHASED",
-              "mcqExamId": 1,
-              "frqExamId": 2
-            },
-    
-     */
-    getsubjects() {
-      return this.$store.state.subjects;
-    }
+  mounted() {
+    this.getSubData();
   },
   methods:
   {
+    async getSubData() {
+      const config = {
+        headers: {
+          jwt: this.$store.state.jwt,
+        }
+      }
+      var vm = this;
+      await getRoadmap(config)
+        .then((response) => {
+          console.log("Getroadmap!!data : " + response.data.success)
+          if (!response.data.success) {
+            this.$router.push('/');
+          }
+          vm.isSuccess = response.data.success;
+          vm.subjects = response.data.subjects;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
     setCurrentSubjectId(subId) {
       // var courseStr = String(course);
       // const subjectID = courseStr.split(',')[1];

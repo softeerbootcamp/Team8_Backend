@@ -41,6 +41,8 @@ export default {
       const tossPayment = await loadTossPayments(this.clientKey);
       // TODO : 13, 27, 16000이 아니라 각각에 대한 정보를 가져올것.
       // 필요하면 백엔드에서 jwt, examId로 다 가져올수 있도록 제공가능함.
+      console.log("account id : " + this.$store.state.accountId);
+      console.log("examId : " + this.$route.params.examId);
       tossPayment.requestPayment('카드', this.sendOrderToToss(this.$store.state.accountId, this.$route.params.examId, 16000));
     }
 
