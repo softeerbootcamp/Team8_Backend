@@ -6,19 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
-import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
-import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
-import site.devroad.softeer.src.exam.dto.domain.MultiChoiceQuestion;
-import site.devroad.softeer.src.exam.model.Exam;
-import site.devroad.softeer.src.exam.model.ExamMcq;
-import site.devroad.softeer.src.exam.model.ExamSubmission;
-import site.devroad.softeer.src.exam.model.SubmissionType;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
+import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
+import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
+import site.devroad.softeer.src.exam.model.Exam;
+import site.devroad.softeer.src.exam.model.ExamSubmission;
+import site.devroad.softeer.src.exam.model.SubmissionType;
 import site.devroad.softeer.src.user.UserRepo;
+import site.devroad.softeer.src.user.model.Account;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,7 +35,7 @@ public class ExamService {
         this.userRepo = userRepo;
     }
 
-    public Boolean isUserPassedExam(Long subjectId, Long accountId) {
+    public Boolean isUserPassedExam(Long subjectId, Long accountId){
 
         //subjectId -> subject
         Optional<Subject> optionalSubject = subjectRepo.findById(subjectId);
@@ -66,55 +63,32 @@ public class ExamService {
     }
 
 
-    public void checkExamPurchased(Long accountId) {
+    public void checkExamPurchased(Long accountId){
         if (!userRepo.isUserSubscribed(accountId)) {
             throw new CustomException(ExceptionType.EXAM_NOT_PURCHASED);
         }
     }
 
-    public ExamDetail getExamDetail(Long examId) {
+    public ExamDetail getExamDetail(Long examId){
         Optional<ExamDetail> examDetailById = examRepo.findExamDetailById(examId);
         if (examDetailById.isEmpty()) {
             throw new CustomException(ExceptionType.EXAM_NOT_FOUND);
         }
-        ExamDetail examDetail = examDetailById.get();
-        String type = examDetail.getType();
-        if (type.equals("MCQ")) {
-            List<ExamMcq> questionsByExamId = examRepo.findQuestionsByExamId(examId);
-            return ExamDetail.createMCQDetail(examDetail, getAns(questionsByExamId), getMCQs(questionsByExamId));
-        }
-        return examDetail;
+        return examDetailById.get();
     }
 
-    public List<Integer> getAns(List<ExamMcq> questions) {
-        List<Integer> ans = new ArrayList<>();
-        for (ExamMcq examMcq : questions) {
-            ans.add(examMcq.getAns());
-        }
-        return ans;
-    }
-
-    public List<MultiChoiceQuestion> getMCQs(List<ExamMcq> questions) {
-        List<MultiChoiceQuestion> ans = new ArrayList<>();
-        for (ExamMcq examMcq : questions) {
-            if (examMcq == null)
-                continue;
-            ans.add(new MultiChoiceQuestion(examMcq));
-        }
-        return ans;
-    }
-
-    public void submitAssignment(Long accountId, PostAssignSubmitReq req) {
+    public void submitAssignment(Long accountId, PostAssignSubmitReq req){
         examRepo.addExamSubmission(accountId, req.getExamId(), req.getUrl(), req.getDescription());
     }
-
-    public void makePurchasedByTossOrderId(String orderId) {
+    public void makePurchasedByTossOrderId(String orderId){
         //   orderId : accountId + "_" + examId + "_" + randomStr,
         String[] parsedOrderId = orderId.split("_");
         Long accountId = Long.valueOf(parsedOrderId[0]);
-        if (userRepo.isUserSubscribed(accountId)) {
-            throw new CustomException(ExceptionType.EXAM_ALREADY_PURCHASED);
+        if (!userRepo.isUserSubscribed(accountId)) {
+            userRepo.doSubscribe(accountId);
         }
         userRepo.extendSubscribeEndDate(accountId, 31);
     }
+
+
 }
