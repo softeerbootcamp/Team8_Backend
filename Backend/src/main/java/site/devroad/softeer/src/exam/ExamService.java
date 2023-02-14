@@ -44,19 +44,19 @@ public class ExamService {
 
         Subject subject = optionalSubject.get();
 
-        logger.debug("subject id : {}, subject description : {}", subject.getId(), subject.getDescription());
+        logger.warn("subject id : {}, subject description : {}", subject.getId(), subject.getDescription());
 
         //subject.id -> exam
-        Optional<Exam> optionalExam = examRepo.findExamBySubjectId(subject.getId());
+        Optional<Exam> optionalExam = examRepo.findExamBySubjectId(subject.getId(), "MCQ");
         if (optionalExam.isEmpty())
             throw new CustomException(ExceptionType.EXAM_NOT_FOUND);
 
         Exam exam = optionalExam.get();
-        logger.debug("exam id : {}, exam description : {}, accountId : {}", exam.getId(), exam.getDescription(), accountId);
+        logger.warn("exam id : {}, exam description : {}, accountId : {}", exam.getId(), exam.getDescription(), accountId);
         //exam.id + account.id -> examSubmission
         Optional<ExamSubmission> examSubmission = examSubmissionRepo.findByExamIdAndAccountId(exam.getId(), accountId);
 
-        logger.debug("submit id : {}, {}", examSubmission.get().getId(), examSubmission.get().getSubmissionType());
+        logger.warn("submit id : {}, {}", examSubmission.get().getId(), examSubmission.get().getSubmissionType());
         return examSubmission.filter(submission -> submission.getSubmissionType() == SubmissionType.PASSED).isPresent();
 
 
