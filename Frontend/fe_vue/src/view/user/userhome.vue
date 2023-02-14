@@ -7,14 +7,16 @@
   </div>
 
   <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted" style="text-decoration: none;">
-    <!-- <router-link :to="{ name: 'RoadMap' }" v-if="isRoadmapStarted"> -->
     <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" @click="getSubData"
       v-if="!roadMapShowClicked">
       로드맵 시작하기!?
     </button>
   </router-link>
-  <router-link :to="{ name: 'ChapterView' }" v-if="isRoadmapStarted">
-    <button>로드맵 이어하기!</button>
+  <!-- path:"/chapterframe/:chapterId", -->
+
+  <router-link :to="{ name: 'ChapterFrame',params:{chapterId :curChapterPK } }" v-if="isRoadmapStarted"
+    style="text-decoration: none;">
+    <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
   </router-link>
 </template>
 <script>
@@ -34,7 +36,8 @@ export default {
       totalSubjectIdx: 0,
       curSubjectIdx: 0,
       chapterPercent: 0,
-      nextChapterPK: 0,
+      curChapterPK: 0,
+      subscribe: false,
       jwt: null,
     };
   },
@@ -60,6 +63,8 @@ export default {
       };
       await userData(config)
         .then((response) => {
+
+
           console.log("user data jwt : " + config);
           this.$store.commit('setAccountId', response.data.userId);
           this.userId = response.data.userId;
@@ -68,7 +73,8 @@ export default {
           this.totalSubjectIdx = response.data.totalSubjectIdx;
           this.curSubjectIdx = response.data.curSubjectIdx;
           this.chapterPercent = response.data.chapterPercent;
-          this.nextChapterPK = response.data.nextChapterPK;
+          this.curChapterPK = response.data.curChapterPK;
+          this.subscribe = response.data.subscribe;
           this.setProgressbar();
         })
         .catch(function (error) {
@@ -83,8 +89,8 @@ export default {
         return;
       }
       this.roadmapPercentage = parseInt(
-        (this.chapterPercent) * 100
-      );
+        (this.chapterPercent)
+      ) * 100;
     },
     async getSubData() {
       const config = {
