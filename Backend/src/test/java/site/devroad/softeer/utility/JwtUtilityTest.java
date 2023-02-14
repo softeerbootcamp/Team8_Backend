@@ -15,7 +15,7 @@ class JwtUtilityTest {
     @Test
     void makeJwtToken() {
         //given
-        String jwt = jwtUtility.makeJwtToken(13L);
+        String jwt = jwtUtility.makeJwtToken(13L, "hello");
         //when
         try {
             jwtUtility.validateToken(jwt);
