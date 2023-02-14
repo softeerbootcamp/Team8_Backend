@@ -1,6 +1,8 @@
 package site.devroad.softeer.src.user;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
@@ -26,6 +28,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepo userRepo;
     private final RoadmapRepo roadmapRepo;
     private final SubjectRepo subjectRepo;
@@ -99,31 +102,39 @@ public class UserService {
         //roadmapId가 없다면 subscribe 여부는 false
         if (roadmapByAccountId.isEmpty())
             return GetUserDetailRes.createNoRoadmapUserDetail(accountId, userName, false);
+
+        Roadmap roadmap = roadmapByAccountId.get();
+        Long roadmapId = roadmap.getId();
+        Long chapterId = roadmap.getChapterId();
+        int totalSubjects = subjectRepo.findSubjectsByRoadmapId(roadmapId).size();
+        Boolean userSubscribe = isUserSubscribe(accountId);
+        if (chapterId == 0) {
+            return GetUserDetailRes.createNotStartUserDetail(accountId, roadmapId, (long)totalSubjects, userName, userSubscribe);
+        }
+
         GetUserDetailRes getUserDetailRes = GetUserDetailRes.createUserDetail();
+        getUserDetailRes.setSubscribe(userSubscribe);
         getUserDetailRes.setUserId(accountId);
         getUserDetailRes.setUserName(userName);
         getUserDetailRes.setRoadmapId(accountById.getRoadMapId());
-        Roadmap roadmap = roadmapByAccountId.get();
-        Long chapterId = roadmap.getChapterId();
-        Long roadmapId = roadmap.getId();
         getUserDetailRes.setCurChapterPK(chapterId);
-        int totalSubjects = subjectRepo.findSubjectsByRoadmapId(roadmapId).size();
         getUserDetailRes.setTotalSubjectIdx((long) totalSubjects);
         List<ExamSubmission> byRoadmapIdAndAccountId = examSubmissionRepo.findByRoadmapIdAndAccountId(roadmapId, accountId);
         long cnt = byRoadmapIdAndAccountId.stream()
                 .filter(examSubmission -> examSubmission.getSubmissionType() == SubmissionType.PASSED)
                 .count();
-        getUserDetailRes.setCurSubjectIdx(cnt + 1);
-        //진행 중인 챕터가 없을 때
-        if (chapterId == null) {
+        getUserDetailRes.setCurSubjectIdx(cnt);
+
+        //진행 중인 챕터가 없을 때와 한 챕터가 종료 되었을 때 분리
+        if (chapterId == -1) {
             getUserDetailRes.setChapterPercent(1F);
             return getUserDetailRes;
         }
         Long courseId = chapterRepo.findChapterById(chapterId).get().getCourseId();
         int totalChapterCnt = chapterRepo.findChaptersByCourseId(courseId).size();
+        //완료된 completed chatpers
         int completedChapterCnt = completedChapterRepo.readCompletedChapters(accountId, courseId).size();
         getUserDetailRes.setChapterPercent(completedChapterCnt / (float) totalChapterCnt);
-        getUserDetailRes.setSubscribe(isUserSubscribe(accountId));
         return getUserDetailRes;
     }
 
