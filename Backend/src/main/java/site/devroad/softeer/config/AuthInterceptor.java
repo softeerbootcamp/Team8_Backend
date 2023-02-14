@@ -22,8 +22,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws CustomException {
         //jwt validateToken에서 문제가 생기면 CustomException을 던짐
-        logger.info(">>> interceptor.preHandle 호출");
-        logger.info(request.getRequestURI());
+        logger.info(request.getMethod() + " " + request.getRequestURI() +" >>> interceptor.preHandle 호출");
         String jwt = request.getHeader("jwt");
         jwtUtility.validateToken(jwt);
         Long accountId = jwtUtility.getAccountId(jwt);
