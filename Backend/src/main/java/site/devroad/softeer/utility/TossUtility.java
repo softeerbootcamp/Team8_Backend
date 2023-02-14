@@ -38,13 +38,14 @@ public class TossUtility {
             os.close();
 
             int responseCode = con.getResponseCode();
+            logger.info("payload is {}" , payload);
+            logger.info("response code is {}", responseCode);
 
             if(responseCode == 401){
                 return;
             }
 
             if(responseCode!=200){
-                logger.warn("response code is {}", responseCode);
                 throw new CustomException(ExceptionType.TOSS_PURCHASE_FAILED);
             }
 
@@ -59,6 +60,7 @@ public class TossUtility {
 
         }catch (IOException e){
             e.printStackTrace();
+            logger.warn("IOExcetion {}", "error occurs while getting result from toss server");
             throw new CustomException(ExceptionType.TOSS_PURCHASE_FAILED);
         }
     }
