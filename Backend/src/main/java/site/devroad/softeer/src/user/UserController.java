@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.user.dto.*;
+import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.utility.JwtUtility;
 
 @RestController
@@ -35,7 +36,8 @@ public class UserController {
     public ResponseEntity<?> postSignIn(@RequestBody PostSignInReq postSignInReq) {
         try {
             Long accountId = userService.signIn(postSignInReq);
-            String jwt = jwtUtility.makeJwtToken(accountId);
+            Account account = userService.getAccountById(accountId);
+            String jwt = jwtUtility.makeJwtToken(accountId, account.getName());
             if (userService.validateAdmin(accountId))
                 return new ResponseEntity<>(new PostSignInRes(jwt, true), HttpStatus.OK);
             return new ResponseEntity<>(new PostSignInRes(jwt, false), HttpStatus.OK);
