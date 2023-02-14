@@ -1,5 +1,7 @@
 package site.devroad.softeer.src.exam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.Map;
 
 @RestController
 public class ExamController {
+    private static Logger logger = LoggerFactory.getLogger(ExamController.class);
     private ExamService examService;
     private UserService userService;
     private JwtUtility jwtUtility;
@@ -53,6 +56,7 @@ public class ExamController {
 
     @GetMapping("/api/purchase/exam/success")
     public ResponseEntity<?> purchaseSuccess(@RequestParam String orderId, @RequestParam String paymentKey, @RequestParam Integer amount) {
+        logger.info("staring Toss server validation \norder_id : {}\n paymentKey : {} \n amount : {}", orderId, paymentKey, amount);
         tossUtility.validateTossParams(orderId, paymentKey, amount);
         examService.makePurchasedByTossOrderId(orderId);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
