@@ -1,6 +1,5 @@
 package site.devroad.softeer.src.user;
 
-import org.apache.catalina.User;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
@@ -14,7 +13,6 @@ import site.devroad.softeer.src.roadmap.completedchapter.CompletedChapterRepo;
 import site.devroad.softeer.src.roadmap.course.CourseRepo;
 import site.devroad.softeer.src.roadmap.model.Roadmap;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
-import site.devroad.softeer.src.user.dto.GetAllUserRes;
 import site.devroad.softeer.src.user.dto.GetUserDetailRes;
 import site.devroad.softeer.src.user.dto.PostSignInReq;
 import site.devroad.softeer.src.user.dto.PostSignUpReq;
@@ -46,14 +44,14 @@ public class UserService {
         this.chapterRepo = chapterRepo;
     }
 
-    public Long join(PostSignUpReq req){
+    public Long join(PostSignUpReq req) {
         validateSignUp(req);
         Account student = userRepo.createAccountInfo(req.getName(), req.getPhone(), "Student");
         String hashPassword = BCrypt.hashpw(req.getPassword(), BCrypt.gensalt());
         return userRepo.createLoginInfo(req.getEmail(), hashPassword, student.getId()).getId();
     }
 
-    public Long signIn(PostSignInReq req){
+    public Long signIn(PostSignInReq req) {
         String email = req.getEmail();
         Optional<LoginInfo> loginInfo = userRepo.findLoginInfoByEmail(email);
         if (loginInfo.isEmpty()) {
@@ -67,7 +65,7 @@ public class UserService {
         throw new CustomException(ExceptionType.AUTHENTICATION_FAILED);
     }
 
-    public void validateSignUp(PostSignUpReq req){
+    public void validateSignUp(PostSignUpReq req) {
         String phone = req.getPhone();
         String email = req.getEmail();
         if (userRepo.findByPhone(phone).isPresent())
@@ -76,12 +74,12 @@ public class UserService {
             throw new CustomException(ExceptionType.POST_ACCOUNT_EMAIL_DUPLICATED);
     }
 
-    public boolean validateAdmin(Long accountId){
+    public boolean validateAdmin(Long accountId) {
         Account accountById = userRepo.findAccountById(accountId);
         return accountById.getType().equals("Admin");
     }
 
-    public List<String> getNoRoadmapUsers(){
+    public List<String> getNoRoadmapUsers() {
         List<LoginInfo> noRoadmapUser = userRepo.findNoRoadmapUser();
         List<String> users = new ArrayList<>();
         for (LoginInfo loginInfo : noRoadmapUser) {
@@ -90,7 +88,7 @@ public class UserService {
         return users;
     }
 
-    public Boolean isUserSubscribe(Long accountId){
+    public Boolean isUserSubscribe(Long accountId) {
         return userRepo.isUserSubscribed(accountId);
     }
 
@@ -117,7 +115,7 @@ public class UserService {
                 .count();
         getUserDetailRes.setCurSubjectIdx(cnt + 1);
         //진행 중인 챕터가 없을 때
-        if (chapterId == -1) {
+        if (chapterId == null) {
             getUserDetailRes.setChapterPercent(1F);
             return getUserDetailRes;
         }
@@ -125,10 +123,11 @@ public class UserService {
         int totalChapterCnt = chapterRepo.findChaptersByCourseId(courseId).size();
         int completedChapterCnt = completedChapterRepo.readCompletedChapters(accountId, courseId).size();
         getUserDetailRes.setChapterPercent(completedChapterCnt / (float) totalChapterCnt);
+        getUserDetailRes.setSubscribe(isUserSubscribe(accountId));
         return getUserDetailRes;
     }
 
-    public List<UserDetail> getAllUser(Long accountId){
+    public List<UserDetail> getAllUser(Long accountId) {
         List<UserDetail> allUser = userRepo.findAllUser();
         return allUser;
     }
