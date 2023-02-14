@@ -14,8 +14,9 @@ export default new Vuex.Store({
     username :"",
   },
   mutations: {
-
-
+    setIsRoadmap(state,status){
+state.isRoadmap = status;
+    },
     setAccountId(state,status){
       state.accountId = status;
     },

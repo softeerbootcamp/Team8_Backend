@@ -1,6 +1,6 @@
 <template>
   <div class="d-grid gap-2 col-6 mx-auto mt-4">
-    <div v-for="subject in getsubjects" :key="subject">
+    <div v-for="subject in subjects" :key="subject">
       <button class="btn btn-primary ms-3 mt-4" @click="[
       $router.push({
         name: 'CourseView',
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { getRoadmap } from '@/api'
 export default {
   name: "RoadMap",
 
@@ -29,32 +30,38 @@ export default {
       isCardOn: false,
       success: false,
       subDataSuccess: false,
+
+      isSuccess: false,
+      subjects: [],
     };
   },
-
-  computed: {
-    // 여기서 course 는 클릭한 현재 sub 이다.
-    /**
-     * {
-        "success" : "true",
-        "subjects" : 
-        [
-            {
-              "name": "파이썬 기초",
-              "subjectId": "2001",
-              "mcqState": "PASSED",
-              "frqState": "PURCHASED",
-              "mcqExamId": 1,
-              "frqExamId": 2
-            },
-    
-     */
-    getsubjects() {
-      return this.$store.state.subjects;
-    }
+  mounted() {
+    this.getSubData();
   },
   methods:
   {
+    async getSubData() {
+      const config = {
+        headers: {
+          jwt: this.$store.state.jwt,
+        }
+      }
+      var vm = this;
+      await getRoadmap(config)
+        .then((response) => {
+          console.log("Getroadmap!!data : " + response.data.success)
+          if (!response.data.success) {
+            this.$router.push('/');
+          }
+          vm.isSuccess = response.data.success;
+          vm.subjects = response.data.subjects;
+          this.$store.commit("setSubjectsStatus", response.data.subjects);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
     setCurrentSubjectId(subId) {
       // var courseStr = String(course);
       // const subjectID = courseStr.split(',')[1];

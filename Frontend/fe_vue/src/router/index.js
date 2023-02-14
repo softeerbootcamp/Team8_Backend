@@ -114,7 +114,8 @@ router.beforeEach((to, from, next) => {
     next("/");
   }else if(to.path === "/userpendingview" && isRoadmapExist){
     next("/")
-  }else {
+  }
+  else {
     next();
   }
 
