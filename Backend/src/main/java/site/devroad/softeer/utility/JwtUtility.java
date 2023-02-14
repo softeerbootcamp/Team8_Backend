@@ -21,13 +21,14 @@ public class JwtUtility {
     @Value("${jwt.secretKey}")
     private String secret;
 
-    public String makeJwtToken(Long accountId) {
+    public String makeJwtToken(Long accountId, String username) {
         Date now = new Date();
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
                 .setIssuer("fresh") // (2)
                 .setIssuedAt(now) // (3)
                 .setExpiration(new Date(now.getTime() + Duration.ofMinutes(300).toMillis())) // (4)
+                .claim("username", username)
                 .claim("accountId", String.valueOf(accountId)) // (5)
                 .signWith(SignatureAlgorithm.HS256, secret) // (6)
                 .compact();
