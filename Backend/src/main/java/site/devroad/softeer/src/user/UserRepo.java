@@ -80,11 +80,15 @@ public class UserRepo {
     }
 
     public Boolean isUserSubscribed(Long accountId) throws CustomException {
-        Timestamp ends = jdbcTemplate.queryForObject(
-                "select end_at from Subscribe where account_id = ?", Timestamp.class, accountId
-        );
-        return ends.after(new Date());
-
+        try {
+            Timestamp ends = jdbcTemplate.queryForObject(
+                    "select end_at from Subscribe where account_id = ?", Timestamp.class, accountId
+            );
+            return ends.after(new Date());
+        }
+        catch(EmptyResultDataAccessException e){
+            return false;
+        }
     }
 
 
