@@ -44,6 +44,7 @@ export default {
             ans: [],
             myAns: [],
             isPassed: false,
+            examId: "",
         }
     },
     mounted() {
@@ -51,9 +52,6 @@ export default {
         this.examId = this.$route.params.examId;
     },
     methods: {
-        getExamId() {
-            return this.$route.params.examId;
-        },
         async onSubmit() {
             var correct = 0;
             for (var i = 0; i < this.ans.length; i++) {
@@ -67,7 +65,7 @@ export default {
                 this.isPassed = true;
             }
             const params = {
-                examId: this.$route.params.examId,
+                examId: this.examId,
                 result: this.isPassed
             };
             const config = {
@@ -92,7 +90,7 @@ export default {
 
         },
         async getExamDetail() {
-            const params = this.$route.params.examId;
+            const params = this.examId;
             const config = {
                 headers: {
                     jwt: this.$store.state.jwt
