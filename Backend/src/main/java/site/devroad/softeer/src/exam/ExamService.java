@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.exam.dto.GetAssignmentDetail;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.exam.dto.PutExamDetailReq;
 import site.devroad.softeer.src.exam.dto.PutExamDetailRes;
+import site.devroad.softeer.src.exam.dto.domain.Assignment;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.dto.domain.MultiChoiceQuestion;
 import site.devroad.softeer.src.exam.model.Exam;
@@ -125,5 +127,14 @@ public class ExamService {
         SubmissionType submissionType = result ? SubmissionType.PASSED : SubmissionType.FAILED;
         examSubmissionRepo.updateByExamIdAndAccountId(examId, accountId, submissionType);
         return new PutExamDetailRes();
+    }
+
+    public GetAssignmentDetail getAssignmentDetail(String userName, Long examSubmissionId) {
+        Optional<ExamSubmission> examSubmissionById = examSubmissionRepo.findExamSubmissionById(examSubmissionId);
+        if (examSubmissionById.isEmpty())
+            throw new CustomException(ExceptionType.EXAM_SUBMISSION_NOT_FOUND);
+        ExamSubmission examSubmission = examSubmissionById.get();
+        Assignment assignment = new Assignment(examSubmission, userName);
+        return new GetAssignmentDetail(assignment);
     }
 }
