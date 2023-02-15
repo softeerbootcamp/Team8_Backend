@@ -63,13 +63,16 @@ public class RoadmapService {
             Optional<Exam> frq = examRepo.findExamBySubjectIdAndType(subjectId, FRQ);
             if (mcq.isEmpty() || frq.isEmpty())
                 throw new CustomException(ExceptionType.EXAM_NOT_FOUND);
-            ;
+            
             Exam mcqExam = mcq.get();
             Exam frqExam = frq.get();
             Optional<ExamSubmission> mcqSubmission = examSubmissionRepo.findByExamIdAndAccountId(mcqExam.getId(), accountId);
             Optional<ExamSubmission> frqSubmission = examSubmissionRepo.findByExamIdAndAccountId(frqExam.getId(), accountId);
-            SubmissionType mcqSubmissionType = mcqSubmission.isPresent() ? mcqSubmission.get().getSubmissionType() : SubmissionType.NONE;
-            SubmissionType frqSubmissionType = frqSubmission.isPresent() ? frqSubmission.get().getSubmissionType() : SubmissionType.NONE;
+            //디폴트 상태인 NONE
+            SubmissionType mcqSubmissionType = SubmissionType.NONE;
+            SubmissionType frqSubmissionType = SubmissionType.NONE;
+
+            //subscribe를 한 상태에서는 제출이 존재한다면 submission type을 받아옴
             if (userSubscribed) {
                 mcqSubmissionType = mcqSubmission.isPresent() ? mcqSubmission.get().getSubmissionType() : SubmissionType.PURCHASED;
                 frqSubmissionType = frqSubmission.isPresent() ? frqSubmission.get().getSubmissionType() : SubmissionType.PURCHASED;
