@@ -30,7 +30,7 @@
                 </div>
                 <div class="card-footer">
                     <router-link to="/roadmap">
-                        <button type="submit" class="btn btn-primary mt-2">제출하기</button>
+                        <button type="submit" @click="onSubmit" class="btn btn-primary mt-2">제출하기</button>
                     </router-link>
                 </div>
             </form>
@@ -75,7 +75,10 @@ export default {
             } else this.isPassed = false;
         },
         async onSubmit() {
+            console.log("test pending....")
+
             this.setTestResult();
+            console.log("test pending....")
             const params = {
                 examId: this.mcqExamId,
                 result: this.isPassed

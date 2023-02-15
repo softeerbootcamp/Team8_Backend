@@ -121,21 +121,9 @@ export default {
       }
     },
     switchRouterByState(state, examId, isMcqOrFrq) {
-      // switch(state) {
-      //   case 'NONE':
-      //     return 'btn btn-light btn-sm';
-      //   case 'PURCHASED':
-
-      //   case 'SUBMITTED':
-      //     return 'btn btn-warning btn-sm';
-      //   case 'PASSED':
-      //     return 'btn btn-success btn-sm';
-      //   case 'FAILED':
-      //     return 'btn btn-danger btn-sm';
-      //   break:
-      //     return 'btn btn-light btn-sm';
-      // }
-
+      if (state === 'NONE') {
+        this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
+      }
       if (state === 'PURCHASED') {
         if (isMcqOrFrq === 'MCQ') {
           console.log("purchased button  exam id log : " + examId)
@@ -145,9 +133,7 @@ export default {
           this.$router.push({ name: 'FrqExamView', params: { frqExamId: examId } });
         }
       }
-      if (state === 'NONE') {
-        this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
-      }
+
     }
   }
 };
