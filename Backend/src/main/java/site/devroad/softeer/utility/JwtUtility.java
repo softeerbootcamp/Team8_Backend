@@ -50,4 +50,10 @@ public class JwtUtility {
                 .getBody().get("accountId"));
     }
 
+    public Long getUserName(String jwt) {
+        return Long.parseLong((String) Jwts.parser().setSigningKey(secret)
+                .parseClaimsJws(jwt)
+                .getBody().get("username"));
+    }
+
 }
