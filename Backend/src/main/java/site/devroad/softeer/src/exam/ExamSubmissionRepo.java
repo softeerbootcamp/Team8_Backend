@@ -24,7 +24,7 @@ public class ExamSubmissionRepo {
     }
 
 
-    public Optional<ExamSubmission> findById(Long id) {
+    public Optional<ExamSubmission> findExamSubmissionById(Long id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from ExamSubmission where id = ?",
                     examSubmissionRowMapper(), id));
