@@ -1,5 +1,35 @@
 <template>
-  <div class="container">
+  <h1 class="d-flex justify-content-center mt-4">
+    나만의 로드맵
+  </h1>
+  <div class="roadmapBody">
+    <div class="d-flex justify-content-center mt-4" style=" height: 80vh;overflow-y: scroll;">
+      <div class="card-deck" style="width: 80vh">
+        <div v-for="subject in subjects" :key="subject">
+          <div class="card text-center mb-4">
+            <div class="card-body">
+              <button class="btn btn-dark card-title" @click="[
+                $router.push({ name: 'CourseView', }), setCurrentSubjectId(subject.subjectId)
+              ]" style="margin-right:auto;">
+                {{ subject.name }}
+              </button>
+              <button class="btn ml-3" :class="getButtonClass(subject.mcqState)" type="button"
+                @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')">
+                <span>객관식</span>
+                <span class="bi bi-file-text"></span>
+              </button>
+              <button class="btn ml-3" :class="getButtonClass(subject.frqState)" type="button"
+                @click="switchRouterByState(subject.frqState, subject.frqExamId, 'FRQ')">
+                <span>주관식</span>
+                <span class="bi bi-file-text"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="container">
     <div class="row align-items-center">
       <div class="row" v-for="subject in subjects" :key="subject">
         <div class="col col-md-7 offset-md-3
@@ -24,7 +54,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -108,9 +138,11 @@ export default {
 
       if (state === 'PURCHASED') {
         if (isMcqOrFrq === 'MCQ') {
-          this.$router.push({ name: "McqExamView", params: { examId: examId } });
+          console.log("purchased button  exam id log : " + examId)
+          this.$router.push({ name: 'McqExamView', params: { mcqExamId: examId } });
         } else {
-          this.$router.push({ name: "FrqExamView", params: { examId: examId } });
+          console.log("purchased button  exam id log : " + examId)
+          this.$router.push({ name: 'FrqExamView', params: { frqExamId: examId } });
         }
       }
       if (state === 'NONE') {
@@ -122,5 +154,12 @@ export default {
 </script>
 
 <style>
+.roadmapBody {
+  background-repeat: repeat-y;
+  background-size: 40vh;
+  background-position: center;
+  background-image: url("@/assets/road_svg.svg");
 
+
+}
 </style>

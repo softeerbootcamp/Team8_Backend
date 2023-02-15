@@ -1,6 +1,5 @@
 <template>
     <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
-
         <div class="card text-center" style="width: 500px;">
             <div class="card-header bg-primary text-white">
                 <!-- {{ subjectName }} --> 시험지
@@ -32,23 +31,23 @@
 import { postAssignMentData } from '@/api'
 export default {
 
-    name: "ExamSubmitView",
+    name: "FrqExamSubmitView",
     data() {
         return {
             subjectName: "",
-            examId: "",
+            frqExamId: "",
             submitForm: {
                 url: "",
                 description: "// 프로젝트에 대한 간단한 설명\n"
                     + "// 각각의 파일이 무슨일을 하는지 적어주세요.\n"
                     + "// 해당 시험 진행하면서 어려웠던 점이나 고민했던 부분을 적어주세요.\n"
                     + "// 해당 과정을 들으면서 본인이 무엇을 배웠고 얼마나 성장했는지 적어주세요\n",
-                examId: ""
+                frqExamId: ""
             }
         }
     },
     mounted() {
-        this.examId = this.$route.params.examId;
+        this.frqExamId = this.$route.params.frqExamId;
     },
     methods: {
         async postAssignMent() {
@@ -60,7 +59,7 @@ export default {
             const params = {
                 url: this.submitForm.url,
                 description: this.submitForm.description,
-                examId: this.examId
+                examId: this.frqExamId
             };
             await postAssignMentData(config, params)
                 .then((response) => {
