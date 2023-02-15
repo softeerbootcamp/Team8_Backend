@@ -54,9 +54,8 @@ public class ExamController {
     }
 
     @GetMapping("/api/exam/assignment/{examSubmissionId}")
-    public ResponseEntity<?> getAssignmentDetail(@RequestAttribute String userName,
-                                                 @PathVariable("examSubmissionId") Long examSubmissionId) {
-        return new ResponseEntity<>(examService.getAssignmentDetail(userName, examSubmissionId), HttpStatus.OK);
+    public ResponseEntity<?> getAssignmentDetail(@PathVariable("examSubmissionId") Long examSubmissionId) {
+        return new ResponseEntity<>(examService.getAssignmentDetail(examSubmissionId), HttpStatus.OK);
     }
 
     @GetMapping("/api/purchase/exam/success")

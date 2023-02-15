@@ -20,6 +20,7 @@ import site.devroad.softeer.src.exam.model.SubmissionType;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
 import site.devroad.softeer.src.user.UserRepo;
+import site.devroad.softeer.src.user.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,12 +130,13 @@ public class ExamService {
         return new PutExamDetailRes();
     }
 
-    public GetAssignmentDetail getAssignmentDetail(String userName, Long examSubmissionId) {
+    public GetAssignmentDetail getAssignmentDetail(Long examSubmissionId) {
         Optional<ExamSubmission> examSubmissionById = examSubmissionRepo.findExamSubmissionById(examSubmissionId);
         if (examSubmissionById.isEmpty())
             throw new CustomException(ExceptionType.EXAM_SUBMISSION_NOT_FOUND);
         ExamSubmission examSubmission = examSubmissionById.get();
-        Assignment assignment = new Assignment(examSubmission, userName);
+        Account accountById = userRepo.findAccountById(examSubmission.getId());
+        Assignment assignment = new Assignment(examSubmission, accountById.getName());
         return new GetAssignmentDetail(assignment);
     }
 }
