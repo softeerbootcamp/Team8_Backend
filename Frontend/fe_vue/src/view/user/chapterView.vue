@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-center mt-4" style="height: 80vh;">
+  <div class="d-flex justify-content-center mt-4" style="height: 80vh;overflow-y: scroll;">
     <div class="card-deck">
       <div v-for="chapter in chapters" :key="chapter">
         <router-link :to="{ name: 'ChapterFrame', params: { chapterId: chapter.chapterId } }"

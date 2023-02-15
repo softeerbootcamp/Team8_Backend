@@ -1,5 +1,5 @@
 <template>
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="row row-cols-1 row-cols-md-3 g-4" style="overflow-y: scroll">
     <div class="col" v-for="course in subjectDetail" :key="course">
       <router-link :to="'/chapterView/' + course.id" style="text-decoration: none; color:black;">
         <div class="card">
