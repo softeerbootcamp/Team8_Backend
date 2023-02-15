@@ -47,8 +47,8 @@ public class ExamSubmissionRepo {
     }
 
     public void updateByExamIdAndAccountId(Long examId, Long accountId, SubmissionType submissionType) {
-        jdbcTemplate.update("update ExamSubmission ]" +
-                        "set is_passed = ? " +
+        jdbcTemplate.update("update ExamSubmission\n" +
+                        "set is_passed = ?\n" +
                         "WHERE account_id = ? AND exam_id = ?",
                 submissionType.getIs_passed(), accountId, examId);
     }
