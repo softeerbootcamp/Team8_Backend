@@ -72,7 +72,7 @@ export default {
       if (!this.$store.state.isLogin) {
         this.$router.push('/login');
       } else {
-        this.$router.push('/');
+        this.$router.push('/roadmap');
       }
     }
   },
