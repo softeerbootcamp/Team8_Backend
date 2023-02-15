@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
+import site.devroad.softeer.src.exam.dto.PutExamDetailReq;
+import site.devroad.softeer.src.exam.dto.PutExamDetailRes;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.dto.domain.MultiChoiceQuestion;
 import site.devroad.softeer.src.exam.model.Exam;
@@ -115,5 +117,13 @@ public class ExamService {
             userRepo.doSubscribe(accountId);
         }
         userRepo.extendSubscribeEndDate(accountId, 31);
+    }
+
+    public PutExamDetailRes getExamDetailRes(PutExamDetailReq req, Long accountId) {
+        Boolean result = req.getResult();
+        Long examId = req.getExamId();
+        SubmissionType submissionType = result ? SubmissionType.PASSED : SubmissionType.FAILED;
+        examSubmissionRepo.updateByExamIdAndAccountId(examId, accountId, submissionType);
+        return new PutExamDetailRes();
     }
 }
