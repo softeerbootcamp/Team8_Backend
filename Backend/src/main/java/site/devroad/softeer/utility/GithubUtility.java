@@ -13,8 +13,7 @@ import site.devroad.softeer.exceptions.ExceptionType;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class GithubUtility {
@@ -82,7 +81,7 @@ public class GithubUtility {
                 Object obj = parser.parse(response.toString());
                 if (obj instanceof JSONObject) {
                     JSONObject jsons = (JSONObject) obj;
-                    issueURL = jsons.get("url").toString();
+                    issueURL = jsons.get("html_url").toString();
                 }
             }catch (ParseException e){
                 throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
@@ -100,4 +99,104 @@ public class GithubUtility {
             throw new CustomException(ExceptionType.GITHUB_API_IO_ERROR);
         }
     }
+
+    public List<String> getPaths(String originRepoUrl){
+        try {
+            String repoURL = originRepoUrl.substring("https://github.com/".length());
+            logger.info(repoURL);
+
+            URL url = new URL("https://api.github.com/repos/"+repoURL+"/contents/");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+            String encodedString = "Bearer " + gitApiKey;
+            logger.info("auth {}", encodedString);
+            con.setRequestProperty("Authorization", encodedString);
+            con.setRequestProperty("Accept", "application/vnd.github+json");
+            con.setDoOutput(true);
+
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
+            JSONParser parser = new JSONParser();
+            String title = null;
+
+            List<String> results = new ArrayList<>();
+            try {
+                Object obj = parser.parse(content.toString());
+                if (obj instanceof List) {
+                    for(Object map : (List)obj){
+                        Map conv = (Map) map;
+                        logger.info(conv.toString());
+                        title = conv.get("path").toString();
+                        results.add(title);
+                    }
+                }
+                return results;
+            }catch (ParseException e){
+                throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            logger.warn("IOExcetion {}", "error occurs while getting result from toss server");
+            throw new CustomException(ExceptionType.GITHUB_API_IO_ERROR);
+        }
+    }
+
+    //file path must not start with /
+    public String getOneFile(String originRepoUrl, String filePath){
+        try {
+            String repoURL = originRepoUrl.substring("https://github.com/".length());
+            logger.info(repoURL);
+
+            URL url = new URL("https://api.github.com/repos/"+repoURL+"/contents/" + filePath);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+            String encodedString = "Bearer " + gitApiKey;
+            logger.info("auth {}", encodedString);
+            con.setRequestProperty("Authorization", encodedString);
+            con.setRequestProperty("Accept", "application/vnd.github+json");
+            con.setDoOutput(true);
+
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
+            JSONParser parser = new JSONParser();
+            String base64data = null;
+            try {
+                Object obj = parser.parse(content.toString());
+                if (obj instanceof JSONObject) {
+                    JSONObject jsons = (JSONObject) obj;
+                    base64data = jsons.get("content").toString().replace("\n", "");
+                    byte[] decodedBytes = Base64.getDecoder().decode(base64data);
+                    String decodedStr = new String(decodedBytes);
+                    logger.info("data is {}", decodedStr);
+                    return decodedStr;
+                }
+            }catch (ParseException e){
+                throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
+            }
+            throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
+
+        }catch (IOException e){
+            e.printStackTrace();
+            logger.warn("IOExcetion {}", "error occurs while getting result from toss server");
+            throw new CustomException(ExceptionType.GITHUB_API_IO_ERROR);
+        }
+    }
+
+
 }
