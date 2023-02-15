@@ -15,7 +15,7 @@
         <router-link to="/roadmap">로드맵으로!</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link to="/userhome">{{ username }}</router-link>
+        <router-link to="/userhome">{{ this.$store.state.username }}</router-link>
       </a>
     </div>
     <div class="menu" v-if="isAdmin">
@@ -37,11 +37,7 @@ export default {
   name: "Header",
   data() {
     return {
-      username: ""
     }
-  },
-  mounted() {
-    this.username = this.$store.state.username;
   },
   computed: {
     isAdmin() {
