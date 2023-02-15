@@ -38,7 +38,8 @@ export default {
                     if (response.data.success) {
                         this.chapterName = response.data.chapterDetail.chapterName;
                         this.chapterId = response.data.chapterDetail.chapterId;
-                        this.chapterUrl = this.baseUrl + response.data.chapterDetail.chapterUrl;
+                        this.chapterUrl = this.baseUrl + response.data.chapterDetail.chapterUrl.split('?v=')[1];
+                        console.log("this.chapterurl" + this.chapterUrl);
                         this.thumbnailUrl = response.data.chapterDetail.thumbnailUrl;
                         this.description = response.data.chapterDetail.description;
                         this.finish = response.data.chapterDetail.finish;
