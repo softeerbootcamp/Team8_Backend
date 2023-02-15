@@ -8,13 +8,17 @@ import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
+import site.devroad.softeer.src.exam.dto.domain.MultiChoiceQuestion;
 import site.devroad.softeer.src.exam.model.Exam;
+import site.devroad.softeer.src.exam.model.ExamMcq;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
 import site.devroad.softeer.src.exam.model.SubmissionType;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
 import site.devroad.softeer.src.user.UserRepo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,19 +65,42 @@ public class ExamService {
 
     }
 
-
-    public void checkExamPurchased(Long accountId) {
-        if (!userRepo.isUserSubscribed(accountId)) {
-            throw new CustomException(ExceptionType.EXAM_NOT_PURCHASED);
-        }
-    }
-
     public ExamDetail getExamDetail(Long examId) {
         Optional<ExamDetail> examDetailById = examRepo.findExamDetailById(examId);
         if (examDetailById.isEmpty()) {
             throw new CustomException(ExceptionType.EXAM_NOT_FOUND);
         }
-        return examDetailById.get();
+        ExamDetail examDetail = examDetailById.get();
+        String type = examDetail.getType();
+        if (type.equals("MCQ")) {
+            List<ExamMcq> questionsByExamId = examRepo.findQuestionsByExamId(examId);
+            return ExamDetail.createMCQDetail(examDetail, getAns(questionsByExamId), getMCQs(questionsByExamId));
+        }
+        return examDetail;
+    }
+
+    public List<Integer> getAns(List<ExamMcq> questions) {
+        List<Integer> ans = new ArrayList<>();
+        for (ExamMcq examMcq : questions) {
+            ans.add(examMcq.getAns());
+        }
+        return ans;
+    }
+
+    public List<MultiChoiceQuestion> getMCQs(List<ExamMcq> questions) {
+        List<MultiChoiceQuestion> ans = new ArrayList<>();
+        for (ExamMcq examMcq : questions) {
+            if (examMcq == null)
+                continue;
+            ans.add(new MultiChoiceQuestion(examMcq));
+        }
+        return ans;
+    }
+
+    public void checkExamPurchased(Long accountId) {
+        if (!userRepo.isUserSubscribed(accountId)) {
+            throw new CustomException(ExceptionType.EXAM_NOT_PURCHASED);
+        }
     }
 
     public void submitAssignment(Long accountId, PostAssignSubmitReq req) {
