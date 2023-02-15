@@ -138,9 +138,11 @@ export default {
 
       if (state === 'PURCHASED') {
         if (isMcqOrFrq === 'MCQ') {
-          this.$router.push({ name: "McqExamView", params: { examId: examId } });
+          console.log("purchased button  exam id log : " + examId)
+          this.$router.push({ name: 'McqExamView', params: { mcqExamId: examId } });
         } else {
-          this.$router.push({ name: "FrqExamView", params: { examId: examId } });
+          console.log("purchased button  exam id log : " + examId)
+          this.$router.push({ name: 'FrqExamView', params: { frqExamId: examId } });
         }
       }
       if (state === 'NONE') {
