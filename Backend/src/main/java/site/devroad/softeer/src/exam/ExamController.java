@@ -8,16 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.exam.dto.GetExamDetailRes;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
+import site.devroad.softeer.src.exam.dto.PutExamDetailReq;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.roadmap.RoadmapService;
 import site.devroad.softeer.src.user.UserService;
 import site.devroad.softeer.utility.JwtUtility;
 import site.devroad.softeer.utility.TossUtility;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -69,6 +68,11 @@ public class ExamController {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("Location", "/roadmap");
         return new ResponseEntity<>("", map, HttpStatus.TEMPORARY_REDIRECT);
+    }
+
+    @PutMapping("/api/exam/result")
+    public ResponseEntity<?> putExamResult(@RequestAttribute Long accountId, @RequestBody PutExamDetailReq req) {
+        return new ResponseEntity<>(examService.getExamDetailRes(req, accountId), HttpStatus.ACCEPTED);
     }
 
 

@@ -9,7 +9,6 @@ public class CourseDetail {
     private String tutorName;
     private String thumbnailUrl;
     private String explain;
-    private Boolean finish;
 
     public CourseDetail(Course course) {
         this.id = course.getId();
@@ -18,7 +17,6 @@ public class CourseDetail {
         this.tutorName = course.getTutorName();
         this.thumbnailUrl = course.getThumbnailUrl();
         this.explain = course.getDescription();
-        this.finish = true;
     }
 
     public Long getId() {
@@ -43,9 +41,5 @@ public class CourseDetail {
 
     public String getExplain() {
         return explain;
-    }
-
-    public Boolean getFinish() {
-        return finish;
     }
 }
