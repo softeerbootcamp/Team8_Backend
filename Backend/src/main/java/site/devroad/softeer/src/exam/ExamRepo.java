@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.model.Exam;
+import site.devroad.softeer.src.exam.model.ExamMcq;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
 import site.devroad.softeer.src.exam.model.SubmissionType;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -56,7 +59,8 @@ public class ExamRepo {
                             "s.name AS subject_name,\n" +
                             "e.url AS url, \n" +
                             "e.name AS name,\n" +
-                            "e.description AS description\n" +
+                            "e.description AS description,\n" +
+                            "e.type AS type\n" +
                             "FROM Subject s\n" +
                             "JOIN Exam e \n" +
                             "ON s.id = e.subject_id\n" +
@@ -65,6 +69,13 @@ public class ExamRepo {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+    }
+
+    public List<ExamMcq> findQuestionsByExamId(Long examId) {
+        return jdbcTemplate.query("SELECT mcq.* FROM ExamMcq mcq \n" +
+                "JOIN Exam e ON e.id = mcq.exam_id \n" +
+                "WHERE mcq.exam_id = ? \n" +
+                "ORDER BY mcq.`sequence` ", examMcqRowMapper(), examId);
     }
 
     public void delete(Long examId) {
@@ -112,7 +123,22 @@ public class ExamRepo {
             String url = rs.getString("url");
             String name = rs.getString("name");
             String description = rs.getString("description");
-            return new ExamDetail(subjectName, url, name, description);
+            String type = rs.getString("type");
+            return ExamDetail.createFRQDetail(subjectName, url, name, description, type);
+        };
+    }
+
+    RowMapper<ExamMcq> examMcqRowMapper() {
+        return (rs, rowNum) -> {
+            long id = rs.getLong("id");
+            long examId = rs.getLong("exam_id");
+            long sequence = rs.getLong("sequence");
+            String title = rs.getString("title");
+            String content = rs.getString("content");
+            String[] choices = rs.getString("choices").split("\\|");
+            List<String> choicesList = Arrays.asList(choices);
+            int ans = rs.getInt("ans");
+            return new ExamMcq(id, examId, sequence, title, content, choicesList, ans);
         };
     }
 }
