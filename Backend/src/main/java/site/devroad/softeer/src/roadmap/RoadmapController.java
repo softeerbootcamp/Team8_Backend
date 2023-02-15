@@ -38,8 +38,8 @@ public class RoadmapController {
 
     @GetMapping("/api/subject/{subjectId}")
     public ResponseEntity<?> getSubjectDetail(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("subjectId") String subjectId) {
-        List<CourseDetail> courses = subjectService.getCourseDetails(Long.valueOf(subjectId), accountId);
-        return new ResponseEntity<>(new GetSubjectDetailRes(courses), HttpStatus.OK);
+        GetSubjectDetailRes courseDetails = subjectService.getCourseDetails(Long.valueOf(subjectId), accountId);
+        return new ResponseEntity<>(courseDetails, HttpStatus.OK);
     }
 
     @GetMapping("/api/course/{courseId}")
