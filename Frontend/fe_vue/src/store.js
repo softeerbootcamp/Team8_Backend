@@ -57,9 +57,6 @@ export default new Vuex.Store({
     ifTokenVal: ({ commit }) => {
       commit("ifTokenVal");
     },
-    logout: ({ commit }) => {
-      commit("logout");
-    },
     adminLogout: ({ commit }) => {
       commit("adminLogout");
     },
