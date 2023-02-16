@@ -12,12 +12,15 @@
         <router-link to="/" @click="logout">로그아웃</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link to="/userhome">로드맵으로!</router-link>
+        <router-link to="/roadmap">로드맵으로!</router-link>
+      </a>
+      <a v-if="isLogin">
+        <router-link to="/userhome">{{ username }}</router-link>
       </a>
     </div>
     <div class="menu" v-if="isAdmin">
       <a v-if="isLogin">
-        <router-link to="/" @click="[logout(), adminLogout()]">로그아웃</router-link>
+        <router-link to="/" @click="logout">로그아웃</router-link>
       </a>
       <a v-if="isLogin">
         <router-link to="/adminhome">로드맵 작성 관리</router-link>
@@ -32,6 +35,14 @@
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      username: ""
+    }
+  },
+  mounted() {
+    this.username = this.$store.state.username;
+  },
   computed: {
     isAdmin() {
       return this.$store.state.isAdmin;
@@ -42,10 +53,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch("logout");
-    },
-    adminLogout() {
-      this.$store.dispatch("adminLogout");
+      this.$store.commit('logout');
     },
   },
 };

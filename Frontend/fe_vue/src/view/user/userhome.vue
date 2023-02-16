@@ -1,41 +1,79 @@
 <template>
-  <div class="progress">
-    <div class="progress-bar" role="progressbar" :style="`width: ${roadmapPercentage}%`"
-      :aria-valuenow="roadmapPercentage" aria-valuemin="0" aria-valuemax="100">
-      {{ roadmapPercentage }}%
+  <!-- style="display:flex; margin-right:auto" -->
+  <div>
+    <div class="container mt-5" style="display:flex; width:40vw">
+      <div>
+        지금 듣고 계시는 강의는<br>
+        <img src="../assets/images/spring.svg" style="width:10vw" />
+      </div>
+      <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
+        <div class="col-md-3 col-sm-6" style="width:200px">
+          전체 진행도
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
+            angle: 90,
+            startColor: 'black',
+            stopColor: 'black'
+          
+          }" style="width:13vw" />
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5" style="display:flex; width:40vw">
+      <div class="row" style="display:flex;flex-direction:column;margin-right;:auto">
+        <div class="col-md-3 col-sm-6" style="width:200px">
+          강의 진행도
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
+            :gradient="{
+              angle: 90,
+              startColor: 'black',
+              stopColor: 'black'
+            }
+            " />
+        </div>
+      </div>
+      <div style="margin-left: auto;">
+        이다음 들어야 할 강의는<br>
+        <img src="../assets/images/tensorflow.svg" style="width:10vw;" />
+      </div>
     </div>
   </div>
-
   <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted" style="text-decoration: none;">
-    <!-- <router-link :to="{ name: 'RoadMap' }" v-if="isRoadmapStarted"> -->
-    <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" @click="getSubData"
-      v-if="!roadMapShowClicked">
+    <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" v-if="!roadMapShowClicked">
       로드맵 시작하기!?
     </button>
   </router-link>
-  <router-link :to="{ name: 'ChapterView' }" v-if="isRoadmapStarted">
-    <button>로드맵 이어하기!</button>
-  </router-link>
+  <div v-if="isRoadmapStarted">
+    <button @click="routeByCurChapterPK" class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
+  </div>
 </template>
 <script>
-import { userData, getRoadmap } from '@/api'
+import "vue3-circle-progress/dist/circle-progress.css";
+import CircleProgress from "vue3-circle-progress";
+import { userData } from '@/api'
 
 export default {
+  components: { CircleProgress },
+
   name: "UserHome",
   data() {
     return {
       roadmapPercentage: 0,
       roadMapShowClicked: false,
-      subjects: [],
       isSuccess: false,
       userId: null,
       userName: null,
-      roadmapId: "1",
+      roadmapId: "-1",
       totalSubjectIdx: 0,
       curSubjectIdx: 0,
       chapterPercent: 0,
-      nextChapterPK: 0,
+      curChapterPK: 0,
+      subscribe: false,
       jwt: null,
+      subjectPercentage: 0,
     };
   },
   mounted() {
@@ -52,6 +90,14 @@ export default {
     },
   },
   methods: {
+    routeByCurChapterPK() {
+      var cpk = this.curChapterPK;
+      if (cpk === -1) {
+        this.$router.push('/roadmap');
+      } else {
+        this.$router.push({ name: 'ChapterFrame', params: { chapterId: this.curChapterPK } })
+      }
+    },
     async getUserData() {
       const config = {
         headers: {
@@ -60,15 +106,21 @@ export default {
       };
       await userData(config)
         .then((response) => {
+
+
           console.log("user data jwt : " + config);
           this.$store.commit('setAccountId', response.data.userId);
           this.userId = response.data.userId;
           this.userName = response.data.userName;
           this.roadmapId = response.data.roadmapId;
+          if (this.roadmapId != "-1") {
+            this.$store.commit('setIsRoadmap', true);
+          }
           this.totalSubjectIdx = response.data.totalSubjectIdx;
           this.curSubjectIdx = response.data.curSubjectIdx;
           this.chapterPercent = response.data.chapterPercent;
-          this.nextChapterPK = response.data.nextChapterPK;
+          this.curChapterPK = response.data.curChapterPK;
+          this.subscribe = response.data.subscribe;
           this.setProgressbar();
         })
         .catch(function (error) {
@@ -83,31 +135,13 @@ export default {
         return;
       }
       this.roadmapPercentage = parseInt(
-        (this.chapterPercent) * 100
-      );
-    },
-    async getSubData() {
-      const config = {
-        headers: {
-          jwt: this.$store.state.jwt,
-        }
-      }
-      var vm = this;
-      await getRoadmap(config)
-        .then((response) => {
-          console.log("Getroadmap!!data : " + response.data.success)
-          if (!response.data.success) {
-            this.$router.push('/');
-          }
+        (this.chapterPercent)
+      ) * 100;
 
-          vm.isSuccess = response.data.success;
-          vm.subjects = response.data.subjects;
-          this.$store.commit("setSubjectsStatus", response.data.subjects);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      this.subjectPercentage = (this.curSubjectIdx / this.totalSubjectIdx) * 100;
+      console.log("this subject percentage" + this.subjectPercentage);
     },
+
   },
 };
 </script>

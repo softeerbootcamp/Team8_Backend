@@ -14,12 +14,15 @@
             </div>
             <div class="card-footer">
                 <a v-bind:href="examUrl">템플릿 코드를 다운로드하는 곳</a>
-                <router-link :to="{
+                <!-- <router-link :to="{
                     name: 'FrqExamSubmitView',
-                    params: { examId: getExamId() }
-                }">
-                    <button class="btn btn-primary mt-2">제출하러가기</button>
-                </router-link>
+                    params: { frqExamIdForSubmit: frqExamId }
+                }"> -->
+                <button class="btn btn-primary mt-2" @click="[$router.push({
+                    name: 'FrqExamSubmitView',
+                    params: { frqExamIdForSubmit: frqExamId }
+                })]">제출하러가기</button>
+                <!-- </router-link> -->
                 <!-- <router-link :to="{ name: 'home' }" class="btn btn-secondary">Back</router-link> -->
             </div>
         </div>
@@ -28,28 +31,24 @@
 <script>
 import { getExamDetailData } from '@/api'
 export default {
-    name: 'ExamView',
+    name: 'FrqExamView',
     data() {
         return {
             //subjectName: "",
             examUrl: "",
             examTitle: "",
             examExplain: "",
-            examId: ""
+            frqExamId: ""
         }
     },
     mounted() {
+        this.frqExamId = this.$route.params.frqExamId;
         this.getExamDetail();
-        this.examId = this.$route.params.examId;
 
     },
     methods: {
-        getExamId() {
-            return this.$route.params.examId;
-        },
-
         async getExamDetail() {
-            const params = this.$route.params.examId;
+            const params = this.frqExamId;
             const config = {
                 headers: {
                     jwt: this.$store.state.jwt

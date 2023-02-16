@@ -26,7 +26,9 @@ public class AuthInterceptor implements HandlerInterceptor {
         String jwt = request.getHeader("jwt");
         jwtUtility.validateToken(jwt);
         Long accountId = jwtUtility.getAccountId(jwt);
+        String userName = jwtUtility.getUserName(jwt);
         request.setAttribute("accountId", accountId);
+        request.setAttribute("userName", userName);
         return true;
     }
 }

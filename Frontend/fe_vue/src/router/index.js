@@ -5,16 +5,16 @@ import RoadMap from "@/view/user/roadmap.vue";
 import CourseView from "@/view/user/courseView.vue";
 import UserHome from "@/view/user/userhome.vue";
 import ChapterView from "@/view/user/chapterView.vue";
-import RoadMapFactory from "@/view/admin/roadmapFactory.vue"
-import AdminHome from "@/view/admin/adminHome.vue"
-import FrqExamView from "@/view/exam/frqExamView.vue"
-import FrqExamSubmitView from "@/view/exam/frqExamSubmitView.vue"
-import ExamPurchaseView from "@/view/exam/examPurchaseView.vue"
-import AdminUserView from "@/view/admin/adminUserView"
-import UserPendingView from "@/view/user/userPendingView"
-import McqExamView from "@/view/exam/mcqExamView"
-import ChapterFrame from "@/view/user/chapterFrame"
-import Store from "@/store"
+import RoadMapFactory from "@/view/admin/roadmapFactory.vue";
+import AdminHome from "@/view/admin/adminHome.vue";
+import FrqExamView from "@/view/exam/frqExamView.vue";
+import FrqExamSubmitView from "@/view/exam/frqExamSubmitView.vue";
+import ExamPurchaseView from "@/view/exam/examPurchaseView.vue";
+import AdminUserView from "@/view/admin/adminUserView";
+import UserPendingView from "@/view/user/userPendingView";
+import McqExamView from "@/view/exam/mcqExamView";
+import ChapterFrame from "@/view/user/chapterFrame";
+import Store from "@/store";
 // path: '/',
 //     redirect: "/login",
 //     component: LoginLayout,
@@ -25,12 +25,12 @@ const routes = [
     component: () => import("../view/home.vue"),
   },
   {
-    path: "/mcqexamview/:examId",
+    path: "/mcqexamview/:mcqExamId",
     name: "McqExamView",
     component: McqExamView,
-  }, 
+  },
   {
-    path: "/frqexamview/:examId",
+    path: "/frqexamview/:frqExamId",
     name: "FrqExamView",
     component: FrqExamView,
   },
@@ -40,12 +40,12 @@ const routes = [
     component: AdminUserView,
   },
   {
-  path:"/chapterframe/:chapterId",
-  name:"ChapterFrame",
-  component:ChapterFrame,
+    path: "/chapterframe/:chapterId",
+    name: "ChapterFrame",
+    component: ChapterFrame,
   },
   {
-    path: "/frqexamsubmitview/:examId",
+    path: "/frqexamsubmitview/:frqExamIdForSubmit",
     name: "FrqExamSubmitView",
     component: FrqExamSubmitView,
   },
@@ -112,13 +112,11 @@ router.beforeEach((to, from, next) => {
 
   if (to.path === "/login" && isLoggedIn) {
     next("/");
-  }else if(to.path === "/userpendingview" && isRoadmapExist){
-    next("/")
-  }else {
+  } else if (to.path === "/userpendingview" && isRoadmapExist) {
+    next("/");
+  } else {
     next();
   }
-
 });
 
 export default router;
-

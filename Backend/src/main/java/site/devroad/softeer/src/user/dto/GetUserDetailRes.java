@@ -10,6 +10,7 @@ public class GetUserDetailRes {
     private Float chapterPercent;
     private Long curChapterPK;
     private Boolean subscribe;
+    private Boolean roadmapStarted;
 
     private GetUserDetailRes(Long userId, String userName, Boolean subscribe) {
         this.subscribe = subscribe;
@@ -21,14 +22,33 @@ public class GetUserDetailRes {
         this.curSubjectIdx = 0L;
         this.chapterPercent = 0F;
         this.curChapterPK = -1L;
+        this.roadmapStarted = false;
+    }
+
+    private GetUserDetailRes(Long userId, Long roadmapId, Long totalSubjectIdx, String userName, Boolean subscribe) {
+        this.subscribe = subscribe;
+        this.success = true;
+        this.userId = userId;
+        this.userName = userName;
+        this.roadmapId = roadmapId;
+        this.totalSubjectIdx = totalSubjectIdx;
+        this.curSubjectIdx = 0L;
+        this.chapterPercent = 0F;
+        this.curChapterPK = -1L;
+        this.roadmapStarted = false;
     }
 
     private GetUserDetailRes() {
         this.success = true;
+        this.roadmapStarted = true;
     }
 
     public static GetUserDetailRes createNoRoadmapUserDetail(Long userId, String userName, Boolean subscribe) {
         return new GetUserDetailRes(userId, userName, subscribe);
+    }
+
+    public static GetUserDetailRes createNotStartUserDetail(Long userId, Long roadmapId, Long totalSubjectIdx, String userName, Boolean subscribe) {
+        return new GetUserDetailRes(userId, roadmapId, totalSubjectIdx, userName, subscribe);
     }
 
     public static GetUserDetailRes createUserDetail() {
