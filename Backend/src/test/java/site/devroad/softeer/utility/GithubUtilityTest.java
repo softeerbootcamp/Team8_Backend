@@ -21,10 +21,22 @@ class GithubUtilityTest {
     GithubUtility githubUtility;
 
     @Test
-    void testAllData() throws IOException {
-        Map<String, String> allJavaCodeFromRepo = githubUtility.getAllCodeFromRepo("rohsik2", "devroad-test", ".java");
+    void testAllData() {
+        Map<String, String> allJavaCodeFromRepo = githubUtility.getAllCodeFromRepo("rohsik2", "devroad-test", ".cpp");
         logger.info(allJavaCodeFromRepo.toString());
         assertThat(allJavaCodeFromRepo.keySet().size()).isEqualTo(2);
     }
-  
+
+
+    @Test
+    void getProgrammingLanguageFromRepo() {
+        String mainLanguage = githubUtility.getMainExtensionFromRepo("rohsik2", "devroad-test");
+        logger.info(mainLanguage);
+    }
+
+//    @Test
+//    void setIssueToRepo(){
+//        String issueUrl = githubUtility.createIssue("rohsik2", "devroad-test", "this is my string", "this is my cotent");
+//        logger.info(issueUrl);
+//    }
 }

@@ -59,12 +59,12 @@ public class OpenAiUtility {
             body.put("model", "text-davinci-003");
             body.put("prompt", rawCode + "what does this code does?");
             body.put("temperature", 0);
-            body.put("max_tokens", 100);
+            body.put("max_tokens", 50);
 
             HttpURLConnection con = getConnection("https://api.openai.com/v1/completions", "POST", body);
             String response = getResponse(con);
 
-            return getSummaryFromResponse(response);
+            return getChoicesFromResponse(response);
         }catch (IOException e){
             logger.warn(e.getMessage());
             return null;
@@ -72,9 +72,23 @@ public class OpenAiUtility {
     }
 
 
-    public String getCodeReview(String codeReview){
+    public String getCodeReview(String rawCode){
 
-        return null;
+        try {
+            Map<String, Object> body = new HashMap<>();
+            body.put("model", "text-davinci-003");
+            body.put("prompt", rawCode + "\n\n you did a good job but there is 5 suggestion for improving your code: \n");
+            body.put("temperature", 0);
+            body.put("max_tokens", 150);
+
+            HttpURLConnection con = getConnection("https://api.openai.com/v1/completions", "POST", body);
+            String response = getResponse(con);
+
+            return getChoicesFromResponse(response);
+        }catch (IOException e){
+            logger.warn(e.getMessage());
+            return null;
+        }
     }
 
 
@@ -101,9 +115,8 @@ public class OpenAiUtility {
     }
 
 
-    public String getSummaryFromResponse(String jsonString){
+    private String getChoicesFromResponse(String jsonString){
         JSONObject json = new JSONObject(jsonString);
-
         JSONArray choices = json.getJSONArray("choices");
         String text = choices.getJSONObject(0).getString("text");
         return text;

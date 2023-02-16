@@ -27,48 +27,86 @@ public class GithubUtility {
     @Value("${github.apiKey}")
     private String token;
 
+    private static Map<String, String> extensionMap = new HashMap<>(){{
+        put("Java", ".java");
+        put("Python", ".py");
+        put("Go", ".go");
+        put("C", ".c");
+        put("Cpp", ".cpp");
+    }};
 
-    class Directory{
-        public List<String> files;
-        public List<String> dirs;
+    public String getMainExtensionFromRepo(String owner, String repo) {
+        try {
+            String path = "https://api.github.com/repos/" + owner + "/" + repo;
+            URL url = new URL(path);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Authorization", "Bearer " + token);
+            con.setRequestProperty("Accept", "application/vnd.github.v3+json");
+
+            int status = con.getResponseCode();
+            if (status != 200) {
+                throw new RuntimeException("Failed to get repository contents: " + status);
+            }
+
+            InputStream in = con.getInputStream();
+            byte[] responseBytes = in.readAllBytes();
+            String response = new String(responseBytes);
+
+            JSONObject jsonObject = new JSONObject(response);
+
+            String language = jsonObject.getString("language");
+            if (!extensionMap.containsKey(language))
+                return ".java";
+            return extensionMap.get(language);
+        }catch (IOException e){
+            e.printStackTrace();
+            throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
+        }
     }
 
-    public Map<String, String> getAllCodeFromRepo(String owner, String repo, String fileType) throws IOException {
-        String path = "https://api.github.com/repos/" + owner + "/" + repo + "/contents";
-        URL url = new URL(path);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setRequestProperty("Authorization", "Bearer " + token);
-        con.setRequestProperty("Accept", "application/vnd.github.v3+json");
+    public Map<String, String> getAllCodeFromRepo(String owner, String repo, String fileType) {
+        try {
+            String path = "https://api.github.com/repos/" + owner + "/" + repo + "/contents";
+            URL url = new URL(path);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Authorization", "Bearer " + token);
+            con.setRequestProperty("Accept", "application/vnd.github.v3+json");
 
-        int status = con.getResponseCode();
-        if (status != 200) {
-            throw new RuntimeException("Failed to get repository contents: " + status);
-        }
-
-        InputStream in = con.getInputStream();
-        byte[] responseBytes = in.readAllBytes();
-        String response = new String(responseBytes);
-
-        JSONArray jsonArray = new JSONArray(response);
-
-        Map<String, String> javaFiles = new HashMap<>();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject obj = (JSONObject) jsonArray.get(i);
-            String name = (String) obj.get("name");
-            String type = (String) obj.get("type");
-            String pathUrl = (String) obj.get("url");
-            if (type.equals("dir")) {
-                javaFiles.putAll(getFilesFromDirectory(pathUrl, fileType));
-            } else if (name.endsWith(fileType)) {
-                String downloadUrl = (String) obj.get("download_url");
-                String content = getFileContentFromUrl(downloadUrl);
-                javaFiles.put(getFileName(pathUrl), content);
+            int status = con.getResponseCode();
+            if (status != 200) {
+                throw new RuntimeException("Failed to get repository contents: " + status);
             }
-        }
 
-        return javaFiles;
+            InputStream in = con.getInputStream();
+            byte[] responseBytes = in.readAllBytes();
+            String response = new String(responseBytes);
+
+            JSONArray jsonArray = new JSONArray(response);
+
+            logger.info("jsonArray {}", jsonArray);
+            Map<String, String> javaFiles = new HashMap<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = (JSONObject) jsonArray.get(i);
+                String name = (String) obj.get("name");
+                String type = (String) obj.get("type");
+                String pathUrl = (String) obj.get("url");
+                if (type.equals("dir")) {
+                    javaFiles.putAll(getFilesFromDirectory(pathUrl, fileType));
+                } else if (name.endsWith(fileType)) {
+                    String downloadUrl = (String) obj.get("download_url");
+                    String content = getFileContentFromUrl(downloadUrl);
+                    javaFiles.put(getFileName(pathUrl), content);
+                }
+            }
+
+            return javaFiles;
+        }catch (IOException e){
+            e.printStackTrace();
+            throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
+        }
     }
 
     //create new Issue from originGitUrl and returns new Issue url;

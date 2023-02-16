@@ -48,9 +48,12 @@ public enum ExceptionType {
     GITHUB_ISSUE_ALREADY_SENDED(HttpStatus.BAD_REQUEST, "Issue라는 글자가 이미 url에 들어있습니다.", 1403),
     //HTTP Connection Error
     CONNECTION_ESTABLISH_FAILED(HttpStatus.BAD_REQUEST, "Http connection error, 외부 연동에 문제가 존재합니다.", 1501),
+
+    //AI Review Related Error
+    AI_REVIEW_ALREADY_DONE(HttpStatus.BAD_REQUEST, "AI Review already done" , 1602),
+
     //Last Exceptions
     DATABASE_NOT_CONNECTED(HttpStatus.INTERNAL_SERVER_ERROR, "Database not connected", 2001);
-
     private HttpStatus httpStatus;
     private String message;
     private Integer customErrorCode;
