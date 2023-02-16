@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
-import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
-import site.devroad.softeer.src.exam.dto.PutExamDetailReq;
-import site.devroad.softeer.src.exam.dto.PutExamDetailRes;
+import site.devroad.softeer.src.exam.dto.*;
+import site.devroad.softeer.src.exam.dto.domain.Assignment;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.dto.domain.MultiChoiceQuestion;
+import site.devroad.softeer.src.exam.dto.domain.PeerDetail;
 import site.devroad.softeer.src.exam.model.Exam;
 import site.devroad.softeer.src.exam.model.ExamMcq;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
@@ -18,10 +18,9 @@ import site.devroad.softeer.src.exam.model.SubmissionType;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
 import site.devroad.softeer.src.user.UserRepo;
+import site.devroad.softeer.src.user.model.Account;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ExamService {
@@ -125,5 +124,21 @@ public class ExamService {
         SubmissionType submissionType = result ? SubmissionType.PASSED : SubmissionType.FAILED;
         examSubmissionRepo.updateByExamIdAndAccountId(examId, accountId, submissionType);
         return new PutExamDetailRes();
+    }
+
+    public GetAssignmentDetail getAssignmentDetail(Long examSubmissionId) {
+        Optional<ExamSubmission> examSubmissionById = examSubmissionRepo.findExamSubmissionById(examSubmissionId);
+        if (examSubmissionById.isEmpty())
+            throw new CustomException(ExceptionType.EXAM_SUBMISSION_NOT_FOUND);
+        ExamSubmission examSubmission = examSubmissionById.get();
+        Account accountById = userRepo.findAccountById(examSubmission.getId());
+        Assignment assignment = new Assignment(examSubmission, accountById.getName());
+        return new GetAssignmentDetail(assignment);
+    }
+    public GetPeerDetail getPeerDetail(Long examId){
+
+        List<PeerDetail> peerList = userRepo.findPeerDetailByExamId(examId);
+        Collections.shuffle(peerList);
+        return new GetPeerDetail(true , peerList.subList(0,2));
     }
 }

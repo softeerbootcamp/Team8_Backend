@@ -53,6 +53,11 @@ public class ExamController {
         return new ResponseEntity<>(Map.of("success", true), HttpStatus.CREATED);
     }
 
+    @GetMapping("/api/exam/assignment/{examSubmissionId}")
+    public ResponseEntity<?> getAssignmentDetail(@PathVariable("examSubmissionId") Long examSubmissionId) {
+        return new ResponseEntity<>(examService.getAssignmentDetail(examSubmissionId), HttpStatus.OK);
+    }
+
     @GetMapping("/api/purchase/exam/success")
     public ResponseEntity<?> purchaseSuccess(@RequestParam String orderId, @RequestParam String paymentKey, @RequestParam Integer amount) {
         logger.info("staring Toss server validation \norder_id : {}\n paymentKey : {} \n amount : {}", orderId, paymentKey, amount);
@@ -75,5 +80,8 @@ public class ExamController {
         return new ResponseEntity<>(examService.getExamDetailRes(req, accountId), HttpStatus.ACCEPTED);
     }
 
-
+    @GetMapping("/api/exam/peer/{examId}")
+    public ResponseEntity<?> getPeerDetail(@PathVariable("examId") Long examId){
+        return new ResponseEntity<>(examService.getPeerDetail(examId),HttpStatus.OK);
+    }
 }

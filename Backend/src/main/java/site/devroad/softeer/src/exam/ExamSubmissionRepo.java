@@ -24,7 +24,7 @@ public class ExamSubmissionRepo {
     }
 
 
-    public Optional<ExamSubmission> findById(Long id) {
+    public Optional<ExamSubmission> findExamSubmissionById(Long id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("select * from ExamSubmission where id = ?",
                     examSubmissionRowMapper(), id));
@@ -47,8 +47,8 @@ public class ExamSubmissionRepo {
     }
 
     public void updateByExamIdAndAccountId(Long examId, Long accountId, SubmissionType submissionType) {
-        jdbcTemplate.update("update ExamSubmission ]" +
-                        "set is_passed = ? " +
+        jdbcTemplate.update("update ExamSubmission\n" +
+                        "set is_passed = ?\n" +
                         "WHERE account_id = ? AND exam_id = ?",
                 submissionType.getIs_passed(), accountId, examId);
     }
