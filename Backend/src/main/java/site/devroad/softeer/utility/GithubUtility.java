@@ -137,58 +137,6 @@ public class GithubUtility {
         }
     }
 
-    public Directory getPaths(String originRepoUrl){
-        logger.info("createIssue {}", originRepoUrl);
-        try {
-            Directory directory = new Directory();
-            directory.dirs = new ArrayList<>();
-            directory.files = new ArrayList<>();
-
-            String repoURL = originRepoUrl.substring("https://github.com/".length());
-            logger.info(repoURL);
-
-            URL url = new URL("https://api.github.com/repos/"+repoURL+"/contents/");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-
-            String encodedString = "Bearer " + gitApiKey;
-            logger.info("auth {}", encodedString);
-            con.setRequestProperty("Authorization", encodedString);
-            con.setRequestProperty("Accept", "application/vnd.github+json");
-            con.setDoOutput(true);
-
-            int status = con.getResponseCode();
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-
-            List<String> results = new ArrayList<>();
-
-            JSONArray obj = new JSONArray(content.toString());
-            for(int i =0; i<obj.length(); i++){
-                JSONObject conv = (JSONObject) obj.get(i);
-                logger.info(conv.toString());
-                String type = conv.get("type").toString();
-                String title = conv.get("path").toString();
-                if(type.equals("file"))
-                    directory.files.add(title);
-                else
-                    directory.dirs.add(type);
-                results.add(title);
-            }
-            return directory;
-        }catch (IOException e){
-            e.printStackTrace();
-            logger.warn("IOExcetion {}", "error occurs while getting result from toss server");
-            throw new CustomException(ExceptionType.GITHUB_API_IO_ERROR);
-        }
-    }
-
     private  String getFileName(String originalUrl) {
         originalUrl = URLDecoder.decode(originalUrl, Charset.defaultCharset());
         originalUrl = originalUrl.replace("?ref=main", "");

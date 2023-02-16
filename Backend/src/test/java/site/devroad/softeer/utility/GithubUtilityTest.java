@@ -21,19 +21,6 @@ class GithubUtilityTest {
     GithubUtility githubUtility;
 
     @Test
-    @DisplayName("github repo get all paths")
-    void getFilePaths(){
-        //given
-        String gitUrl = "https://github.com/rohsik2/devroad-test";
-
-        //when
-        List<String> paths = githubUtility.getPaths(gitUrl).files;
-
-        //then
-        logger.info(paths.toString());
-    }
-
-    @Test
     void testAllData() throws IOException {
         Map<String, String> allJavaCodeFromRepo = githubUtility.getAllCodeFromRepo("rohsik2", "devroad-test", ".java");
         logger.info(allJavaCodeFromRepo.toString());
