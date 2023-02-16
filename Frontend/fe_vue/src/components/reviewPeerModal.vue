@@ -4,20 +4,22 @@
             <div class="modal-wrapper">
                 <div class="modal-container">
                     <div class="modal-header mt-1">
-                        테스트를 통과하셨군요! 이후 과정을 어떻게 진행하시겠어요?
+                        peer 모달입니다!!!!
                     </div>
                     <div class="modal-body">
                         <div class="row row-cols-1 row-cols-md-2 g-4 mt-1" style="height:100%">
                             <div class="col">
-                                <div class="card" @click="$emit('card-selected', card.ai.class)" style="height:80%">
-                                    <div class="card-header">{{ card.ai.title }}</div>
-                                    <div class="card-body">{{ card.ai.description }}</div>
+                                <div class="card" style="height:80%">
+                                    <div class="card-header">{{ cards.card1.name }}</div>
+                                    <div class="card-body">{{ cards.card1.url }}</div>
+                                    <div class="card-body">{{ cards.card1.curSubject }}</div>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="card" @click="$emit('card-selected', card.peer.class)" style="height:80%">
-                                    <div class="card-header">{{ card.peer.title }}</div>
-                                    <div class="card-body">{{ card.peer.description }}</div>
+                                <div class="card" style="height:80%">
+                                    <div class="card-header">{{ cards.card2.name }}</div>
+                                    <div class="card-body">{{ cards.card2.url }}</div>
+                                    <div class="card-body">{{ cards.card2.curSubject }}</div>
                                 </div>
                             </div>
                         </div>
@@ -32,29 +34,24 @@
             </div>
         </div>
     </transition>
-
-
 </template>
 <script>
-export default {
-    components: {
 
-    },
+export default {
+    name: "reviewPeerModal",
     data() {
         return {
 
-            card: {
-                ai: {
-                    id: 1,
-                    title: 'AI 와 함께하는 리뷰',
-                    description: '최신 AI 와 함께 틀린 부분을 논의해 보아요!',
-                    class: 'ai'
+            cards: {
+                card1: {
+                    name: "",
+                    url: "",
+                    curSubject: "",
                 },
-                peer: {
-                    id: 2,
-                    title: 'Peer 리뷰',
-                    description: '같은 과목을 들은 학생들과 서로 리뷰해 보아요!',
-                    class: 'peer'
+                card2: {
+                    name: "",
+                    url: "",
+                    curSubject: "",
                 }
 
             },
@@ -62,9 +59,6 @@ export default {
 
         };
     },
-    methods: {
-
-    }
 }
 </script>
 

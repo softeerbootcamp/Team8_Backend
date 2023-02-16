@@ -29,23 +29,23 @@
       </div>
     </div>
   </div>
-  <reviewModal @close="closeModal" v-if="modal">
-    <!-- default 슬롯 콘텐츠 -->
-    <p>Vue.js Modal Window!</p>
-    <!-- /default -->
-    <!-- footer 슬롯 콘텐츠 -->
-    <!-- <button @click="doSend">제출</button> -->
-    <!-- /footer -->
-  </reviewModal>
+  <reviewSelectModal @card-selected="onCardSelected" @close="closeModal" v-if="showReviewSelectModal">
+  </reviewSelectModal>
+  <reviewAiModal @close="showReviewAiModal = false" v-if="showReviewAiModal"></reviewAiModal>
+  <reviewPeerModal @close="showReviewPeerModal = false" v-if="showReviewPeerModal"></reviewPeerModal>
 </template>
 
 <script>
 import { getRoadmap } from '@/api'
-import reviewModal from '@/components/reviewSelectModal.vue'
+import reviewSelectModal from '@/components/reviewSelectModal.vue'
+import reviewAiModal from '@/components/reviewAiModal.vue'
+import reviewPeerModal from '@/components/reviewPeerModal.vue';
 export default {
   name: "RoadMap",
   components: {
-    reviewModal
+    reviewSelectModal,
+    reviewAiModal,
+    reviewPeerModal
   },
   data() {
     return {
@@ -56,8 +56,9 @@ export default {
       isSuccess: false,
       subjects: [],
 
-      modal: false,
-
+      showReviewSelectModal: false,
+      showReviewAiModal: false,
+      showReviewPeerModal: false,
     };
   },
   mounted() {
@@ -65,10 +66,21 @@ export default {
   },
   methods:
   {
-    openModal() {
-      this.modal = true;
-    }, closeModal() {
-      this.modal = false;
+    openReviewModal() {
+      this.showReviewSelectModal = true
+    },
+    closeModal() {
+      this.showReviewSelectModal = false
+    },
+    onCardSelected(cardClass) {
+      this.selectedReviewType = cardClass
+      this.showReviewSelectModal = false
+      if (cardClass === 'ai') {
+        this.showReviewAiModal = true
+      }
+      if (cardClass === 'peer') {
+        this.showReviewPeerModal = true
+      }
     },
 
     async getSubData() {
@@ -119,7 +131,9 @@ export default {
         this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
       }
       if (state === 'PASSED') {
-        this.openModal();
+        if (isMcqOrFrq == 'FRQ') {
+          this.openReviewModal();
+        }
       }
       if (state === 'PURCHASED') {
         if (isMcqOrFrq === 'MCQ') {
