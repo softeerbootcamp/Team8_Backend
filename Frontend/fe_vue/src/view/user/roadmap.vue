@@ -29,39 +29,24 @@
       </div>
     </div>
   </div>
-  <!-- <div class="container">
-    <div class="row align-items-center">
-      <div class="row" v-for="subject in subjects" :key="subject">
-        <div class="col col-md-7 offset-md-3
-                            text-center mt-5">
-          <button class="btn btn-dark" @click="[
-          $router.push({
-            name: 'CourseView',
-          })
-          , setCurrentSubjectId(subject.subjectId)]">
-            {{ subject.name }}
-          </button>
-          <button class="btn ml-3" :class="getButtonClass(subject.mcqState)" type="button"
-            @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')">
-            <span>객관식</span>
-            <span class="bi bi-file-text"></span>
-          </button>
-          <button class="btn ml-3" :class="getButtonClass(subject.frqState)" type="button"
-            @click="switchRouterByState(subject.frqState, subject.frqExamId, 'FRQ')">
-            <span>주관식</span>
-            <span class="bi bi-file-text"></span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> -->
+  <reviewModal @close="closeModal" v-if="modal">
+    <!-- default 슬롯 콘텐츠 -->
+    <p>Vue.js Modal Window!</p>
+    <!-- /default -->
+    <!-- footer 슬롯 콘텐츠 -->
+    <!-- <button @click="doSend">제출</button> -->
+    <!-- /footer -->
+  </reviewModal>
 </template>
 
 <script>
 import { getRoadmap } from '@/api'
+import reviewModal from '@/components/reviewSelectModal.vue'
 export default {
   name: "RoadMap",
-
+  components: {
+    reviewModal
+  },
   data() {
     return {
       isCardOn: false,
@@ -70,6 +55,9 @@ export default {
 
       isSuccess: false,
       subjects: [],
+
+      modal: false,
+
     };
   },
   mounted() {
@@ -77,6 +65,12 @@ export default {
   },
   methods:
   {
+    openModal() {
+      this.modal = true;
+    }, closeModal() {
+      this.modal = false;
+    },
+
     async getSubData() {
       const config = {
         headers: {
@@ -121,21 +115,12 @@ export default {
       }
     },
     switchRouterByState(state, examId, isMcqOrFrq) {
-      // switch(state) {
-      //   case 'NONE':
-      //     return 'btn btn-light btn-sm';
-      //   case 'PURCHASED':
-
-      //   case 'SUBMITTED':
-      //     return 'btn btn-warning btn-sm';
-      //   case 'PASSED':
-      //     return 'btn btn-success btn-sm';
-      //   case 'FAILED':
-      //     return 'btn btn-danger btn-sm';
-      //   break:
-      //     return 'btn btn-light btn-sm';
-      // }
-
+      if (state === 'NONE') {
+        this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
+      }
+      if (state === 'PASSED') {
+        this.openModal();
+      }
       if (state === 'PURCHASED') {
         if (isMcqOrFrq === 'MCQ') {
           console.log("purchased button  exam id log : " + examId)
@@ -145,9 +130,7 @@ export default {
           this.$router.push({ name: 'FrqExamView', params: { frqExamId: examId } });
         }
       }
-      if (state === 'NONE') {
-        this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
-      }
+
     }
   }
 };
