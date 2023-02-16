@@ -177,7 +177,7 @@ public class ExamService {
         StringBuilder body = new StringBuilder();
         body.append("## Code Summary");
         for(String key : summaries.keySet()){
-            body.append("\n\n### filename : " + key + "\n");
+            body.append("\n\n### filename : [" + key + "]("+submission.getUrl()+"/blob/main"+key+")\n");
             body.append(summaries.get(key) + "\n");
         }
 
@@ -191,7 +191,7 @@ public class ExamService {
         //insert Review into body
         body.append("## Code Review");
         for(String key : summaries.keySet()){
-            body.append("\n\n### filename : " + key + "\n");
+            body.append("\n\n### filename : [" + key + "]("+submission.getUrl()+"/blob/main"+key+")\n");
             body.append(reviews.get(key) + "\n");
         }
 
