@@ -62,6 +62,10 @@ public class ExamSubmissionRepo {
                 "AND es.account_id = ?", examSubmissionRowMapper(), roadmapId, accountID);
     }
 
+    public void updateSubmissionUrl(Long id, String issueUrl) {
+        jdbcTemplate.update("update ExamSubmission set url = ? where id = ?", issueUrl, id);
+    }
+
 
     public RowMapper<ExamSubmission> examSubmissionRowMapper() {
         return (rs, rowNum) -> {
@@ -75,4 +79,5 @@ public class ExamSubmissionRepo {
             return new ExamSubmission(id, accountId, examId, url, type, description);
         };
     }
+
 }

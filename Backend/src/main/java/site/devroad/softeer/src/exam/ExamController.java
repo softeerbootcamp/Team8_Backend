@@ -50,6 +50,10 @@ public class ExamController {
 
         examService.checkExamPurchased(accountId);
         examService.submitAssignment(accountId, req);
+        Thread backgroundThread = new Thread(() -> {
+
+        });
+        backgroundThread.start();
         return new ResponseEntity<>(Map.of("success", true), HttpStatus.CREATED);
     }
 
@@ -79,6 +83,19 @@ public class ExamController {
     public ResponseEntity<?> putExamResult(@RequestAttribute Long accountId, @RequestBody PutExamDetailReq req) {
         return new ResponseEntity<>(examService.getExamDetailRes(req, accountId), HttpStatus.ACCEPTED);
     }
+
+
+    @PostMapping("/api/exam/ai/{examSubmissionId}")
+    public ResponseEntity<?> doSubmissionAI(@PathVariable("examSubmissionId") Long examSubmissionId){
+        Thread runnable = new Thread(
+                ()->{
+                    examService.doAiReview(examSubmissionId);
+                }
+        );
+        runnable.run();
+        return new ResponseEntity<>(Map.of("success", true), HttpStatus.OK);
+    }
+
 
     @GetMapping("/api/exam/peer/{examId}")
     public ResponseEntity<?> getPeerDetail(@PathVariable("examId") Long examId){

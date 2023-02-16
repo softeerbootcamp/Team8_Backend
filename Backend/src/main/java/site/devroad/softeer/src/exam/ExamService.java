@@ -10,7 +10,6 @@ import site.devroad.softeer.src.exam.dto.*;
 import site.devroad.softeer.src.exam.dto.domain.Assignment;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.dto.domain.MultiChoiceQuestion;
-import site.devroad.softeer.src.exam.dto.domain.PeerDetail;
 import site.devroad.softeer.src.exam.model.Exam;
 import site.devroad.softeer.src.exam.model.ExamMcq;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
@@ -19,6 +18,8 @@ import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectRepo;
 import site.devroad.softeer.src.user.UserRepo;
 import site.devroad.softeer.src.user.model.Account;
+import site.devroad.softeer.utility.GithubUtility;
+import site.devroad.softeer.utility.OpenAiUtility;
 
 import java.util.*;
 
@@ -30,13 +31,17 @@ public class ExamService {
     private SubjectRepo subjectRepo;
     private ExamSubmissionRepo examSubmissionRepo;
     private UserRepo userRepo;
+    private GithubUtility githubUtility;
+    private OpenAiUtility openAiUtility;
 
     @Autowired
-    public ExamService(ExamRepo examRepo, SubjectRepo subjectRepo, ExamSubmissionRepo examSubmissionRepo, UserRepo userRepo) {
+    public ExamService(ExamRepo examRepo, SubjectRepo subjectRepo, ExamSubmissionRepo examSubmissionRepo, UserRepo userRepo, GithubUtility githubUtility, OpenAiUtility openAiUtility) {
         this.examRepo = examRepo;
         this.subjectRepo = subjectRepo;
         this.examSubmissionRepo = examSubmissionRepo;
         this.userRepo = userRepo;
+        this.githubUtility = githubUtility;
+        this.openAiUtility = openAiUtility;
     }
 
     public Boolean isUserPassedExam(Long subjectId, Long accountId) {
@@ -135,6 +140,63 @@ public class ExamService {
         Assignment assignment = new Assignment(examSubmission, accountById.getName());
         return new GetAssignmentDetail(assignment);
     }
+
+    public void doAiReview(Long examSubmissionId) {
+        Optional<ExamSubmission> optionalExamSubmission = examSubmissionRepo.findExamSubmissionById(examSubmissionId);
+        if(optionalExamSubmission.isEmpty())
+            throw new CustomException(ExceptionType.EXAM_SUBMISSION_NOT_FOUND);
+
+        // https://github.com/rohsik2/Team8_FullStack
+        ExamSubmission submission = optionalExamSubmission.get();
+
+        if(submission.getUrl().contains("/issues/"))
+            throw new CustomException(ExceptionType.AI_REVIEW_ALREADY_DONE);
+        String[] splitedURl = submission.getUrl().split("/");
+        String username = splitedURl[3];
+        String repos = splitedURl[4];
+
+        logger.info("username {}, repose {}", username, repos);
+
+        //get main file type from url
+        String extension = githubUtility.getMainExtensionFromRepo(username, repos);
+
+        //Making code summary from open ai
+        Map<String, String> repo = githubUtility.getAllCodeFromRepo(username, repos, extension);
+        Map<String, String> summaries = new HashMap<>();
+        for(String key : repo.keySet()) {
+            String summary = openAiUtility.getCodeSummary(repo.get(key));
+            summaries.put(key, summary);
+        }
+
+        //Insert summary info body
+        String title = "Code Review from DevRoad";
+        StringBuilder body = new StringBuilder();
+        body.append("## Code Summary");
+        for(String key : summaries.keySet()){
+            body.append("\n\n### filename : [" + key + "]("+submission.getUrl()+"/blob/main"+key+")\n");
+            body.append(summaries.get(key) + "\n");
+        }
+
+        //making code Review From open ai
+        Map<String, String> reviews = new HashMap<>();
+        for(String key : repo.keySet()){
+            String review = openAiUtility.getCodeReview(repo.get(key));
+            reviews.put(key, review);
+        }
+
+        //insert Review into body
+        body.append("## Code Review");
+        for(String key : summaries.keySet()){
+            body.append("\n\n### filename : [" + key + "]("+submission.getUrl()+"/blob/main"+key+")\n");
+            body.append(reviews.get(key) + "\n");
+        }
+
+        String issueUrl = githubUtility.createIssue(username, repos, title, body.toString());
+
+        examSubmissionRepo.updateSubmissionUrl(submission.getId(), issueUrl);
+
+    }
+
     public GetPeerDetail getPeerDetail(Long examId){
 
         List<PeerDetail> peerList = userRepo.findPeerDetailByExamId(examId);
