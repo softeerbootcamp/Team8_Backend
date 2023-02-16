@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
-import site.devroad.softeer.src.exam.dto.GetAssignmentDetail;
-import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
-import site.devroad.softeer.src.exam.dto.PutExamDetailReq;
-import site.devroad.softeer.src.exam.dto.PutExamDetailRes;
+import site.devroad.softeer.src.exam.dto.*;
 import site.devroad.softeer.src.exam.dto.domain.Assignment;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.dto.domain.MultiChoiceQuestion;
@@ -46,7 +43,6 @@ public class ExamService {
         this.githubUtility = githubUtility;
         this.openAiUtility = openAiUtility;
     }
-
 
     public Boolean isUserPassedExam(Long subjectId, Long accountId) {
 
@@ -199,5 +195,12 @@ public class ExamService {
 
         examSubmissionRepo.updateSubmissionUrl(submission.getId(), issueUrl);
 
+    }
+
+    public GetPeerDetail getPeerDetail(Long examId){
+
+        List<PeerDetail> peerList = userRepo.findPeerDetailByExamId(examId);
+        Collections.shuffle(peerList);
+        return new GetPeerDetail(true , peerList.subList(0,2));
     }
 }

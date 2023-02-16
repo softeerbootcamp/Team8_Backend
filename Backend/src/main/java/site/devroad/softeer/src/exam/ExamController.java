@@ -97,4 +97,8 @@ public class ExamController {
     }
 
 
+    @GetMapping("/api/exam/peer/{examId}")
+    public ResponseEntity<?> getPeerDetail(@PathVariable("examId") Long examId){
+        return new ResponseEntity<>(examService.getPeerDetail(examId),HttpStatus.OK);
+    }
 }
