@@ -80,5 +80,8 @@ public class ExamController {
         return new ResponseEntity<>(examService.getExamDetailRes(req, accountId), HttpStatus.ACCEPTED);
     }
 
-
+    @GetMapping("/api/exam/peer/{examId}")
+    public ResponseEntity<?> getPeerDetail(@PathVariable("examId") Long examId){
+        return new ResponseEntity<>(examService.getPeerDetail(examId),HttpStatus.OK);
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
+import site.devroad.softeer.src.exam.dto.domain.PeerDetail;
 import site.devroad.softeer.src.user.dto.domain.UserDetail;
 import site.devroad.softeer.src.user.model.Account;
 import site.devroad.softeer.src.user.model.LoginInfo;
@@ -112,7 +113,25 @@ public class UserRepo {
             throw new CustomException(ExceptionType.DATABASE_ERROR);
         }
     }
-
+    public List<PeerDetail> findPeerDetailByExamId(Long examId){
+        return jdbcTemplate.query(
+                "SELECT es.url,es.account_id,a.name ,s.name as \"curSubjectName\" \n" +
+                        "from ExamSubmission es \n" +
+                        "join Account a On a.id = es.account_id \n" +
+                        "JOIN Roadmap r On r.id = a.roadmap_id  \n" +
+                        "JOIN Chapter c2 On c2.id = r.chapter_id \n" +
+                        "JOIN Course c On c.id = c2.course_id \n" +
+                        "JOIN Subject s On s.id =c.subject_id \n" +
+                        "WHERE es.is_passed=4 and es.exam_id = ? ",accountIdRowMapper(),examId);
+    }
+    private RowMapper<PeerDetail> accountIdRowMapper() {
+        return ((rs, rowNum) -> {
+            String url = (rs.getString("url"));
+            String userName = (rs.getString("name"));
+            String curSubject = (rs.getString("curSubjectName"));
+            return new PeerDetail(url,userName,curSubject);
+        });
+    }
 
     private RowMapper<LoginInfo> loginInfoRowMapper() {
         return ((rs, rowNum) -> {
