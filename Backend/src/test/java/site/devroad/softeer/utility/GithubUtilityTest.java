@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -20,34 +21,23 @@ class GithubUtilityTest {
     GithubUtility githubUtility;
 
     @Test
-    @DisplayName("github get test")
-    void getFileTest() throws IOException {
-        //given
-        String gitUrl = "https://github.com/rohsik2/hello-world";
-        String pathUrl = "main.py";
-        if(false){
-            githubUtility.createIssue(gitUrl, "really", "works");
-        }
-
-        //when
-        String result = githubUtility.getOneFile(gitUrl, pathUrl);
-
-        //then
-        assertThat(result).isEqualTo("print(\"hello world\")\n");
-
-    }
-
-    @Test
     @DisplayName("github repo get all paths")
     void getFilePaths(){
         //given
-        String gitUrl = "https://github.com/rohsik2/hello-world";
+        String gitUrl = "https://github.com/rohsik2/devroad-test";
 
         //when
-        List<String> paths = githubUtility.getPaths(gitUrl);
+        List<String> paths = githubUtility.getPaths(gitUrl).files;
 
         //then
         logger.info(paths.toString());
+    }
+
+    @Test
+    void testAllData() throws IOException {
+        Map<String, String> allJavaCodeFromRepo = githubUtility.getAllCodeFromRepo("rohsik2", "devroad-test", ".java");
+        logger.info(allJavaCodeFromRepo.toString());
+        assertThat(allJavaCodeFromRepo.keySet().size()).isEqualTo(2);
     }
   
 }

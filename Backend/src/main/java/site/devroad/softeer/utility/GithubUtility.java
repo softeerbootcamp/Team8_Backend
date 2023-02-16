@@ -1,8 +1,7 @@
 package site.devroad.softeer.utility;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +12,8 @@ import site.devroad.softeer.exceptions.ExceptionType;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.*;
 
 @Component
@@ -23,14 +24,59 @@ public class GithubUtility {
     @Value("${github.apiKey}")
     private String gitApiKey;
 
+    @Value("${github.apiKey}")
+    private String token;
+
+
+    class Directory{
+        public List<String> files;
+        public List<String> dirs;
+    }
+
+    public Map<String, String> getAllCodeFromRepo(String owner, String repo, String fileType) throws IOException {
+        String path = "https://api.github.com/repos/" + owner + "/" + repo + "/contents";
+        URL url = new URL(path);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Authorization", "Bearer " + token);
+        con.setRequestProperty("Accept", "application/vnd.github.v3+json");
+
+        int status = con.getResponseCode();
+        if (status != 200) {
+            throw new RuntimeException("Failed to get repository contents: " + status);
+        }
+
+        InputStream in = con.getInputStream();
+        byte[] responseBytes = in.readAllBytes();
+        String response = new String(responseBytes);
+
+        JSONArray jsonArray = new JSONArray(response);
+
+        Map<String, String> javaFiles = new HashMap<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = (JSONObject) jsonArray.get(i);
+            String name = (String) obj.get("name");
+            String type = (String) obj.get("type");
+            String pathUrl = (String) obj.get("url");
+            if (type.equals("dir")) {
+                javaFiles.putAll(getFilesFromDirectory(pathUrl, fileType));
+            } else if (name.endsWith(fileType)) {
+                String downloadUrl = (String) obj.get("download_url");
+                String content = getFileContentFromUrl(downloadUrl);
+                javaFiles.put(getFileName(pathUrl), content);
+            }
+        }
+
+        return javaFiles;
+    }
+
     //create new Issue from originGitUrl and returns new Issue url;
-    public String createIssue(String originGitUrl, String title, String content){
-        if(originGitUrl.contains("issue"))
-            throw new CustomException(ExceptionType.GITHUB_ISSUE_ALREADY_SENDED);
+    public String createIssue(String owner, String repo, String title, String content){
+        logger.info("createIssue {}, {}, {}", owner+"/"+repo, title, content);
 
         try {
-            int start_at = originGitUrl.indexOf("https://github.com/") + "https://github.com/".length();
-            URL url = new URL("https://api.github.com/repos/" + originGitUrl.substring(start_at) + "/issues");
+            URL url = new URL("https://api.github.com/repos/" + owner+"/"+repo + "/issues");
 
             logger.info(url.toString());
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -74,18 +120,9 @@ public class GithubUtility {
             reader.close();
 
             logger.info("response message is {}", response.toString());
-            JSONParser parser = new JSONParser();
+            JSONObject jsons = new JSONObject(response.toString());
+            String issueURL = jsons.get("html_url").toString();
 
-            String issueURL = null;
-            try {
-                Object obj = parser.parse(response.toString());
-                if (obj instanceof JSONObject) {
-                    JSONObject jsons = (JSONObject) obj;
-                    issueURL = jsons.get("html_url").toString();
-                }
-            }catch (ParseException e){
-                throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
-            }
             logger.info("issue url : {}", issueURL);
 
             if(responseCode!=201){
@@ -100,8 +137,13 @@ public class GithubUtility {
         }
     }
 
-    public List<String> getPaths(String originRepoUrl){
+    public Directory getPaths(String originRepoUrl){
+        logger.info("createIssue {}", originRepoUrl);
         try {
+            Directory directory = new Directory();
+            directory.dirs = new ArrayList<>();
+            directory.files = new ArrayList<>();
+
             String repoURL = originRepoUrl.substring("https://github.com/".length());
             logger.info(repoURL);
 
@@ -124,24 +166,22 @@ public class GithubUtility {
             }
             in.close();
             con.disconnect();
-            JSONParser parser = new JSONParser();
-            String title = null;
 
             List<String> results = new ArrayList<>();
-            try {
-                Object obj = parser.parse(content.toString());
-                if (obj instanceof List) {
-                    for(Object map : (List)obj){
-                        Map conv = (Map) map;
-                        logger.info(conv.toString());
-                        title = conv.get("path").toString();
-                        results.add(title);
-                    }
-                }
-                return results;
-            }catch (ParseException e){
-                throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
+
+            JSONArray obj = new JSONArray(content.toString());
+            for(int i =0; i<obj.length(); i++){
+                JSONObject conv = (JSONObject) obj.get(i);
+                logger.info(conv.toString());
+                String type = conv.get("type").toString();
+                String title = conv.get("path").toString();
+                if(type.equals("file"))
+                    directory.files.add(title);
+                else
+                    directory.dirs.add(type);
+                results.add(title);
             }
+            return directory;
         }catch (IOException e){
             e.printStackTrace();
             logger.warn("IOExcetion {}", "error occurs while getting result from toss server");
@@ -149,54 +189,76 @@ public class GithubUtility {
         }
     }
 
-    //file path must not start with /
-    public String getOneFile(String originRepoUrl, String filePath){
-        try {
-            String repoURL = originRepoUrl.substring("https://github.com/".length());
-            logger.info(repoURL);
-
-            URL url = new URL("https://api.github.com/repos/"+repoURL+"/contents/" + filePath);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-
-            String encodedString = "Bearer " + gitApiKey;
-            logger.info("auth {}", encodedString);
-            con.setRequestProperty("Authorization", encodedString);
-            con.setRequestProperty("Accept", "application/vnd.github+json");
-            con.setDoOutput(true);
-
-            int status = con.getResponseCode();
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-            JSONParser parser = new JSONParser();
-            String base64data = null;
-            try {
-                Object obj = parser.parse(content.toString());
-                if (obj instanceof JSONObject) {
-                    JSONObject jsons = (JSONObject) obj;
-                    base64data = jsons.get("content").toString().replace("\n", "");
-                    byte[] decodedBytes = Base64.getDecoder().decode(base64data);
-                    String decodedStr = new String(decodedBytes);
-                    logger.info("data is {}", decodedStr);
-                    return decodedStr;
-                }
-            }catch (ParseException e){
-                throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
-            }
-            throw new CustomException(ExceptionType.GITHUB_API_ERROR_RESPONSE);
-
-        }catch (IOException e){
-            e.printStackTrace();
-            logger.warn("IOExcetion {}", "error occurs while getting result from toss server");
-            throw new CustomException(ExceptionType.GITHUB_API_IO_ERROR);
-        }
+    private  String getFileName(String originalUrl) {
+        originalUrl = URLDecoder.decode(originalUrl, Charset.defaultCharset());
+        originalUrl = originalUrl.replace("?ref=main", "");
+        return originalUrl.substring(originalUrl.indexOf("contents")+"contents".length());
     }
+
+    private Map<String, String> getFilesFromDirectory(String urlStr, String fileType) throws IOException {
+        URL url = new URL(urlStr);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Authorization", "Bearer " + token);
+        con.setRequestProperty("Accept", "application/vnd.github.v3+json");
+
+        int status = con.getResponseCode();
+        if (status != 200) {
+            throw new RuntimeException("Failed to get directory contents: " + status);
+        }
+
+        InputStream in = con.getInputStream();
+        byte[] responseBytes = in.readAllBytes();
+        String response = new String(responseBytes);
+
+        JSONArray jsonArray = new JSONArray(response.toString());
+        Map<String, String> javaFiles = new HashMap<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = (JSONObject) jsonArray.get(i);
+            String name = (String) obj.get("name");
+            String type = (String) obj.get("type");
+            String pathUrl = (String) obj.get("url");
+            if (type.equals("dir")) {
+                javaFiles.putAll(getFilesFromDirectory(pathUrl, fileType));
+            } else if (name.endsWith(fileType)) {
+                String downloadUrl = (String) obj.get("download_url");
+                String content = getFileContentFromUrl(downloadUrl);
+                logger.info("download_url : {}", downloadUrl);
+                javaFiles.put(getFileName(pathUrl), content);
+            }
+        }
+
+        return javaFiles;
+    }
+
+    private String getFileContentFromUrl(String downloadUrl) throws IOException {
+        logger.info("get file content from {",downloadUrl);
+
+        URL url = new URL(downloadUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Authorization", "Bearer " + token);
+        con.setRequestProperty("Accept", "application/vnd.github.v3.raw");
+
+        int status = con.getResponseCode();
+        if (status != 200) {
+            throw new RuntimeException("Failed to get file content: " + status);
+        }
+
+        InputStream in = con.getInputStream();
+        byte[] responseBytes = in.readAllBytes();
+        String content = new String(responseBytes);
+
+        // Decode Base64-encoded files
+        if (content.contains("base64")) {
+            content = content.split(",")[1];
+            content = new String(Base64.getDecoder().decode(content));
+        }
+
+        return content;
+    }
+
 
 
 }
