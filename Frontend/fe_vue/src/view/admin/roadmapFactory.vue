@@ -41,7 +41,8 @@ export default {
         };
     },
     mounted() {
-        this.selectedSubjects = []
+        this.selectedSubjects = [];
+        this.getAllSubjectDetail();
     },
     methods: {
         addRoadmapSubjectCnt() {
@@ -83,7 +84,12 @@ export default {
             this.selectedSubjects = [];
         },
         async getAllSubjectDetail() {
-            await getAllSubjectData()
+            const config = {
+                headers: {
+                    jwt: this.$store.state.jwt
+                }
+            };
+            await getAllSubjectData(config)
                 .then((response) => {
                     this.subjects = response.data.subjects;
                 })

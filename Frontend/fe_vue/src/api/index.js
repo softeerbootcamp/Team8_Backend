@@ -36,8 +36,11 @@ function getSubjectDetail(param, config) {
 function getCourseData(param, config) {
   return axiosService.get("api/course" + "/" + param, config);
 }
-function getAllSubjectData() {
-  return axiosService.get("api/subject");
+function getAllSubjectData(config) {
+  return axiosService.get("api/subject", config);
+}
+function postAiCodeReviewModal(config, params) {
+  return axiosService.post("api/exam/ai/" + params, config);
 }
 function postRoadmapToUserByEmail(requestBody) {
   return axiosService.post("api/roadmap", requestBody);
@@ -74,4 +77,5 @@ export {
   getChapterDetailData,
   putFinishChapter,
   getPeerDetail,
+  postAiCodeReviewModal,
 };
