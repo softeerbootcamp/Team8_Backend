@@ -10,14 +10,14 @@
                         <div class="row row-cols-1 row-cols-md-2 g-4 mt-1" style="height:100%">
                             <div class="col">
                                 <div class="card" style="height:80%">
-                                    <div class="card-header">{{ cards.card1.name }}</div>
+                                    <div class="card-header">{{ cards.card1.username }}</div>
                                     <div class="card-body">{{ cards.card1.url }}</div>
                                     <div class="card-body">{{ cards.card1.curSubject }}</div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card" style="height:80%">
-                                    <div class="card-header">{{ cards.card2.name }}</div>
+                                    <div class="card-header">{{ cards.card2.username }}</div>
                                     <div class="card-body">{{ cards.card2.url }}</div>
                                     <div class="card-body">{{ cards.card2.curSubject }}</div>
                                 </div>
@@ -26,7 +26,12 @@
                     </div>
                     <footer class="modal-footer">
                         <slot name="footer">
-                            <button class="btn btn-dark" @click="$emit('close')">Close</button>
+                            <div>
+                                <button class="btn btn-dark mr-1" style="margin:10px"
+                                    @click="$emit('card-selected', 'gobackToSelectFromPeer')">뒤로가기</button>
+                                <button class="btn btn-dark" @click="$emit('close')">창닫기</button>
+
+                            </div>
                         </slot>
                     </footer>
                 </div>
@@ -36,20 +41,20 @@
     </transition>
 </template>
 <script>
-
+import { getPeerDetail } from '@/api'
 export default {
     name: "reviewPeerModal",
     data() {
         return {
-
+            peerDatas: [],
             cards: {
                 card1: {
-                    name: "",
+                    username: "",
                     url: "",
                     curSubject: "",
                 },
                 card2: {
-                    name: "",
+                    username: "",
                     url: "",
                     curSubject: "",
                 }
@@ -59,6 +64,37 @@ export default {
 
         };
     },
+    mounted() {
+        this.getPeerData();
+    },
+    methods: {
+        async getPeerData() {
+            console.log("this.$store.state.curSubExamId" + this.$store.state.curSubExamId);
+            const config = {
+                headers: {
+                    jwt: this.$store.state.jwt,
+                }
+            }
+            await getPeerDetail(config, this.$store.state.curSubExamId)
+                .then((response) => {
+                    if (response.data.success) {
+                        this.cards.card1 = response.data.peerDetails[0]
+                        this.cards.card2 = response.data.peerDetails[1]
+                        // this.peerDatas = response.data.peerDetails
+                        // console.log("this.peerDatas : " + this.peerDatas);
+                        // this.cards.card1.name = this.peerDatas[0].username;
+                        // this.cards.card1.url = this.peerDatas[0].url;
+                        // this.cards.card1.curSubject = this.peerDatas[0].curSubject;
+                        // this.cards.card2 = this.peerDatas[1];
+
+                    }
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+    }
 }
 </script>
 

@@ -11,6 +11,10 @@ const axiosService = axios.create({
 function putFinishChapter(config, param) {
   return axiosService.put("api/chapter/" + param, config);
 }
+//GET /api/exam/peer/{:examId} Peer Detail
+function getPeerDetail(config, param) {
+  return axiosService.get("api/exam/peer/" + param, config);
+}
 function adminUser(config) {
   return axiosService.get("api/admin/users", config);
 }
@@ -69,4 +73,5 @@ export {
   sendExamResult,
   getChapterDetailData,
   putFinishChapter,
+  getPeerDetail,
 };

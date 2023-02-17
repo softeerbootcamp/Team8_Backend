@@ -13,12 +13,12 @@
               ]" style="margin-right:auto;">
                 {{ subject.name }}
               </button>
-              <button class="btn ml-3" :class="getButtonClass(subject.mcqState)" type="button"
-                @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')">
+              <button class="btn" :class="getButtonClass(subject.mcqState)" type="button"
+                @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')" style="margin:10px">
                 <span>객관식</span>
                 <span class="bi bi-file-text"></span>
               </button>
-              <button class="btn ml-3" :class="getButtonClass(subject.frqState)" type="button"
+              <button class="btn" :class="getButtonClass(subject.frqState)" type="button"
                 @click="switchRouterByState(subject.frqState, subject.frqExamId, 'FRQ')">
                 <span>주관식</span>
                 <span class="bi bi-file-text"></span>
@@ -32,7 +32,8 @@
   <reviewSelectModal @card-selected="onCardSelected" @close="closeModal" v-if="showReviewSelectModal">
   </reviewSelectModal>
   <reviewAiModal @close="showReviewAiModal = false" v-if="showReviewAiModal"></reviewAiModal>
-  <reviewPeerModal @close="showReviewPeerModal = false" v-if="showReviewPeerModal"></reviewPeerModal>
+  <reviewPeerModal @card-selected="onCardSelected" @close="showReviewPeerModal = false" v-if="showReviewPeerModal">
+  </reviewPeerModal>
 </template>
 
 <script>
@@ -59,6 +60,7 @@ export default {
       showReviewSelectModal: false,
       showReviewAiModal: false,
       showReviewPeerModal: false,
+      frqExamIdForModal: "",
     };
   },
   mounted() {
@@ -74,13 +76,21 @@ export default {
     },
     onCardSelected(cardClass) {
       this.selectedReviewType = cardClass
-      this.showReviewSelectModal = false
-      if (cardClass === 'ai') {
-        this.showReviewAiModal = true
+      if (cardClass === 'gobackToSelectFromPeer') {
+        this.showReviewPeerModal = false;
+        this.showReviewSelectModal = true;
+
+      } else {
+        this.showReviewSelectModal = false
+        if (cardClass === 'ai') {
+          this.showReviewAiModal = true
+        }
+        if (cardClass === 'peer') {
+          this.showReviewPeerModal = true
+        }
       }
-      if (cardClass === 'peer') {
-        this.showReviewPeerModal = true
-      }
+
+
     },
 
     async getSubData() {
@@ -132,6 +142,7 @@ export default {
       }
       if (state === 'PASSED') {
         if (isMcqOrFrq == 'FRQ') {
+          this.$store.commit('setCurSubjectExamId', examId);
           this.openReviewModal();
         }
       }
