@@ -8,6 +8,13 @@ const axiosService = axios.create({
     jwt: store.state.jwt,
   },
 });
+function putFinishChapter(config, param) {
+  return axiosService.put("api/chapter/" + param, config);
+}
+//GET /api/exam/peer/{:examId} Peer Detail
+function getPeerDetail(config, param) {
+  return axiosService.get("api/exam/peer/" + param, config);
+}
 function adminUser(config) {
   return axiosService.get("api/admin/users", config);
 }
@@ -45,7 +52,7 @@ function postAssignMentData(config, param) {
   return axiosService.post("api/exam/assignment/", param, config);
 }
 function sendExamResult(config, param) {
-  return axiosService.put("api/exam/result/", param, config);
+  return axiosService.put("api/exam/result", param, config);
 }
 function getChapterDetailData(config, param) {
   return axiosService.get("api/chapter/" + param, config);
@@ -65,4 +72,6 @@ export {
   postAssignMentData,
   sendExamResult,
   getChapterDetailData,
+  putFinishChapter,
+  getPeerDetail,
 };
