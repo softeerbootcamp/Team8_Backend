@@ -3,12 +3,12 @@ package site.devroad.softeer.src.exam.dto.domain;
 public class PeerDetail {
     private final String url;
     private final String username;
-    private final String curSubejct;
+    private final String curSubject;
 
-    public PeerDetail(String url, String username, String curSubejct) {
+    public PeerDetail(String url, String username, String curSubject) {
         this.url = url;
         this.username = username;
-        this.curSubejct = curSubejct;
+        this.curSubject = curSubject;
     }
 
     public String getUrl() {
@@ -19,7 +19,7 @@ public class PeerDetail {
         return username;
     }
 
-    public String getCurSubejct() {
-        return curSubejct;
+    public String getCurSubject() {
+        return curSubject;
     }
 }
