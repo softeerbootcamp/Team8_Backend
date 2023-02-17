@@ -119,9 +119,9 @@ public class UserService {
         getUserDetailRes.setRoadmapId(accountById.getRoadMapId());
         getUserDetailRes.setCurChapterPK(chapterId);
         getUserDetailRes.setTotalSubjectIdx((long) totalSubjects);
-        List<ExamSubmission> byRoadmapIdAndAccountId = examSubmissionRepo.findByRoadmapIdAndAccountId(roadmapId, accountId);
-        long cnt = byRoadmapIdAndAccountId.stream()
-                .filter(examSubmission -> examSubmission.getSubmissionType() == SubmissionType.PASSED)
+        List<ExamSubmission> mcqSubmissions = examSubmissionRepo.findMCQByRoadmapIdAndAccountId(roadmapId, accountId);
+        long cnt = mcqSubmissions.stream()
+                .filter(examSubmission -> examSubmission.getSubmissionType() == SubmissionType.PASSED )
                 .count();
         getUserDetailRes.setCurSubjectIdx(cnt);
 
