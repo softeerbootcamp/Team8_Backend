@@ -21,10 +21,36 @@
     </transition>
 </template>
 <script>
-
+import { postAiCodeReviewModal } from '@/api'
 export default {
     name: "reviewAiModal",
+    mounted() {
+        this.postAiCodeReview();
+    },
+    methods: {
+        async postAiCodeReview() {
+            // const params = {
+            //     "submissionId": 149
+            // }
+            const config = {
+                headers: {
+                    jwt: this.$store.state.jwt
+                }
+            };
+            await postAiCodeReviewModal(config, 149)
+                .then((response) => {
+                    if (response.data.success) {
 
+                        console.log("이슈 깃헙 성공 ");
+                    } else {
+                        console.log("데이터를 불러오는데 실패하였습니다!")
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+    }
 }
 </script>
 
