@@ -6,6 +6,7 @@ import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.RoadmapRepo;
 import site.devroad.softeer.src.roadmap.chapter.Chapter;
 import site.devroad.softeer.src.roadmap.chapter.ChapterRepo;
+import site.devroad.softeer.src.roadmap.completedchapter.CompletedChapter;
 import site.devroad.softeer.src.roadmap.completedchapter.CompletedChapterRepo;
 import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
 
@@ -66,6 +67,9 @@ public class CourseService {
     public Long getNextChapterId(Long accountId, Long chapterId)  {
         Optional<Chapter> nextChapter = getNextChapter(chapterId);
         //completed chapter db에 chapter 넣어줌
+        Optional<CompletedChapter> completedChapterOptional = completedChapter.readCompletedChapter(accountId, chapterId);
+        if (completedChapterOptional.isPresent() && nextChapter.isPresent())
+            return nextChapter.get().getId();
         completedChapter.createCompletedChapter(accountId, chapterId);
         if (nextChapter.isPresent()) {
             return nextChapter.get().getId();
