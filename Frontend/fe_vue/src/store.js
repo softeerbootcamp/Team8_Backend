@@ -11,10 +11,14 @@ export default new Vuex.Store({
     isRoadmap: false,
     passingScore: 80,
     username: "",
+    curSubExamId: "",
   },
   mutations: {
     setIsRoadmap(state, status) {
       state.isRoadmap = status;
+    },
+    setCurSubjectExamId(state, status) {
+      state.curSubExamId = status;
     },
     setAccountId(state, status) {
       state.accountId = status;
@@ -51,6 +55,7 @@ export default new Vuex.Store({
       state.isRoadmap = false;
       state.passingScore = 80;
       state.username = "";
+      state.curSubExamId = "";
     },
   },
   actions: {
