@@ -128,7 +128,12 @@ public class ExamService {
         Boolean result = req.getResult();
         Long examId = req.getExamId();
         SubmissionType submissionType = result ? SubmissionType.PASSED : SubmissionType.FAILED;
-        examSubmissionRepo.updateByExamIdAndAccountId(examId, accountId, submissionType);
+        if(examSubmissionRepo.findByExamIdAndAccountId(req.getExamId(), accountId).isPresent()){
+            examSubmissionRepo.updateByExamIdAndAccountId(examId, accountId, submissionType);
+        }
+        else{
+            examSubmissionRepo.addExamSubmission(req.getExamId(), accountId, submissionType);
+        }
         return new PutExamDetailRes();
     }
 

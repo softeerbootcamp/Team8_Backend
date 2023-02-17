@@ -80,4 +80,10 @@ public class ExamSubmissionRepo {
         };
     }
 
+    public void addExamSubmission(Long examId, Long accountId, SubmissionType submissionType) {
+        jdbcTemplate.update(
+                "insert into ExamSubmission (exam_id, account_id, is_passed, url) values (?,?,?,?);",
+                examId, accountId, submissionType.getIs_passed(), ""
+        );
+    }
 }
