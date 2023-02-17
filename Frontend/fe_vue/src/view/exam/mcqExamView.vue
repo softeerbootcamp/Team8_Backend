@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="d-flex justify-content-center align-items-center" style="height: 80vh;overflow-y: scroll;">
         <div class="card text-center" style="width: 500px;">
             <div class="card-header bg-primary text-white">{{ subjectName }} 시험지</div>
             <div class="card-body">
@@ -92,6 +92,7 @@ export default {
                 .then((response) => {
                     if (response.data.success) {
                         console.log("테스트 제출 성공")
+                        console.log("result: this.isPassed : " + this.isPassed);
                         // 현재는 테스트 결과에 상관 없이 roadmap 으로 반환한다. 라우터 링크.
                         // this.$router.push('/roadmap');
                     } else {

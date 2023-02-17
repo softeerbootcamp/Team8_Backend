@@ -134,9 +134,9 @@ export default {
         this.roadmapPercentage = 0;
         return;
       }
-      this.roadmapPercentage = parseInt(
+      this.roadmapPercentage =
         (this.chapterPercent)
-      ) * 100;
+        * 100;
 
       this.subjectPercentage = (this.curSubjectIdx / this.totalSubjectIdx) * 100;
       console.log("this subject percentage" + this.subjectPercentage);

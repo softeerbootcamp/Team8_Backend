@@ -67,7 +67,7 @@ class ExamServiceTest {
             userRepo.doSubscribe(account.getId());
 
             //when
-            examService.submitAssignment(1L, new PostAssignSubmitReq("wow.naver.com", "test_passed", 1L));
+            examService.submitAssignment(account.getId(), new PostAssignSubmitReq("wow.naver.com", "test_passed", 1L));
 
             //then
             assertEquals(subjectRepo.findById(1L).isPresent(), true);
