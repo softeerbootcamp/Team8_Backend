@@ -36,8 +36,8 @@ function getSubjectDetail(param, config) {
 function getCourseData(param, config) {
   return axiosService.get("api/course" + "/" + param, config);
 }
-function getAllSubjectData() {
-  return axiosService.get("api/subject");
+function getAllSubjectData(config) {
+  return axiosService.get("api/subject", config);
 }
 function postRoadmapToUserByEmail(requestBody) {
   return axiosService.post("api/roadmap", requestBody);
