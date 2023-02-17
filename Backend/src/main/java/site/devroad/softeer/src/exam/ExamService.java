@@ -10,6 +10,7 @@ import site.devroad.softeer.src.exam.dto.*;
 import site.devroad.softeer.src.exam.dto.domain.Assignment;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.dto.domain.MultiChoiceQuestion;
+import site.devroad.softeer.src.exam.dto.domain.PeerDetail;
 import site.devroad.softeer.src.exam.model.Exam;
 import site.devroad.softeer.src.exam.model.ExamMcq;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
