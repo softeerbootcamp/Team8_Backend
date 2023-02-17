@@ -178,6 +178,7 @@ public class GithubUtility {
     private  String getFileName(String originalUrl) {
         originalUrl = URLDecoder.decode(originalUrl, Charset.defaultCharset());
         originalUrl = originalUrl.replace("?ref=main", "");
+        originalUrl = originalUrl.replace("?ref=master", "");
         return originalUrl.substring(originalUrl.indexOf("contents")+"contents".length());
     }
 
