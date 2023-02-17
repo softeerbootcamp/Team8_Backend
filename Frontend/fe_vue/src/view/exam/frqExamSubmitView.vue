@@ -47,10 +47,11 @@ export default {
         }
     },
     mounted() {
-        this.frqExamId = this.$route.params.frqExamId;
+        this.frqExamId = this.$route.params.frqExamIdForSubmit;
     },
     methods: {
         async postAssignMent() {
+            console.log("this.frqExamId" + this.frqExamId);
             const config = {
                 headers: {
                     jwt: this.$store.state.jwt

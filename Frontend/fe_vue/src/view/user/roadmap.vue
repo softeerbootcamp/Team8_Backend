@@ -13,12 +13,12 @@
               ]" style="margin-right:auto;">
                 {{ subject.name }}
               </button>
-              <button class="btn ml-3" :class="getButtonClass(subject.mcqState)" type="button"
-                @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')">
+              <button class="btn" :class="getButtonClass(subject.mcqState)" type="button"
+                @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')" style="margin:10px">
                 <span>객관식</span>
                 <span class="bi bi-file-text"></span>
               </button>
-              <button class="btn ml-3" :class="getButtonClass(subject.frqState)" type="button"
+              <button class="btn" :class="getButtonClass(subject.frqState)" type="button"
                 @click="switchRouterByState(subject.frqState, subject.frqExamId, 'FRQ')">
                 <span>주관식</span>
                 <span class="bi bi-file-text"></span>
@@ -29,39 +29,25 @@
       </div>
     </div>
   </div>
-  <!-- <div class="container">
-    <div class="row align-items-center">
-      <div class="row" v-for="subject in subjects" :key="subject">
-        <div class="col col-md-7 offset-md-3
-                            text-center mt-5">
-          <button class="btn btn-dark" @click="[
-          $router.push({
-            name: 'CourseView',
-          })
-          , setCurrentSubjectId(subject.subjectId)]">
-            {{ subject.name }}
-          </button>
-          <button class="btn ml-3" :class="getButtonClass(subject.mcqState)" type="button"
-            @click="switchRouterByState(subject.mcqState, subject.mcqExamId, 'MCQ')">
-            <span>객관식</span>
-            <span class="bi bi-file-text"></span>
-          </button>
-          <button class="btn ml-3" :class="getButtonClass(subject.frqState)" type="button"
-            @click="switchRouterByState(subject.frqState, subject.frqExamId, 'FRQ')">
-            <span>주관식</span>
-            <span class="bi bi-file-text"></span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> -->
+  <reviewSelectModal @card-selected="onCardSelected" @close="closeModal" v-if="showReviewSelectModal">
+  </reviewSelectModal>
+  <reviewAiModal @close="showReviewAiModal = false" v-if="showReviewAiModal"></reviewAiModal>
+  <reviewPeerModal @card-selected="onCardSelected" @close="showReviewPeerModal = false" v-if="showReviewPeerModal">
+  </reviewPeerModal>
 </template>
 
 <script>
 import { getRoadmap } from '@/api'
+import reviewSelectModal from '@/components/reviewSelectModal.vue'
+import reviewAiModal from '@/components/reviewAiModal.vue'
+import reviewPeerModal from '@/components/reviewPeerModal.vue';
 export default {
   name: "RoadMap",
-
+  components: {
+    reviewSelectModal,
+    reviewAiModal,
+    reviewPeerModal
+  },
   data() {
     return {
       isCardOn: false,
@@ -70,6 +56,11 @@ export default {
 
       isSuccess: false,
       subjects: [],
+
+      showReviewSelectModal: false,
+      showReviewAiModal: false,
+      showReviewPeerModal: false,
+      frqExamIdForModal: "",
     };
   },
   mounted() {
@@ -77,6 +68,31 @@ export default {
   },
   methods:
   {
+    openReviewModal() {
+      this.showReviewSelectModal = true
+    },
+    closeModal() {
+      this.showReviewSelectModal = false
+    },
+    onCardSelected(cardClass) {
+      this.selectedReviewType = cardClass
+      if (cardClass === 'gobackToSelectFromPeer') {
+        this.showReviewPeerModal = false;
+        this.showReviewSelectModal = true;
+
+      } else {
+        this.showReviewSelectModal = false
+        if (cardClass === 'ai') {
+          this.showReviewAiModal = true
+        }
+        if (cardClass === 'peer') {
+          this.showReviewPeerModal = true
+        }
+      }
+
+
+    },
+
     async getSubData() {
       const config = {
         headers: {
@@ -121,21 +137,15 @@ export default {
       }
     },
     switchRouterByState(state, examId, isMcqOrFrq) {
-      // switch(state) {
-      //   case 'NONE':
-      //     return 'btn btn-light btn-sm';
-      //   case 'PURCHASED':
-
-      //   case 'SUBMITTED':
-      //     return 'btn btn-warning btn-sm';
-      //   case 'PASSED':
-      //     return 'btn btn-success btn-sm';
-      //   case 'FAILED':
-      //     return 'btn btn-danger btn-sm';
-      //   break:
-      //     return 'btn btn-light btn-sm';
-      // }
-
+      if (state === 'NONE') {
+        this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
+      }
+      if (state === 'PASSED') {
+        if (isMcqOrFrq == 'FRQ') {
+          this.$store.commit('setCurSubjectExamId', examId);
+          this.openReviewModal();
+        }
+      }
       if (state === 'PURCHASED') {
         if (isMcqOrFrq === 'MCQ') {
           console.log("purchased button  exam id log : " + examId)
@@ -145,9 +155,7 @@ export default {
           this.$router.push({ name: 'FrqExamView', params: { frqExamId: examId } });
         }
       }
-      if (state === 'NONE') {
-        this.$router.push({ name: "ExamPurchaseView", params: { examId: examId } });
-      }
+
     }
   }
 };
