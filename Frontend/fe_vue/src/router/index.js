@@ -40,12 +40,12 @@ const routes = [
     component: AdminUserView,
   },
   {
-    path: "/chapter/detail/:chapterId",
+    path: "/chapter/:chapterId",
     name: "ChapterFrame",
     component: ChapterFrame,
   },
   {
-    path: "/exam/frq/submit/:frqExamIdForSubmit",
+    path: "/exam/frq/:frqExamIdForSubmit/submit",
     name: "FrqExamSubmitView",
     component: FrqExamSubmitView,
   },
@@ -70,12 +70,12 @@ const routes = [
     component: RoadMap,
   },
   {
-    path: "/chapters/:courseId",
+    path: "/course/:courseId",
     name: "ChapterView",
     component: ChapterView,
   },
   {
-    path: "/course",
+    path: "/subject/:subjectId",
     name: "CourseView",
     component: CourseView,
   },
