@@ -96,6 +96,16 @@ public class ExamController {
         return new ResponseEntity<>(Map.of("success", true), HttpStatus.OK);
     }
 
+    @GetMapping("/api/exam/ai/{examSubmissionId}")
+    public ResponseEntity<?> isAIReviewFinish(@PathVariable("examSubmissionId") Long examSubmissionId){
+        String url = examService.getAssignmentDetail(examSubmissionId).getAssignment().getUrl();
+        if(url.contains("/issues/"))
+            return new ResponseEntity<>(Map.of("success", true, "issueUrl", url), HttpStatus.OK);
+        if(!url.contains("github"))
+            return new ResponseEntity<>(Map.of("success", true, "issueUrl", url), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("success", false), HttpStatus.OK);
+    }
+
 
     @GetMapping("/api/exam/peer/{examId}")
     public ResponseEntity<?> getPeerDetail(@PathVariable("examId") Long examId){
