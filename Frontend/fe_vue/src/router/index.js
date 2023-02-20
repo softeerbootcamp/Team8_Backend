@@ -15,14 +15,12 @@ import UserPendingView from "@/view/user/userPendingView";
 import McqExamView from "@/view/exam/mcqExamView";
 import ChapterFrame from "@/view/user/chapterFrame";
 import Store from "@/store";
-// path: '/',
-//     redirect: "/login",
-//     component: LoginLayout,
+
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("../view/home.vue"),
+    component: () => import("../view/home-cover.vue"),
   },
   {
     path: "/exam/mcq/:mcqExamId",
