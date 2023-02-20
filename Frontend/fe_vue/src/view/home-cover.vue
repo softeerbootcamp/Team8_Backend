@@ -3,22 +3,24 @@
         <div class="container">
             <div class="message">
                 <div class="slide-up">Make your own Career</div>
-                <div class="buttons">
-                    <button class="button" @click="showLoginForm" v-show="!showLogin">Login</button>
-                    <button class="button" v-show="!showLogin">Sign up</button>
-                </div>
+                <transition name="fade">
+                    <div v-if="!showLogin" class="buttons">
+                        <button class="button" @click="showLoginForm">Login</button>
+                        <button class="button">Sign up</button>
+                    </div>
+                </transition>
             </div>
-            <transition name="fade">
-                <div v-if="showLogin" class="login-form-container">
+            <div v-if="showLogin" class="login-form-container">
+                <transition name="fade">
                     <Login @closeLoginForm="closeLoginForm" />
-                </div>
-            </transition>
+                </transition>
+            </div>
         </div>
     </div>
 </template>
-  
+
 <script>
-import Login from "@/components/login.vue";
+import Login from '@/components/login.vue';
 
 export default {
     name: "Home",
@@ -40,7 +42,7 @@ export default {
     },
 };
 </script>
-  
+
 <style>
 .fade-enter-active,
 .fade-leave-active {
@@ -56,7 +58,6 @@ export default {
     justify-content: center;
     position: relative;
     margin-top: 30%;
-    animation: fadeIn 1s ease forwards;
 }
 
 .background {
@@ -64,6 +65,7 @@ export default {
     overflow: hidden;
     margin: 0;
     background: linear-gradient(to bottom, #FFE15D, #ff7f50, #ff6b6b);
+
 }
 
 .message {
@@ -125,4 +127,3 @@ export default {
     text-align: center;
 }
 </style>
-  
