@@ -9,7 +9,7 @@
           <div class="card text-center mb-4">
             <div class="card-body">
               <button class="btn btn-dark card-title" @click="[
-                $router.push({ name: 'CourseView', }), setCurrentSubjectId(subject.subjectId)
+                $router.push({ name: 'CourseView', params: {subjectId : subject.subjectId}}), setCurrentSubjectId(subject.subjectId)
               ]" style="margin-right:auto;">
                 {{ subject.name }}
               </button>
