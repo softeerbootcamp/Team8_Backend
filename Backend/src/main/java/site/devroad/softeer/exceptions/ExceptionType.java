@@ -41,9 +41,19 @@ public enum ExceptionType {
     EXAM_SUBMISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "Exam submission not exist", 1305),
 
 
+    //Github erros
+    GITHUB_API_ERROR_RESPONSE(HttpStatus.INTERNAL_SERVER_ERROR, "Github api 연동오류, apikey문제일 확율이 높습니다.", 1401 ),
+    GITHUB_API_IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Github api연동중 io 문제가 발생했습니다.", 1402 ),
+
+    GITHUB_ISSUE_ALREADY_SENDED(HttpStatus.BAD_REQUEST, "Issue라는 글자가 이미 url에 들어있습니다.", 1403),
+    //HTTP Connection Error
+    CONNECTION_ESTABLISH_FAILED(HttpStatus.BAD_REQUEST, "Http connection error, 외부 연동에 문제가 존재합니다.", 1501),
+
+    //AI Review Related Error
+    AI_REVIEW_ALREADY_DONE(HttpStatus.BAD_REQUEST, "AI Review already done" , 1602),
+
     //Last Exceptions
     DATABASE_NOT_CONNECTED(HttpStatus.INTERNAL_SERVER_ERROR, "Database not connected", 2001);
-
     private HttpStatus httpStatus;
     private String message;
     private Integer customErrorCode;

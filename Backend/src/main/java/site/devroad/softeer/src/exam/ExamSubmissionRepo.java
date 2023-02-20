@@ -53,13 +53,18 @@ public class ExamSubmissionRepo {
                 submissionType.getIs_passed(), accountId, examId);
     }
 
-    public List<ExamSubmission> findByRoadmapIdAndAccountId(Long roadmapId, Long accountID) {
+    public List<ExamSubmission> findMCQByRoadmapIdAndAccountId(Long roadmapId, Long accountID) {
         return jdbcTemplate.query("SELECT es.*\n" +
                 "FROM ExamSubmission es\n" +
                 "JOIN Exam e ON es.exam_id = e.id\n" +
                 "JOIN SubjectToRoadmap str ON e.subject_id = str.subject_id\n" +
                 "WHERE str.roadmap_id = ?\n" +
-                "AND es.account_id = ?", examSubmissionRowMapper(), roadmapId, accountID);
+                "AND es.account_id = ?\n" +
+                "AND e.type = ?", examSubmissionRowMapper(), roadmapId, accountID, "MCQ");
+    }
+
+    public void updateSubmissionUrl(Long id, String issueUrl) {
+        jdbcTemplate.update("update ExamSubmission set url = ? where id = ?", issueUrl, id);
     }
 
 
@@ -74,5 +79,12 @@ public class ExamSubmissionRepo {
             String description = rs.getString("description");
             return new ExamSubmission(id, accountId, examId, url, type, description);
         };
+    }
+
+    public void addExamSubmission(Long examId, Long accountId, SubmissionType submissionType) {
+        jdbcTemplate.update(
+                "insert into ExamSubmission (exam_id, account_id, is_passed, url) values (?,?,?,?);",
+                examId, accountId, submissionType.getIs_passed(), ""
+        );
     }
 }

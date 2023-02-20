@@ -6,6 +6,7 @@ import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.RoadmapRepo;
 import site.devroad.softeer.src.roadmap.chapter.Chapter;
 import site.devroad.softeer.src.roadmap.chapter.ChapterRepo;
+import site.devroad.softeer.src.roadmap.completedchapter.CompletedChapter;
 import site.devroad.softeer.src.roadmap.completedchapter.CompletedChapterRepo;
 import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
 
@@ -27,11 +28,11 @@ public class CourseService {
         this.completedChapter = completedChapter;
     }
 
-    public List<ChapterDetail> getChapterDetails(Long courseId){
+    public List<ChapterDetail> getChapterDetails(Long courseId) {
         return chapterRepo.findChapterDetailByCourseId(courseId);
     }
 
-    public Optional<Chapter> getNextChapter(Long chapterId){
+    public Optional<Chapter> getNextChapter(Long chapterId) {
         Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
         if (chapterById.isEmpty()) {
             throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
@@ -42,7 +43,7 @@ public class CourseService {
         return chapterRepo.findNextChapter(courseId, sequence + 1);
     }
 
-    public Chapter getChapter(Long chapterId){
+    public Chapter getChapter(Long chapterId) {
         Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
         if (chapterById.isEmpty()) {
             throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
@@ -50,22 +51,28 @@ public class CourseService {
         return chapterById.get();
     }
 
-    public ChapterDetail getChapterDetail(Long chapterId){
-        Optional<ChapterDetail> chapterById = chapterRepo.findChapterDetailById(chapterId);
-        if (chapterById.isEmpty()) {
-            throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
+    public ChapterDetail getChapterDetail(Long chapterId, Long accountId) {
+        Optional<ChapterDetail> chapterDetailById = chapterRepo.findChapterDetailById(chapterId, accountId);
+        if (chapterDetailById.isEmpty()) {
+            Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
+            if (chapterById.isEmpty())
+                throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
+            return new ChapterDetail(chapterById.get());
         }
-        return chapterById.get();
+        return chapterDetailById.get();
     }
 
-    public Boolean getCourseFinished(Long chapterId){
+    public Boolean getCourseFinished(Long chapterId) {
         Optional<Chapter> nextChapter = getNextChapter(chapterId);
         return nextChapter.isEmpty();
     }
 
-    public Long getNextChapterId(Long accountId, Long chapterId)  {
+    public Long getNextChapterId(Long accountId, Long chapterId) {
         Optional<Chapter> nextChapter = getNextChapter(chapterId);
         //completed chapter db에 chapter 넣어줌
+        Optional<CompletedChapter> completedChapterOptional = completedChapter.readCompletedChapter(accountId, chapterId);
+        if (completedChapterOptional.isPresent() && nextChapter.isPresent())
+            return nextChapter.get().getId();
         completedChapter.createCompletedChapter(accountId, chapterId);
         if (nextChapter.isPresent()) {
             return nextChapter.get().getId();
