@@ -1,6 +1,7 @@
 package site.devroad.softeer.src.roadmap.completedchapter;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import site.devroad.softeer.exceptions.ExceptionType;
 import javax.sql.DataSource;
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CompletedChapterRepo {
@@ -24,6 +26,16 @@ public class CompletedChapterRepo {
             jdbcTemplate.update("insert into CompletedChapter(account_id, chapter_id) values(?, ?)", accountId, chapterId);
         } catch (DataAccessException e) {
             throw new CustomException(ExceptionType.DATABASE_ERROR);
+        }
+    }
+
+    public Optional<CompletedChapter> readCompletedChapter(Long accountId, Long chapterId) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM CompletedChapter\n" +
+                    "WHERE account_id = ? \n" +
+                    "AND chapter_id = ?", completedChapterRowMapper(), accountId, chapterId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
     }
 

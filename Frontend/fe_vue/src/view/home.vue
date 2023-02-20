@@ -30,7 +30,8 @@
     </div>
   </div>
   <h3>
-    <button type="button" class="btn btn-dark d-grid gap-2 col-1 mt-4 mx-auto" @click="startBtnClickEvent">출발!</button>
+    <button type="button" class="btn btn-dark d-grid gap-2 col-1 mt-4 mx-auto" @click="startBtnClickEvent"
+      onmouseover="this.innerHTML='뿌와아아앙!!!';" onmouseout="this.innerHTML='출발!';">출발!</button>
   </h3>
 </template>
 <script>
@@ -72,7 +73,7 @@ export default {
       if (!this.$store.state.isLogin) {
         this.$router.push('/login');
       } else {
-        if (this.$store.state.isRoadmapExist) {
+        if (this.$store.state.isRoadmap) {
           this.$router.push('/roadmap');
 
         } else {
