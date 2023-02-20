@@ -7,7 +7,6 @@
   <div class="d-flex justify-content-center">
     <div class="highway d-flex align-items-center">
       <img class="road w-50 h-100" src="../assets/images/road.svg" />
-      <img class="road w-50 h-100" src="../assets/images/road.svg" />
 
       <div ref="car" class="car d-flex align-items-center justify-content-center">
         <img class="car" src="../assets/images/porsche.svg" />
@@ -92,6 +91,20 @@ export default {
 
 }
 
+/* .roadmapBody {
+  background-repeat: repeat-y;
+  background-size: 40vh;
+  background-position: center;
+  background-image: url("@/assets/road_svg.svg");
+
+
+} */
+.roadBody {
+  background-repeat: repeat-y;
+  background-size: 40vh;
+  background-position: center;
+  background-image: url("@/assets/road_svg.svg");
+}
 
 .highway {
   width: 100%;

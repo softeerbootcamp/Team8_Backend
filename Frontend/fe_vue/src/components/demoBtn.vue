@@ -61,13 +61,10 @@ export default {
                 .then((response) => {
                     if (response.data.success) {
                         this.$store.commit("setLoginStatus", true);
-                        console.log("isLogin store status when login success! : " + this.$store.state.isLogin)
                         this.$store.commit("setJwtToken", response.data.jwt);
                         this.setStoreUserNameByJwt(response.data.jwt);
-                        console.log("username setted : " + this.$store.state.username)
 
                         if (response.data.roadmapId === "-1") {
-                            console.log("userpending view roadmap id : " + response.data.roadmapId);
                             this.$router.push({ name: "UserPendingView" });
                         }
                         if (response.data.admin) {
@@ -80,7 +77,6 @@ export default {
                         }
                     } else {
                         this.isLoginFailed = true;
-                        console.log("login failed : " + response.data.success);
                     }
                 });
 

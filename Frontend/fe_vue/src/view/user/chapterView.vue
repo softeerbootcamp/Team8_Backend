@@ -8,11 +8,12 @@
             <div class="card-body">
               <h5 class="card-title">
                 <div>
-                  <button></button>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" :checked="chapter.finish" value=""
+                      id="flexCheckDefault">
+                    {{ chapter.chapterName }}
 
-                  {{ chapter.chapterName }}
-                </div>
-                <div>
+                  </div>
                 </div>
               </h5>
               <p class="card-text">{{ chapter.description }}</p>
@@ -36,6 +37,7 @@ export default {
       curCourseId: "",
       chapters: [],
       curChapterId: "",
+      isChecked: false,
       /* chapters
          "chapterName" : "자료형", 
          "chapterId" : 10011, 
