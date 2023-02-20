@@ -1,19 +1,18 @@
 <template>
-    <div class="background">
-        <div class="container">
-            <div class="message">
-                <div class="slide-up">Make your own Career</div>
-                <div class="buttons">
-                    <button class="button" @click="showLoginForm" v-show="!showLogin">Login</button>
-                    <button class="button" v-show="!showLogin">Sign up</button>
-                </div>
+    <div class="container" style="display:contents;">
+        <div class="message">
+            <div class="slide-up">Make your own Career</div>
+            <div class="buttons">
+                <button class="button" @click="showLoginForm" v-show="!showLogin && !$store.state.isLogin">Login</button>
+                <button class="button" v-show="!showLogin && !$store.state.isLogin">Sign up</button>
+                <button class="button" v-show="$store.state.isLogin" @click="$router.push('/roadmap')">To Roadmap</button>
             </div>
-            <transition name="fade">
-                <div v-if="showLogin" class="login-form-container">
-                    <Login @closeLoginForm="closeLoginForm" />
-                </div>
-            </transition>
         </div>
+        <transition name="fade">
+            <div v-if="showLogin" class="login-form-container">
+                <Login @closeLoginForm="closeLoginForm" />
+            </div>
+        </transition>
     </div>
 </template>
   

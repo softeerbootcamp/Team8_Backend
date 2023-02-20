@@ -29,7 +29,7 @@ import { signinUser } from "@/api";
 import jwt_decode from "jwt-decode";
 
 export default {
-  name: "Login",
+  name: "login",
   data() {
     return {
       formData: {
