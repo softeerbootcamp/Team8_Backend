@@ -145,7 +145,7 @@ public class UserRepo {
 
     private RowMapper<UserDetail> allUserRowMapper(){
         return ((rs,rowNum)->{
-            Long id = (rs.getLong("id"));
+            Long id = (rs.getLong("account_id"));
             String email = (rs.getString("email"));
             Long roadmapId = (rs.getLong("roadmap_id"));
             String userName = (rs.getString("name"));
