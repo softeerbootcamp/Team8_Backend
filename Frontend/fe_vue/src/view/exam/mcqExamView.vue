@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <router-link to="/roadmap">
+                    <router-link :to="{name : 'RoadMap'}">
                         <button type="submit" @click="onSubmit" class="btn btn-primary mt-2">제출하기</button>
                     </router-link>
                 </div>
