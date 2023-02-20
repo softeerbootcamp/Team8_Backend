@@ -78,7 +78,6 @@ export default {
 
             } else {
               this.$router.push({ name: "UserHome" });
-
             }
           } else {
             this.isLoginFailed = true;
