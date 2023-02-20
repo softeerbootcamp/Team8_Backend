@@ -3,6 +3,7 @@ package site.devroad.softeer.src.exam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.exceptions.ExceptionType;
@@ -147,6 +148,7 @@ public class ExamService {
         return new GetAssignmentDetail(assignment);
     }
 
+    @Async
     public void doAiReview(Long examSubmissionId) {
         Optional<ExamSubmission> optionalExamSubmission = examSubmissionRepo.findExamSubmissionById(examSubmissionId);
         if(optionalExamSubmission.isEmpty())
