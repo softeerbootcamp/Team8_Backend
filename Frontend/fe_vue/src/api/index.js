@@ -46,8 +46,8 @@ function getAllSubjectData(config) {
 function postAiCodeReviewModal(config, params) {
   return axiosService.post("api/exam/ai/" + params, config);
 }
-function postRoadmapToUserByEmail(requestBody) {
-  return axiosService.post("api/roadmap", requestBody);
+function postRoadmapToUserByEmail(config, data) {
+  return axiosService.post("api/roadmap", data, config);
 }
 function getNoRoadmapUserData(config) {
   return axiosService.get("api/user/noRoadmap", config);
