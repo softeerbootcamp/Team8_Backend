@@ -6,10 +6,9 @@
             height="315" allowfullscreen style="width:100vh; height: 50vh;" />
     </div>
     <div class="d-flex justify-content-center mt-4">
-        <button class="btn btn-dark" @click="finishChapter">수강완료</button>
+        <button class="btn btn-dark" @click="finishChapter" onmouseover="this.innerHTML='다음 강의로';"
+            onmouseout="this.innerHTML='수강완료';">수강완료</button>
     </div>
-
-
 </template>
 <script>
 import { getChapterDetailData, putFinishChapter } from '@/api';
@@ -23,10 +22,11 @@ export default {
         chapterUrl: "",
         thumbnailUrl: "",
         description: "",
-        finish: true
+        finish: true,
+        nextChapterId: "",
     }),
     mounted() {
-        this.getChapterDetail();
+        this.getChapterDetail(this.$route.params.chapterId);
     },
     methods: {
         async finishChapter() {
@@ -40,7 +40,9 @@ export default {
                     if (response.data.success) {
                         //                     "nextChapterId" : "10014",
                         // "isCourseFinished" : "false"
-                        this.$router.push('/roadmap');
+                        this.nextChapterId = response.data.nextChapterId;
+                        this.getChapterDetail(this.nextChapterId);
+
                     }
                 })
                 .catch(function (error) {
@@ -48,12 +50,15 @@ export default {
                 });
 
         },
-
+        refreshAll() {
+            this.$router.go(0);
+        }
+        ,
         onLoad(frame) {
             this.myIframe = frame.contentWindow
         },
-        async getChapterDetail() {
-            this.chapterId = this.$route.params.chapterId;
+        async getChapterDetail(chapterId) {
+            this.chapterId = chapterId;
 
             const config = {
                 headers: {
@@ -82,6 +87,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
