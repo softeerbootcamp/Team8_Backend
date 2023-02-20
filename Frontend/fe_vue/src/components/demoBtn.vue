@@ -1,12 +1,12 @@
 <template>
     <button class="btn" @click="loginDemoStudentId_NotSub">
-        학생 계정_구독없음
+        학생_비구독
     </button>
     <button class="btn" @click="loginDemoStudentId">
-        학생 계정_구독완료
+        학생_구독
     </button>
     <button class="btn" @click="loginDemoAdminId">
-        관리자 계정
+        관리자
     </button>
 </template>
 <script>

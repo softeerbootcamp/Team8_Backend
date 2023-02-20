@@ -1,34 +1,31 @@
 <template>
-  <div class="background">
-    <div class="container mt-5" style="display:flex; width:40vw">
-
-      <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
-        <div class="col-md-3 col-sm-6" style="width:200px">
-          전체 진행도
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
+  <div class="container mt-5" style="display:flex; width:40vw">
+    <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
+      <div class="col-md-3 col-sm-6" style="width:200px">
+        전체 진행도
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
+          angle: 90,
+          startColor: 'black',
+          stopColor: 'black'
+        }" style="width:13vw" />
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5" style="display:flex; width:40vw">
+    <div class="row" style="display:flex;flex-direction:column;margin-right;:auto">
+      <div class="col-md-3 col-sm-6" style="width:200px">
+        강의 진행도
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
+          :gradient="{
             angle: 90,
             startColor: 'black',
             stopColor: 'black'
-          }" style="width:13vw" />
-        </div>
-      </div>
-    </div>
-    <div class="container mt-5" style="display:flex; width:40vw">
-      <div class="row" style="display:flex;flex-direction:column;margin-right;:auto">
-        <div class="col-md-3 col-sm-6" style="width:200px">
-          강의 진행도
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
-            :gradient="{
-              angle: 90,
-              startColor: 'black',
-              stopColor: 'black'
-            }
-            " />
-        </div>
+          }
+          " />
       </div>
     </div>
   </div>

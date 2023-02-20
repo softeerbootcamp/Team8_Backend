@@ -1,46 +1,47 @@
 <template>
-  <div class="background">
-    <nav class="navbar sticky-top">
-      <router-link to="/" class="mainLogo">DevRoad</router-link>
-      <button class="btn" style="position:absolute;left:10%;" @click="demoOnOff">{{ DemoMode }}</button>
-      <demo-btn v-if="DemoOnOff"></demo-btn>
-      <div class="menu" v-if="!isAdmin">
-        <a v-if="!isLogin">
-          <router-link :to="{ name: 'SignUp' }"><i class="bi bi-box-arrow-in-right"></i>
-          </router-link>
-        </a>
-        <a v-if="!isLogin">
-          <router-link :to="{ name: 'LogIn' }">LogIn</router-link>
-        </a>
-        <a v-if="isLogin">
-          <router-link :to="{ name: 'Home' }" @click="logout"><i class="bi bi-person-slash"></i>
-          </router-link>
-        </a>
-        <a v-if="isLogin">
-          <router-link :to="{ name: 'RoadMap' }">
-            <i class="bi bi-signpost-split-fill"></i>
-          </router-link>
-        </a>
-        <a v-if="isLogin">
-          <router-link :to="{ name: 'UserHome' }">
-            <i class="bi bi-person-circle"></i>
-          </router-link>
-        </a>
-      </div>
-      <div class="menu" v-if="isAdmin">
-        <a v-if="isLogin">
-          <router-link :to="{ name: 'Home' }" @click="logout">로그아웃</router-link>
-        </a>
-        <a v-if="isLogin">
-          <router-link :to="{ name: 'AdminHome' }">로드맵 작성 관리</router-link>
-        </a>
-        <a v-if="isLogin">
-          <router-link :to="{ name: 'AdminUserView' }">전체 유저 관리</router-link>
-        </a>
-      </div>
-    </nav>
-  </div>
-</template>
+  <nav class="navbar sticky-top">
+    <div class="menu" v-if="!isAdmin">
+      <router-link to="/" class="mainLogo" style="color : #B01E68">DevRoad</router-link>
+      <button class="btn" style="position:absolute;left:90%;" @click="demoOnOff">
+        {{ DemoMode }}
+        <demo-btn v-if="DemoOnOff"></demo-btn>
+      </button>
+      <a v-if="!isLogin">
+        <router-link :to="{ name: 'SignUp' }" style="color : #B01E68;"><i class="bi bi-box-arrow-in-right"></i>
+        </router-link>
+      </a>
+      <a v-if="!isLogin">
+        <router-link :to="{ name: 'LogIn' }" style="color : #B01E68;">LogIn</router-link>
+      </a>
+      <a v-if="isLogin">
+        <router-link :to="{ name: 'Home' }" @click="logout">
+          <i class="bi bi-person-slash" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
+      </a>
+      <a v-if="isLogin">
+        <router-link :to="{ name: 'RoadMap' }">
+          <i class="bi bi-signpost-split-fill" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
+      </a>
+      <a v-if="isLogin">
+        <router-link :to="{ name: 'UserHome' }">
+          <i class="bi bi-person-circle" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
+      </a>
+    </div>
+    <div class="menu" v-if="isAdmin" style="position:absolute;left:90%;">
+      <a v-if="isLogin">
+        <router-link :to="{ name: 'Home' }" @click="logout">로그아웃</router-link>
+      </a>
+      <a v-if="isLogin">
+        <router-link :to="{ name: 'AdminHome' }">로드맵 작성 관리</router-link>
+      </a>
+      <a v-if="isLogin">
+        <router-link :to="{ name: 'AdminUserView' }">전체 유저 관리</router-link>
+      </a>
+    </div>
+  </nav>
+<!-- </div> --></template>
 
 <script>
 import demoBtn from './demoBtn.vue';
@@ -82,7 +83,9 @@ export default {
 </script>
 
 <style>
-.menu {}
+.menu {
+  margin-left: auto;
+}
 
 .mainLogo {
   color: black;
