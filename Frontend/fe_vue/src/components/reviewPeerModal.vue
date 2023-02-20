@@ -4,22 +4,31 @@
             <div class="modal-wrapper">
                 <div class="modal-container">
                     <div class="modal-header mt-1">
-                        peer 모달입니다!!!!
+                        peer 리뷰
                     </div>
                     <div class="modal-body">
                         <div class="row row-cols-1 row-cols-md-2 g-4 mt-1" style="height:100%">
                             <div class="col">
-                                <div class="card" style="height:80%">
+                                <div v-bind:href="cards.card1.url" class="card" style="height:80%">
                                     <div class="card-header">{{ cards.card1.username }}</div>
-                                    <div class="card-body">{{ cards.card1.url }}</div>
-                                    <div class="card-body">{{ cards.card1.curSubject }}</div>
+                                    <div class="card-body">
+                                        <a :href="cards.card1.url">
+                                            코드 보러가기
+                                        </a>
+                                    </div>
+                                    <div class="card-body">현재 듣고 있는 강의 : {{ cards.card1.curSubject }}</div>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="card" style="height:80%">
+                                <div v-bind:href="cards.card2.url" class="card" style="height:80%">
                                     <div class="card-header">{{ cards.card2.username }}</div>
-                                    <div class="card-body">{{ cards.card2.url }}</div>
-                                    <div class="card-body">{{ cards.card2.curSubject }}</div>
+                                    <div class="card-body">
+                                        <a :href="cards.card2.url">
+                                            코드 보러가기
+                                        </a>
+                                    </div>
+
+                                    <div class="card-body">현재 듣고 있는 강의 : {{ cards.card2.curSubject }}</div>
                                 </div>
                             </div>
                         </div>

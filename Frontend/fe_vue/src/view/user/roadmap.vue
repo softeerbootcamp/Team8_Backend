@@ -31,7 +31,8 @@
   </div>
   <reviewSelectModal @card-selected="onCardSelected" @close="closeModal" v-if="showReviewSelectModal">
   </reviewSelectModal>
-  <reviewAiModal @close="showReviewAiModal = false" v-if="showReviewAiModal"></reviewAiModal>
+  <reviewAiModal @card-selected="onCardSelected" @close="showReviewAiModal = false" v-if="showReviewAiModal">
+  </reviewAiModal>
   <reviewPeerModal @card-selected="onCardSelected" @close="showReviewPeerModal = false" v-if="showReviewPeerModal">
   </reviewPeerModal>
 </template>
@@ -75,12 +76,17 @@ export default {
       this.showReviewSelectModal = false
     },
     onCardSelected(cardClass) {
-      this.selectedReviewType = cardClass
+      this.selectedReviewType = cardClass;
+      console.log("cardClass : " + cardClass);
       if (cardClass === 'gobackToSelectFromPeer') {
         this.showReviewPeerModal = false;
         this.showReviewSelectModal = true;
 
-      } else {
+      } else if (cardClass === 'gobackToSelectFromAi') {
+        this.showReviewAiModal = false;
+        this.showReviewSelectModal = true;
+      }
+      else {
         this.showReviewSelectModal = false
         if (cardClass === 'ai') {
           this.showReviewAiModal = true

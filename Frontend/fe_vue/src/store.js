@@ -14,6 +14,9 @@ export default new Vuex.Store({
     curSubExamId: "",
   },
   mutations: {
+    clearState(state){
+      state.clearState();
+    },
     setIsRoadmap(state, status) {
       state.isRoadmap = status;
     },
