@@ -6,7 +6,15 @@
           style="text-decoration: none; color: black;">
           <div class="card text-center mb-4">
             <div class="card-body">
-              <h5 class="card-title">{{ chapter.chapterName }}</h5>
+              <h5 class="card-title">
+                <div>
+                  <button></button>
+
+                  {{ chapter.chapterName }}
+                </div>
+                <div>
+                </div>
+              </h5>
               <p class="card-text">{{ chapter.description }}</p>
             </div>
           </div>

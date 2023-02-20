@@ -113,7 +113,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === "/login" && isLoggedIn) {
     next("/");
   } else if (to.path === "/roadmap" && !isRoadmapExist) {
-    next("/roadmap");
+    next("/userpendingview");
   } else {
     next();
   }

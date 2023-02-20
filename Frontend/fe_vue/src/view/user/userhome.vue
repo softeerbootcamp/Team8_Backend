@@ -1,11 +1,10 @@
-<template>
-  <!-- style="display:flex; margin-right:auto" -->
+<template><!-- style="display:flex; margin-right:auto" -->
   <div>
     <div class="container mt-5" style="display:flex; width:40vw">
-      <div>
+      <!-- <div>
         지금 듣고 계시는 강의는<br>
         <img src="../assets/images/spring.svg" style="width:10vw" />
-      </div>
+      </div> -->
       <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
         <div class="col-md-3 col-sm-6" style="width:200px">
           전체 진행도
@@ -15,7 +14,7 @@
             angle: 90,
             startColor: 'black',
             stopColor: 'black'
-          
+
           }" style="width:13vw" />
         </div>
       </div>
@@ -35,10 +34,10 @@
             " />
         </div>
       </div>
-      <div style="margin-left: auto;">
+      <!-- <div style="margin-left: auto;">
         이다음 들어야 할 강의는<br>
         <img src="../assets/images/tensorflow.svg" style="width:10vw;" />
-      </div>
+      </div> -->
     </div>
   </div>
   <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted" style="text-decoration: none;">
@@ -146,6 +145,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

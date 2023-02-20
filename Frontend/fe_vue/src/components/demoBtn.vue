@@ -29,14 +29,17 @@ export default {
         loginDemoStudentId_NotSub() {
             this.logout();
             this.loginForm("notPurchase@naver.com", "1234");
+            this.$router.push('/');
         },
         loginDemoStudentId() {
             this.logout();
             this.loginForm("jm1234@naver.com", "jm1234");
+            this.$router.push('/');
         },
         loginDemoAdminId() {
             this.logout();
             this.loginForm("admin@naver.com", "1234");
+            this.$router.push('/');
         },
         async loginForm(email, pwd) {
             const userData = {
