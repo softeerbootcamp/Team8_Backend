@@ -7,7 +7,9 @@
     </div>
     <div class="d-flex justify-content-center mt-4">
         <button class="btn btn-dark" @click="finishChapter" onmouseover="this.innerHTML='다음 강의로';"
-            onmouseout="this.innerHTML='수강완료';">수강완료</button>
+            onmouseout="this.innerHTML='수강완료';" style="margin-right:10px !important">수강완료</button>
+        <button class="btn btn-dark"
+            @click="$router.push({ name: 'chapterView', params: { courseId: courseId } })">뒤로가기</button>
     </div>
 </template>
 <script>
@@ -24,6 +26,8 @@ export default {
         description: "",
         finish: true,
         nextChapterId: "",
+        courseId: "",
+
     }),
     mounted() {
         this.getChapterDetail(this.$route.params.chapterId);
@@ -75,6 +79,8 @@ export default {
                         this.thumbnailUrl = response.data.chapterDetail.thumbnailUrl;
                         this.description = response.data.chapterDetail.description;
                         this.finish = response.data.chapterDetail.finish;
+                        this.courseId = response.data.chapterDetail.courseId;
+
 
                     }
                 })
