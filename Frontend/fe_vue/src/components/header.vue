@@ -5,30 +5,30 @@
     <demo-btn v-if="DemoOnOff"></demo-btn>
     <div class="menu" v-if="!isAdmin">
       <a v-if="!isLogin">
-        <router-link to="/signup">회원가입</router-link>
+        <router-link :to="{ name : 'SignUp'}">회원가입</router-link>
       </a>
       <a v-if="!isLogin">
-        <router-link to="/login">로그인</router-link>
+        <router-link :to="{ name : 'LogIn'}">로그인</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link to="/" @click="logout">로그아웃</router-link>
+        <router-link :to="{ name : 'Home'}" @click="logout">로그아웃</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link to="/roadmap">로드맵으로!</router-link>
+        <router-link :to="{ name : 'RoadMap'}">로드맵으로!</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link to="/userhome">{{ this.$store.state.username }}</router-link>
+        <router-link :to="{ name : 'UserHome'}">{{ this.$store.state.username }}</router-link>
       </a>
     </div>
     <div class="menu" v-if="isAdmin">
       <a v-if="isLogin">
-        <router-link to="/" @click="logout">로그아웃</router-link>
+        <router-link :to="{ name : 'Home'}" @click="logout">로그아웃</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link to="/adminhome">로드맵 작성 관리</router-link>
+        <router-link :to="{ name : 'AdminHome'}">로드맵 작성 관리</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link to="/adminuserview">전체 유저 관리</router-link>
+        <router-link :to="{ name : 'AdminUserView'}">전체 유저 관리</router-link>
       </a>
     </div>
   </nav>
