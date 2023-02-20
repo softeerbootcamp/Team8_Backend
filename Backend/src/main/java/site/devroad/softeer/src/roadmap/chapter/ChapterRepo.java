@@ -60,7 +60,7 @@ public class ChapterRepo {
     public List<ChapterDetail> findChapterDetailByCourseId(Long courseId) {
         try {
             return jdbcTemplate.query("SELECT \n" +
-                            "c.course_id as course_id\n"+
+                            "c.course_id as course_id, \n"+
                             "c.id as chapter_id,\n" +
                             "c.title as title,\n" +
                             "c.chapter_url as chapter_url,\n" +
