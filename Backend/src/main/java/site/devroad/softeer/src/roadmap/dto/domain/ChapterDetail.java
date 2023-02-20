@@ -3,6 +3,7 @@ package site.devroad.softeer.src.roadmap.dto.domain;
 import site.devroad.softeer.src.roadmap.chapter.Chapter;
 
 public class ChapterDetail {
+    private Long courseId;
     private Long chapterId;
     private String chapterName;
     private String chapterUrl;
@@ -10,7 +11,8 @@ public class ChapterDetail {
     private String explain;
     private Boolean finish;
 
-    public ChapterDetail(Long chapterId, String chapterName, String chapterUrl, String thumbnailUrl, String explain, Boolean finish) {
+    public ChapterDetail(Long courseId, Long chapterId, String chapterName, String chapterUrl, String thumbnailUrl, String explain, Boolean finish) {
+        this.courseId = courseId;
         this.chapterId = chapterId;
         this.chapterName = chapterName;
         this.chapterUrl = chapterUrl;
@@ -20,12 +22,17 @@ public class ChapterDetail {
     }
 
     public ChapterDetail(Chapter chapter) {
+        this.courseId = chapter.getCourseId();
         this.chapterId = chapter.getId();
         this.chapterName = chapter.getTitle();
         this.chapterUrl = chapter.getChapterUrl();
         this.thumbnailUrl = chapter.getThumbnailUrl();
         this.explain = chapter.getDescription();
         this.finish = false;
+    }
+
+    public Long getCourseId(){
+        return courseId;
     }
 
     public Long getChapterId() {
