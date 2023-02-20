@@ -1,6 +1,8 @@
 <template>
   <nav class="navbar sticky-top">
     <router-link to="/" class="mainLogo">DevRoad</router-link>
+    <button class="btn" @click="demoOnOff">데모 버튼 켜고 끄기</button>
+    <demo-btn v-if="DemoOnOff"></demo-btn>
     <div class="menu" v-if="!isAdmin">
       <a v-if="!isLogin">
         <router-link to="/signup">회원가입</router-link>
@@ -33,10 +35,15 @@
 </template>
 
 <script>
+import demoBtn from './demoBtn.vue';
 export default {
   name: "Header",
+  components: {
+    demoBtn
+  },
   data() {
     return {
+      DemoOnOff: true
     }
   },
   computed: {
@@ -51,8 +58,10 @@ export default {
     logout() {
       this.$store.commit('logout');
       window.localStorage.clear();
-
     },
+    demoOnOff() {
+      this.DemoOnOff = !this.DemoOnOff;
+    }
   },
 };
 </script>
