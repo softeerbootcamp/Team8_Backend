@@ -56,20 +56,19 @@ export default {
             event.preventDefault();
             const userEmail = this.$route.params.userEmail;
             const subjectSequence = this.selectedSubjects.filter(subject => subject !== null).map(subject => subject.id);
-            console.log("subjectSequence : " + subjectSequence);
-            console.log("filtered subjectSequence : " + subjectSequence);
-
-            const requestBody = {
+            const config = {
+                headers: {
+                    jwt: this.$store.state.jwt
+                }
+            };
+            const data = {
                 email: userEmail,
                 subjectSequence: subjectSequence
             };
-            // 현재는 email 수동
 
-            await postRoadmapToUserByEmail(requestBody)
+            await postRoadmapToUserByEmail(config, data)
                 .then((response) => {
-                    console.log("post roadmap response:" + response);
                     if (response.data.success) {
-                        console.log("success!!");
                         this.$router.push({ name: "AdminHome" });
                     }
                 })
