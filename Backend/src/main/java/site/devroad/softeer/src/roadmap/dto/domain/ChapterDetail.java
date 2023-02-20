@@ -1,5 +1,7 @@
 package site.devroad.softeer.src.roadmap.dto.domain;
 
+import site.devroad.softeer.src.roadmap.chapter.Chapter;
+
 public class ChapterDetail {
     private Long chapterId;
     private String chapterName;
@@ -15,6 +17,15 @@ public class ChapterDetail {
         this.thumbnailUrl = thumbnailUrl;
         this.explain = explain;
         this.finish = finish;
+    }
+
+    public ChapterDetail(Chapter chapter) {
+        this.chapterId = chapter.getId();
+        this.chapterName = chapter.getTitle();
+        this.chapterUrl = chapter.getChapterUrl();
+        this.thumbnailUrl = chapter.getThumbnailUrl();
+        this.explain = chapter.getDescription();
+        this.finish = false;
     }
 
     public Long getChapterId() {

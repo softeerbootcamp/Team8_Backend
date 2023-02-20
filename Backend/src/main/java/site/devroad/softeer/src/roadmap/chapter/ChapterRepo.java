@@ -1,6 +1,5 @@
 package site.devroad.softeer.src.roadmap.chapter;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,7 +27,7 @@ public class ChapterRepo {
         }
     }
 
-    public Optional<ChapterDetail> findChapterDetailById(Long chapterId) {
+    public Optional<ChapterDetail> findChapterDetailById(Long chapterId, Long accountId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT \n" +
                             "c.id as chapter_id,\n" +
@@ -40,8 +39,9 @@ public class ChapterRepo {
                             "FROM Chapter c \n" +
                             "LEFT JOIN CompletedChapter cc\n" +
                             "ON c.id = cc.chapter_id\n" +
-                            "WHERE c.id = ?"
-                    , chapterDetailRowMapper(), chapterId));
+                            "WHERE c.id = ?\n" +
+                            "AND cc.account_id = ?"
+                    , chapterDetailRowMapper(), chapterId, accountId));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
