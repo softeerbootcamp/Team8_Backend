@@ -143,7 +143,7 @@ public class ExamService {
         if (examSubmissionById.isEmpty())
             throw new CustomException(ExceptionType.EXAM_SUBMISSION_NOT_FOUND);
         ExamSubmission examSubmission = examSubmissionById.get();
-        Account accountById = userRepo.findAccountById(examSubmission.getId());
+        Account accountById = userRepo.findAccountById(examSubmission.getAccountId());
         Assignment assignment = new Assignment(examSubmission, accountById.getName());
         return new GetAssignmentDetail(assignment);
     }
@@ -211,4 +211,5 @@ public class ExamService {
         Collections.shuffle(peerList);
         return new GetPeerDetail(true , peerList.subList(0,2));
     }
+
 }
