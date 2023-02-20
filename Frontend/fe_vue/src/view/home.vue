@@ -1,37 +1,41 @@
 <template>
-  <h1 class="homeTitle center">
-    본인만의 커리어를 만들어보세요!<br>
+  <div class="roadBody">
 
 
-  </h1>
-  <div class="d-flex justify-content-center">
-    <div class="highway d-flex align-items-center">
-      <img class="road w-50 h-100" src="../assets/images/road.svg" />
+    <h1 class="homeTitle center">
+      본인만의 커리어를 만들어보세요!<br>
 
-      <div ref="car" class="car d-flex align-items-center justify-content-center">
-        <img class="car" src="../assets/images/porsche.svg" />
-      </div>
-      <div ref="car2" class="car2 d-flex align-items-center justify-content-center">
-        <img class="car2" src="../assets/images/porsche2.svg" />
-      </div>
-      <div class="sign_1 d-flex align-items-center justify-content-center speed-limit">
-        <img class="sign_1" src="../assets/images/spring.svg" />
-      </div>
-      <div class="sign_2 d-flex align-items-center justify-content-center speed-limit">
-        <img class="sign_2" src="../assets/images/bootstrap.svg" />
-      </div>
-      <div class="sign_3 d-flex align-items-center justify-content-center speed-limit">
-        <img class="sign_3" src="../assets/images/vueSvg.svg" />
-      </div>
-      <div class="sign_4 d-flex align-items-center justify-content-center speed-limit">
-        <img class="sign_4" src="../assets/images/tensorflow.svg" />
+
+    </h1>
+    <div class="d-flex justify-content-center">
+      <div class="highway d-flex align-items-center">
+        <!-- <img class="road w-50 h-100" src="../assets/images/road.svg" /> -->
+
+        <div ref="car" class="car d-flex align-items-center justify-content-center">
+          <img class="car" src="../assets/images/porsche.svg" />
+        </div>
+        <div ref="car2" class="car2 d-flex align-items-center justify-content-center">
+          <img class="car2" src="../assets/images/porsche2.svg" />
+        </div>
+        <div class="sign_1 d-flex align-items-center justify-content-center speed-limit">
+          <img class="sign_1" src="../assets/images/spring.svg" />
+        </div>
+        <div class="sign_2 d-flex align-items-center justify-content-center speed-limit">
+          <img class="sign_2" src="../assets/images/bootstrap.svg" />
+        </div>
+        <div class="sign_3 d-flex align-items-center justify-content-center speed-limit">
+          <img class="sign_3" src="../assets/images/vueSvg.svg" />
+        </div>
+        <div class="sign_4 d-flex align-items-center justify-content-center speed-limit">
+          <img class="sign_4" src="../assets/images/tensorflow.svg" />
+        </div>
       </div>
     </div>
+    <h3>
+      <button type="button" class="btn btn-dark d-grid gap-2 col-1 mt-4 mx-auto" @click="startBtnClickEvent"
+        onmouseover="this.innerHTML='뿌와아아앙!!!';" onmouseout="this.innerHTML='출발!';">출발!</button>
+    </h3>
   </div>
-  <h3>
-    <button type="button" class="btn btn-dark d-grid gap-2 col-1 mt-4 mx-auto" @click="startBtnClickEvent"
-      onmouseover="this.innerHTML='뿌와아아앙!!!';" onmouseout="this.innerHTML='출발!';">출발!</button>
-  </h3>
 </template>
 <script>
 export default {
@@ -100,10 +104,12 @@ export default {
 
 } */
 .roadBody {
-  background-repeat: repeat-y;
-  background-size: 40vh;
+  background-repeat: repeat-x;
+  margin: 0%s;
+  height: 75%;
+  background-size: 70vh;
   background-position: center;
-  background-image: url("@/assets/road_svg.svg");
+  background-image: url("@/assets/road.svg");
 }
 
 .highway {

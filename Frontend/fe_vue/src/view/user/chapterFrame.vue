@@ -9,7 +9,7 @@
         <button class="btn btn-dark" @click="finishChapter" onmouseover="this.innerHTML='다음 강의로';"
             onmouseout="this.innerHTML='수강완료';" style="margin-right:10px !important">수강완료</button>
         <button class="btn btn-dark"
-            @click="$router.push({ name: 'chapterView', params: { courseId: courseId } })">뒤로가기</button>
+            @click="$router.push({ name: 'ChapterView', params: { courseId: courseId } })">뒤로가기</button>
     </div>
 </template>
 <script>
