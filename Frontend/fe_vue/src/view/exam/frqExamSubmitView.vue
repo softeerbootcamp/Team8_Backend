@@ -20,7 +20,7 @@
             <div class="card-footer d-flex justify-content-between">
                 <input type="text" class="form-control" id="inputAnswer" v-model="submitForm.url"
                     placeholder="Enter your gitrepo here" style="width: 70%">
-                <router-link to="/roadmap">
+                <router-link :to="{ name : 'RoadMap' }">
                     <button type="submit" class="btn btn-primary" @click="postAssignMent">제출하기</button>
                 </router-link>
             </div>
