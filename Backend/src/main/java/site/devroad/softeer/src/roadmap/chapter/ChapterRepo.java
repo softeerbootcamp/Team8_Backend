@@ -30,6 +30,7 @@ public class ChapterRepo {
     public Optional<ChapterDetail> findChapterDetailById(Long chapterId, Long accountId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT \n" +
+                            "c.course_id as course_id, \n"+
                             "c.id as chapter_id,\n" +
                             "c.title as title,\n" +
                             "c.chapter_url as chapter_url,\n" +
@@ -59,6 +60,7 @@ public class ChapterRepo {
     public List<ChapterDetail> findChapterDetailByCourseId(Long courseId) {
         try {
             return jdbcTemplate.query("SELECT \n" +
+                            "c.course_id as course_id\n"+
                             "c.id as chapter_id,\n" +
                             "c.title as title,\n" +
                             "c.chapter_url as chapter_url,\n" +
@@ -99,6 +101,7 @@ public class ChapterRepo {
 
     private RowMapper<ChapterDetail> chapterDetailRowMapper() {
         return (rs, rowNum) -> {
+            Long courseId = rs.getLong("course_id");
             Long chapterId = rs.getLong("chapter_id");
             String title = rs.getString("title");
             String chapterUrl = rs.getString("chapter_url");
@@ -106,7 +109,7 @@ public class ChapterRepo {
             String description = rs.getString("description");
             Long completed = rs.getLong("completed");
             boolean finish = !rs.wasNull();
-            return new ChapterDetail(chapterId, title, chapterUrl, thumbnailUrl, description, finish);
+            return new ChapterDetail(courseId, chapterId, title, chapterUrl, thumbnailUrl, description, finish);
         };
     }
 }
