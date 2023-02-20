@@ -1,26 +1,23 @@
 <template>
-    <div class="background">
-        <div class="container">
-            <div class="message">
-                <div class="slide-up">Make your own Career</div>
-                <transition name="fade">
-                    <div v-if="!showLogin" class="buttons">
-                        <button class="button" @click="showLoginForm">Login</button>
-                        <button class="button">Sign up</button>
-                    </div>
-                </transition>
-            </div>
-            <div v-if="showLogin" class="login-form-container">
-                <transition name="fade">
-                    <Login @closeLoginForm="closeLoginForm" />
-                </transition>
+    <div class="container" style="display:contents;">
+        <div class="message">
+            <div class="slide-up">Make your own Career</div>
+            <div class="buttons">
+                <button class="button" @click="showLoginForm" v-show="!showLogin && !$store.state.isLogin">Login</button>
+                <button class="button" v-show="!showLogin && !$store.state.isLogin">Sign up</button>
+                <button class="button" v-show="$store.state.isLogin" @click="$router.push('/roadmap')">To Roadmap</button>
             </div>
         </div>
+        <transition name="fade">
+            <div v-if="showLogin" class="login-form-container">
+                <Login @closeLoginForm="closeLoginForm" />
+            </div>
+        </transition>
     </div>
 </template>
-
+  
 <script>
-import Login from '@/components/login.vue';
+import Login from "@/components/login.vue";
 
 export default {
     name: "Home",
@@ -42,7 +39,7 @@ export default {
     },
 };
 </script>
-
+  
 <style>
 .fade-enter-active,
 .fade-leave-active {
@@ -58,6 +55,7 @@ export default {
     justify-content: center;
     position: relative;
     margin-top: 30%;
+    animation: fadeIn 1s ease forwards;
 }
 
 .background {
@@ -65,7 +63,6 @@ export default {
     overflow: hidden;
     margin: 0;
     background: linear-gradient(to bottom, #FFE15D, #ff7f50, #ff6b6b);
-
 }
 
 .message {
@@ -127,3 +124,4 @@ export default {
     text-align: center;
 }
 </style>
+  
