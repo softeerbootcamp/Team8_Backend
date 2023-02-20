@@ -1,38 +1,47 @@
 <template>
   <nav class="navbar sticky-top">
-    <router-link to="/" class="mainLogo">DevRoad</router-link>
-    <button class="btn" @click="demoOnOff">데모 버튼 켜고 끄기</button>
-    <demo-btn v-if="DemoOnOff"></demo-btn>
     <div class="menu" v-if="!isAdmin">
+      <router-link to="/" class="mainLogo" style="color : #B01E68">DevRoad</router-link>
+      <button class="btn" style="position:absolute;left:90%;" @click="demoOnOff">
+        {{ DemoMode }}
+        <demo-btn v-if="DemoOnOff"></demo-btn>
+      </button>
       <a v-if="!isLogin">
-        <router-link :to="{ name : 'SignUp'}">회원가입</router-link>
+        <router-link :to="{ name: 'SignUp' }" style="color : #B01E68;"><i class="bi bi-box-arrow-in-right"></i>
+        </router-link>
       </a>
       <a v-if="!isLogin">
-        <router-link :to="{ name : 'LogIn'}">로그인</router-link>
+        <router-link :to="{ name: 'LogIn' }" style="color : #B01E68;">LogIn</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link :to="{ name : 'Home'}" @click="logout">로그아웃</router-link>
+        <router-link :to="{ name: 'Home' }" @click="logout">
+          <i class="bi bi-person-slash" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
       </a>
       <a v-if="isLogin">
-        <router-link :to="{ name : 'RoadMap'}">로드맵으로!</router-link>
+        <router-link :to="{ name: 'RoadMap' }">
+          <i class="bi bi-signpost-split-fill" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
       </a>
       <a v-if="isLogin">
-        <router-link :to="{ name : 'UserHome'}">{{ this.$store.state.username }}</router-link>
+        <router-link :to="{ name: 'UserHome' }">
+          <i class="bi bi-person-circle" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
       </a>
     </div>
-    <div class="menu" v-if="isAdmin">
+    <div class="menu" v-if="isAdmin" style="position:absolute;left:90%;">
       <a v-if="isLogin">
-        <router-link :to="{ name : 'Home'}" @click="logout">로그아웃</router-link>
+        <router-link :to="{ name: 'Home' }" @click="logout">로그아웃</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link :to="{ name : 'AdminHome'}">로드맵 작성 관리</router-link>
+        <router-link :to="{ name: 'AdminHome' }">로드맵 작성 관리</router-link>
       </a>
       <a v-if="isLogin">
-        <router-link :to="{ name : 'AdminUserView'}">전체 유저 관리</router-link>
+        <router-link :to="{ name: 'AdminUserView' }">전체 유저 관리</router-link>
       </a>
     </div>
   </nav>
-</template>
+<!-- </div> --></template>
 
 <script>
 import demoBtn from './demoBtn.vue';
@@ -43,10 +52,12 @@ export default {
   },
   data() {
     return {
-      DemoOnOff: true
+      DemoOnOff: true,
+      DemoMode: "DemoModeOff"
     }
   },
   computed: {
+
     isAdmin() {
       return this.$store.state.isAdmin;
     },
@@ -61,21 +72,19 @@ export default {
     },
     demoOnOff() {
       this.DemoOnOff = !this.DemoOnOff;
+      if (this.DemoOnOff == true) {
+        this.DemoMode = "DemoMode Off"
+      } else {
+        this.DemoMode = "DemoMode On"
+      }
     }
   },
 };
 </script>
 
 <style>
-.navbar {
-  background-color: white;
-}
-
 .menu {
-  background: black;
-  padding: 10px;
-  border-radius: 5px;
-
+  margin-left: auto;
 }
 
 .mainLogo {
@@ -86,7 +95,7 @@ export default {
 }
 
 .menu a {
-  color: white;
+  color: black;
   padding: 20px;
   text-decoration: none;
 }

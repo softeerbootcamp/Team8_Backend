@@ -64,6 +64,9 @@ function sendExamResult(config, param) {
 function getChapterDetailData(config, param) {
   return axiosService.get("api/chapter/" + param, config);
 }
+function deleteRoadmapData(config, param) {
+  return axiosService.delete("api/roadmap/" + param, config);
+}
 export {
   adminUser,
   signinUser,
@@ -83,4 +86,5 @@ export {
   getPeerDetail,
   postAiCodeReviewModal,
   getAiReviewFin,
+  deleteRoadmapData,
 };

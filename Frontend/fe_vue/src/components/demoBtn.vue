@@ -1,12 +1,12 @@
 <template>
     <button class="btn" @click="loginDemoStudentId_NotSub">
-        학생 계정_구독없음
+        학생_비구독
     </button>
     <button class="btn" @click="loginDemoStudentId">
-        학생 계정_구독완료
+        학생_구독
     </button>
     <button class="btn" @click="loginDemoAdminId">
-        관리자 계정
+        관리자
     </button>
 </template>
 <script>
@@ -29,14 +29,17 @@ export default {
         loginDemoStudentId_NotSub() {
             this.logout();
             this.loginForm("notPurchase@naver.com", "1234");
+            this.$router.push('/');
         },
         loginDemoStudentId() {
             this.logout();
             this.loginForm("jm1234@naver.com", "jm1234");
+            this.$router.push('/');
         },
         loginDemoAdminId() {
             this.logout();
             this.loginForm("admin@naver.com", "1234");
+            this.$router.push('/');
         },
         async loginForm(email, pwd) {
             const userData = {
@@ -58,13 +61,10 @@ export default {
                 .then((response) => {
                     if (response.data.success) {
                         this.$store.commit("setLoginStatus", true);
-                        console.log("isLogin store status when login success! : " + this.$store.state.isLogin)
                         this.$store.commit("setJwtToken", response.data.jwt);
                         this.setStoreUserNameByJwt(response.data.jwt);
-                        console.log("username setted : " + this.$store.state.username)
 
                         if (response.data.roadmapId === "-1") {
-                            console.log("userpending view roadmap id : " + response.data.roadmapId);
                             this.$router.push({ name: "UserPendingView" });
                         }
                         if (response.data.admin) {
@@ -77,7 +77,6 @@ export default {
                         }
                     } else {
                         this.isLoginFailed = true;
-                        console.log("login failed : " + response.data.success);
                     }
                 });
 
