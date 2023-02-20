@@ -32,11 +32,10 @@
             </div>
         </div>
     </transition>
-
-
 </template>
 <script>
 export default {
+    name: 'ReviewSelectModal',
     components: {
 
     },

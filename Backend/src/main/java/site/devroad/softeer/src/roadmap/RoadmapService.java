@@ -112,4 +112,12 @@ public class RoadmapService {
             roadmapRepo.addSubjectToRoadMap(roadmapId, roadmapReq.getSubjectSequence().get(i), i + 1);
         }
     }
+
+    public void deleteRoadmapByAccountId(Long targetAccountId) {
+        Optional<Roadmap> roadmapOptional = roadmapRepo.findRoadmapByAccountId(targetAccountId);
+        if(roadmapOptional.isEmpty())
+            return;
+        roadmapRepo.deleteRoadmap(roadmapOptional.get().getId());
+
+    }
 }

@@ -1,28 +1,35 @@
 package site.devroad.softeer.src.roadmap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.devroad.softeer.exceptions.CustomException;
+import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.course.CourseService;
 import site.devroad.softeer.src.roadmap.dto.*;
 import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
 import site.devroad.softeer.src.roadmap.dto.domain.CourseDetail;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectService;
+import site.devroad.softeer.src.user.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RoadmapController {
-
     private final RoadmapService roadmapService;
     private final SubjectService subjectService;
     private final CourseService courseService;
+    private final UserService userService;
 
-    public RoadmapController(RoadmapService roadmapService, SubjectService subjectService, CourseService courseService) {
+    @Autowired
+    public RoadmapController(RoadmapService roadmapService, SubjectService subjectService, CourseService courseService, UserService userService) {
         this.roadmapService = roadmapService;
         this.subjectService = subjectService;
         this.courseService = courseService;
+        this.userService = userService;
     }
 
     @GetMapping("/api/roadmap")
@@ -70,5 +77,15 @@ public class RoadmapController {
         ChapterDetail chapterDetail = courseService.getChapterDetail(chapterIdL, accountId);
         roadmapService.setCurChapterId(accountId, chapterIdL);
         return new ResponseEntity<>(new GetChapterDetailRes(chapterDetail), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/roadmap/{accountId}")
+    public ResponseEntity<?> deleteRoadMap(@RequestAttribute(value = "accountId") Long adminId, @PathVariable("accountId") Long targetAccountId){
+        if(!userService.getAccountById(adminId).getType().equals("Admin"))
+            return new CustomException(ExceptionType.NO_ADMIN_USER).getResponseEntity();
+
+        roadmapService.deleteRoadmapByAccountId(targetAccountId);
+        return new ResponseEntity<>(Map.of("success", true), HttpStatus.OK);
+
     }
 }
