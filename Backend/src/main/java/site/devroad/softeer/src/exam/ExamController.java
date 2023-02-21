@@ -47,13 +47,8 @@ public class ExamController {
 
     @PostMapping("/api/exam/assignment")
     public ResponseEntity<?> assignmentSubmit(@RequestAttribute Long accountId, @RequestBody PostAssignSubmitReq req) {
-
         examService.checkExamPurchased(accountId);
         examService.submitAssignment(accountId, req);
-        Thread backgroundThread = new Thread(() -> {
-
-        });
-        backgroundThread.start();
         return new ResponseEntity<>(Map.of("success", true), HttpStatus.CREATED);
     }
 
