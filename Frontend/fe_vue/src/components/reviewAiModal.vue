@@ -253,7 +253,6 @@ export default {
     display: inline-block;
     height: 200px;
     width: 33.3%;
-    float: left;
     position: relative;
     /*margin:0 -4px -5px -2px;*/
     transition: all .2s ease;

@@ -271,9 +271,4 @@ export default {
     transform: translateX(0);
   }
 }
-
-.roadmapGuide {
-  position: fixed;
-  left: 0;
-}
 </style>
