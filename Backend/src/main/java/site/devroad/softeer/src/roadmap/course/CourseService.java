@@ -57,9 +57,12 @@ public class CourseService {
             Optional<Chapter> chapterById = chapterRepo.findChapterById(chapterId);
             if (chapterById.isEmpty())
                 throw new CustomException(ExceptionType.CHAPTER_NOT_FOUND);
-            return new ChapterDetail(chapterById.get());
+            Course course = courseRepo.findCourseById(chapterById.get().getCourseId()).get();
+            return new ChapterDetail(chapterById.get(), course.getCourseName());
         }
-        return chapterDetailById.get();
+        ChapterDetail chapterDetail = chapterDetailById.get();
+        chapterDetail.setCourseName(courseRepo.findCourseById(chapterDetail.getCourseId()).get().getCourseName());
+        return chapterDetail;
     }
 
     public Boolean getCourseFinished(Long chapterId) {

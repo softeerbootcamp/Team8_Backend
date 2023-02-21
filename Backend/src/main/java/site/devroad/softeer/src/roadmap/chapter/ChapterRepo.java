@@ -32,6 +32,7 @@ public class ChapterRepo {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT \n" +
                             "c.course_id as course_id, \n"+
                             "c.id as chapter_id,\n" +
+                            "cs.course_name as course_name, \n"+
                             "c.title as title,\n" +
                             "c.chapter_url as chapter_url,\n" +
                             "c.thumbnail_url as thumbnail_url,\n" +
@@ -40,6 +41,8 @@ public class ChapterRepo {
                             "FROM Chapter c \n" +
                             "LEFT JOIN CompletedChapter cc\n" +
                             "ON c.id = cc.chapter_id\n" +
+                            "LEFT JOIN Course cs\n"+
+                            "ON c.course_id = cs.id\n"+
                             "WHERE c.id = ?\n" +
                             "AND cc.account_id = ?"
                     , chapterDetailRowMapper(), chapterId, accountId));
@@ -61,6 +64,7 @@ public class ChapterRepo {
         try {
             return jdbcTemplate.query("SELECT \n" +
                             "c.course_id as course_id, \n"+
+                            "cs.course_name as course_name, \n"+
                             "c.id as chapter_id,\n" +
                             "c.title as title,\n" +
                             "c.chapter_url as chapter_url,\n" +
@@ -70,6 +74,8 @@ public class ChapterRepo {
                             "FROM Chapter c \n" +
                             "LEFT JOIN CompletedChapter cc\n" +
                             "ON c.id = cc.chapter_id\n" +
+                            "LEFT JOIN Course cs\n"+
+                            "ON c.course_id = cs.id\n"+
                             "WHERE c.course_id = ?"
                     , chapterDetailRowMapper(), courseId);
         } catch (EmptyResultDataAccessException e) {
@@ -103,13 +109,14 @@ public class ChapterRepo {
         return (rs, rowNum) -> {
             Long courseId = rs.getLong("course_id");
             Long chapterId = rs.getLong("chapter_id");
+            String courseName = rs.getString("course_name");
             String title = rs.getString("title");
             String chapterUrl = rs.getString("chapter_url");
             String thumbnailUrl = rs.getString("thumbnail_url");
             String description = rs.getString("description");
             Long completed = rs.getLong("completed");
             boolean finish = !rs.wasNull();
-            return new ChapterDetail(courseId, chapterId, title, chapterUrl, thumbnailUrl, description, finish);
+            return new ChapterDetail(courseId, chapterId, courseName, title, chapterUrl, thumbnailUrl, description, finish);
         };
     }
 }
