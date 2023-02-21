@@ -133,7 +133,7 @@ public class ExamService {
             examSubmissionRepo.updateByExamIdAndAccountId(examId, accountId, submissionType);
         }
         else{
-            examSubmissionRepo.addExamSubmission(req.getExamId(), accountId, submissionType);
+            examSubmissionRepo.addMcqExamSubmission(req.getExamId(), accountId, submissionType);
         }
         return new PutExamDetailRes();
     }
