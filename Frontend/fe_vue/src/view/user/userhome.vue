@@ -1,41 +1,43 @@
 <template>
-  <div class="container mt-5" style="display:flex; width:40vw">
-    <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
-      <div class="col-md-3 col-sm-6" style="width:200px">
-        전체 진행도
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
-          angle: 90,
-          startColor: 'black',
-          stopColor: 'black'
-        }" style="width:13vw" />
-      </div>
-    </div>
-  </div>
-  <div class="container mt-5" style="display:flex; width:40vw">
-    <div class="row" style="display:flex;flex-direction:column;margin-right;:auto">
-      <div class="col-md-3 col-sm-6" style="width:200px">
-        강의 진행도
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
-          :gradient="{
+  <div class="container big userhome">
+    <div class="container mt-5" style="display:flex; width:40vw">
+      <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
+        <div class="col-md-3 col-sm-6" style="width:200px">
+          전체 진행도
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
             angle: 90,
             startColor: 'black',
             stopColor: 'black'
-          }
-          " />
+          }" style="width:13vw" />
+        </div>
       </div>
     </div>
-  </div>
-  <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted" style="text-decoration: none;">
-    <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" v-if="!roadMapShowClicked">
-      로드맵 시작하기!
-    </button>
-  </router-link>
-  <div v-if="isRoadmapStarted">
-    <button @click="routeByCurChapterPK" class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
+    <div class="container mt-5" style="display:flex; width:40vw">
+      <div class="row" style="display:flex;flex-direction:column;margin-right;:auto">
+        <div class="col-md-3 col-sm-6" style="width:200px">
+          강의 진행도
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
+            :gradient="{
+              angle: 90,
+              startColor: 'black',
+              stopColor: 'black'
+            }
+            " />
+        </div>
+      </div>
+    </div>
+    <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted" style="text-decoration: none;">
+      <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" v-if="!roadMapShowClicked">
+        로드맵 시작하기!
+      </button>
+    </router-link>
+    <div v-if="isRoadmapStarted">
+      <button @click="routeByCurChapterPK" class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
+    </div>
   </div>
 </template>
 <script>
@@ -137,4 +139,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.container.big.userhome {
+  background-color: wheat;
+  margin: auto;
+  width: 70vw;
+  height: 38vw !important;
+
+}
+</style>
