@@ -1,7 +1,8 @@
 <template>
   <nav class="navbar sticky-top">
     <div class="menu" v-if="!isAdmin">
-      <router-link to="/" class="mainLogo" style="color : #B01E68">DevRoad</router-link>
+      <router-link to="/" @click="$router.go(0)" class="mainLogo" style="color : #B01E68">DevRoad</router-link>
+
       <button class="btn" style="position:absolute;left:90%;" @click="demoOnOff">
         {{ DemoMode }}
         <demo-btn v-if="DemoOnOff"></demo-btn>
@@ -40,8 +41,9 @@
         <router-link :to="{ name: 'AdminUserView' }">전체 유저 관리</router-link>
       </a>
     </div>
+
   </nav>
-<!-- </div> --></template>
+</template>
 
 <script>
 import demoBtn from './demoBtn.vue';
@@ -84,7 +86,17 @@ export default {
 
 <style>
 .menu {
-  margin-left: auto;
+  border-top: 40px;
+  width: 70vw;
+  margin: 20px auto;
+
+
+}
+
+.menu:after {
+  content: "";
+  display: block;
+  border-bottom: 2px solid #B01E68;
 }
 
 .mainLogo {
