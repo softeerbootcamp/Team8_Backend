@@ -9,7 +9,7 @@ public class Chapter {
     private final String description;
     private final Integer sequence;
 
-    public Chapter(Long id, Long courseId, String title, String chapterUrl, String thumbnailUrl, String description, Integer sequence) {
+    public Chapter(Long id, Long courseId,  String title, String chapterUrl, String thumbnailUrl, String description, Integer sequence) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
