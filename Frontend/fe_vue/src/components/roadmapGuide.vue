@@ -1,10 +1,10 @@
 <template>
     <div class="container">
         <div class="roadmapGuide">
-            <div @click="guideOnClick" style="color:#B01E68; text-decoration: underline;">
+            <h5 @click="guideOnClick" style="color:#B01E68; text-decoration: underline;">
                 Roadmap Guide*
-            </div>
-            <div class="row row-cols-auto mt-2" v-if="guideOn">
+            </h5>
+            <div class="guiderow row row-cols-auto mt-2" v-if="guideOn">
                 <div class="col">
                     <button class="btn redbtn">
                         강의주제
@@ -61,10 +61,16 @@ export default {
           return 'btn btn-light btn-sm'; */
 .roadmapGuide {
     position: fixed;
-    left: 20%;
+    left: 20% !important;
     top: 12%;
     width: 20%;
 
+}
+
+.guiderow {
+    opacity: 0;
+    transform: translateX(-100px);
+    animation: fadeInAndMove 1s ease-out forwards;
 }
 
 .btn.redbtn {
@@ -87,8 +93,20 @@ export default {
 
 .btn.purchased {
     background-color: #5bc0de !important;
-    color: white !important;
+    color: black !important;
     margin-bottom: 5px;
+}
+
+@keyframes fadeInAndMove {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 </style>
   
