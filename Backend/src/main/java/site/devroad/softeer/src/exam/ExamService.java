@@ -112,7 +112,7 @@ public class ExamService {
     }
 
     public void submitAssignment(Long accountId, PostAssignSubmitReq req) {
-        examRepo.addExamSubmission(accountId, req.getExamId(), req.getUrl(), req.getDescription());
+        examSubmissionRepo.addFrqExamSubmission(accountId, req.getExamId(), req.getUrl(), req.getDescription());
     }
 
     public void makePurchasedByTossOrderId(String orderId) {
