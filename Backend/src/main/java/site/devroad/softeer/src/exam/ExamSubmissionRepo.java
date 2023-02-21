@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.exam.model.ExamSubmission;
 import site.devroad.softeer.src.exam.model.SubmissionType;
 
@@ -81,10 +82,16 @@ public class ExamSubmissionRepo {
         };
     }
 
-    public void addExamSubmission(Long examId, Long accountId, SubmissionType submissionType) {
+    public void addMcqExamSubmission(Long examId, Long accountId, SubmissionType submissionType) {
         jdbcTemplate.update(
                 "insert into ExamSubmission (exam_id, account_id, is_passed, url) values (?,?,?,?);",
                 examId, accountId, submissionType.getIs_passed(), ""
         );
+    }
+
+    public void addFrqExamSubmission(Long accountId, Long examId, String url, String description) throws CustomException {
+        jdbcTemplate.update("insert into ExamSubmission(account_id, exam_id, url, is_passed, description) " +
+                "values(?, ?, ?, 4, ?)", accountId, examId, url, description);
+
     }
 }

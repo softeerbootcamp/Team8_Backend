@@ -112,7 +112,7 @@ public class ExamService {
     }
 
     public void submitAssignment(Long accountId, PostAssignSubmitReq req) {
-        examRepo.addExamSubmission(accountId, req.getExamId(), req.getUrl(), req.getDescription());
+        examSubmissionRepo.addFrqExamSubmission(accountId, req.getExamId(), req.getUrl(), req.getDescription());
     }
 
     public void makePurchasedByTossOrderId(String orderId) {
@@ -133,7 +133,7 @@ public class ExamService {
             examSubmissionRepo.updateByExamIdAndAccountId(examId, accountId, submissionType);
         }
         else{
-            examSubmissionRepo.addExamSubmission(req.getExamId(), accountId, submissionType);
+            examSubmissionRepo.addMcqExamSubmission(req.getExamId(), accountId, submissionType);
         }
         return new PutExamDetailRes();
     }
