@@ -54,7 +54,7 @@ export default {
 .login-form-container {
     justify-content: center;
     position: relative;
-    margin-top: 30%;
+    margin-top: 23%;
     animation: fadeIn 1s ease forwards;
 }
 

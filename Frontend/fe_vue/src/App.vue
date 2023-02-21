@@ -20,7 +20,7 @@ export default {
   height: 100vh;
   overflow: hidden;
   margin: 0;
-  background: linear-gradient(to bottom, #FFE15D, #ff7f50, #ff6b6b);
+  background: linear-gradient(to bottom, #FFE15D, #ff7f50);
 
 }
 
