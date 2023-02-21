@@ -145,6 +145,8 @@ export default {
   margin: auto;
   width: 70vw;
   height: 38vw !important;
+  border-radius: 40px 40px;
+
 
 }
 </style>

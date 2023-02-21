@@ -65,6 +65,8 @@ export default {
   margin: auto;
   width: 70vw;
   height: 80% !important;
+  border-radius: 40px 40px;
+
 
 }
 </style>

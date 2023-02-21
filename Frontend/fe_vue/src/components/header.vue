@@ -1,12 +1,13 @@
 <template>
   <nav class="navbar sticky-top">
+    <button class="btn" style="position:absolute;left:90%;" @click="demoOnOff">
+      {{ DemoMode }}
+      <demo-btn v-if="DemoOnOff"></demo-btn>
+    </button>
     <div class="menu" v-if="!isAdmin">
-      <router-link to="/" @click="$router.go(0)" class="mainLogo" style="color : #B01E68">DevRoad</router-link>
+      <router-link to="/" class="mainLogo" style="color : #B01E68">DevRoad</router-link>
 
-      <button class="btn" style="position:absolute;left:90%;" @click="demoOnOff">
-        {{ DemoMode }}
-        <demo-btn v-if="DemoOnOff"></demo-btn>
-      </button>
+
       <a v-if="!isLogin">
         <router-link :to="{ name: 'SignUp' }" style="color : #B01E68;"><i class="bi bi-box-arrow-in-right"></i>
         </router-link>
@@ -30,15 +31,24 @@
         </router-link>
       </a>
     </div>
-    <div class="menu" v-if="isAdmin" style="position:absolute;left:90%;">
+    <div class="menu" v-if="isAdmin">
+      <router-link to="/" @click="$router.go(0)" class="mainLogo" style="color : #B01E68">DevRoad</router-link>
+
       <a v-if="isLogin">
-        <router-link :to="{ name: 'Home' }" @click="logout">로그아웃</router-link>
+        <router-link :to="{ name: 'Home' }" @click="logout">
+          <i class="bi bi-person-slash" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
       </a>
       <a v-if="isLogin">
-        <router-link :to="{ name: 'AdminHome' }">로드맵 작성 관리</router-link>
+        <router-link :to="{ name: 'AdminHome' }">
+          <i class="bi bi-signpost-split" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
+
       </a>
       <a v-if="isLogin">
-        <router-link :to="{ name: 'AdminUserView' }">전체 유저 관리</router-link>
+        <router-link :to="{ name: 'AdminUserView' }">
+          <i class="bi bi-people-fill" style="color : #B01E68;font-size: 26px;"></i>
+        </router-link>
       </a>
     </div>
 
@@ -89,8 +99,6 @@ export default {
   border-top: 40px;
   width: 70vw;
   margin: 20px auto;
-
-
 }
 
 .menu:after {

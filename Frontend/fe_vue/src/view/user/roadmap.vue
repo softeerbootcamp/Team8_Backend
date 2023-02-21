@@ -210,6 +210,8 @@ export default {
   width: 70vw;
   margin: auto;
   height: 80% !important;
+  border-radius: 40px 40px;
+
 }
 
 .roadmapBody {
