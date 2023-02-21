@@ -8,8 +8,8 @@
         <div class="col-md-3 col-sm-6">
           <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
             angle: 90,
-            startColor: 'black',
-            stopColor: 'black'
+            startColor: '#B01E68',
+            stopColor: '#B01E68'
           }" style="width:13vw" />
         </div>
       </div>
@@ -23,20 +23,20 @@
           <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
             :gradient="{
               angle: 90,
-              startColor: 'black',
-              stopColor: 'black'
+              startColor: '#B01E68',
+              stopColor: '#B01E68'
             }
             " />
         </div>
       </div>
     </div>
     <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted" style="text-decoration: none;">
-      <button class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" v-if="!roadMapShowClicked">
+      <button class="btn a d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" v-if="!roadMapShowClicked">
         로드맵 시작하기!
       </button>
     </router-link>
     <div v-if="isRoadmapStarted">
-      <button @click="routeByCurChapterPK" class="btn btn-dark d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
+      <button @click="routeByCurChapterPK" class="btn a d-grid gap-2 col-2 mx-auto mt-4">로드맵 이어하기!</button>
     </div>
   </div>
 </template>
@@ -145,6 +145,8 @@ export default {
   margin: auto;
   width: 70vw;
   height: 38vw !important;
+  border-radius: 40px 40px;
+
 
 }
 </style>
