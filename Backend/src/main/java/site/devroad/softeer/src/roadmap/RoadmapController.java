@@ -9,7 +9,6 @@ import site.devroad.softeer.exceptions.ExceptionType;
 import site.devroad.softeer.src.roadmap.course.CourseService;
 import site.devroad.softeer.src.roadmap.dto.*;
 import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
-import site.devroad.softeer.src.roadmap.dto.domain.CourseDetail;
 import site.devroad.softeer.src.roadmap.subject.Subject;
 import site.devroad.softeer.src.roadmap.subject.SubjectService;
 import site.devroad.softeer.src.user.UserService;
@@ -57,12 +56,10 @@ public class RoadmapController {
     }
 
     @PutMapping("/api/chapter/{chapterId}")
-    public ResponseEntity<?> finishChapter(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("chapterId") String chapterId) {
-        Long chapterIdL = Long.valueOf(chapterId);
-        Long nextChapterId = courseService.getNextChapterId(accountId, chapterIdL);
-        roadmapService.setCurChapterId(accountId, nextChapterId);
-        Boolean courseFinished = nextChapterId.equals(-1L);
-        return new ResponseEntity<>(new PutChapterFinishRes(courseFinished, nextChapterId), HttpStatus.ACCEPTED);
+    public ResponseEntity<?> finishChapter(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("chapterId") Long chapterId) {
+        PutChapterFinishRes putChapterFinishRes = courseService.putFinishChapter(accountId, chapterId);
+        roadmapService.setCurChapterId(accountId, putChapterFinishRes.getNextChapterId());
+        return new ResponseEntity<>(putChapterFinishRes, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/api/roadmap")
@@ -72,16 +69,15 @@ public class RoadmapController {
     }
 
     @GetMapping("/api/chapter/{chapterId}")
-    public ResponseEntity<?> getChapterDetail(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("chapterId") String chapterId) {
-        Long chapterIdL = Long.valueOf(chapterId);
-        ChapterDetail chapterDetail = courseService.getChapterDetail(chapterIdL, accountId);
-        roadmapService.setCurChapterId(accountId, chapterIdL);
+    public ResponseEntity<?> getChapterDetail(@RequestAttribute(value = "accountId") Long accountId, @PathVariable("chapterId") Long chapterId) {
+        ChapterDetail chapterDetail = courseService.getChapterDetail(chapterId, accountId);
+        roadmapService.setCurChapterId(accountId, chapterId);
         return new ResponseEntity<>(new GetChapterDetailRes(chapterDetail), HttpStatus.OK);
     }
 
     @DeleteMapping("/api/roadmap/{accountId}")
-    public ResponseEntity<?> deleteRoadMap(@RequestAttribute(value = "accountId") Long adminId, @PathVariable("accountId") Long targetAccountId){
-        if(!userService.getAccountById(adminId).getType().equals("Admin"))
+    public ResponseEntity<?> deleteRoadMap(@RequestAttribute(value = "accountId") Long adminId, @PathVariable("accountId") Long targetAccountId) {
+        if (!userService.getAccountById(adminId).getType().equals("Admin"))
             return new CustomException(ExceptionType.NO_ADMIN_USER).getResponseEntity();
 
         roadmapService.deleteRoadmapByAccountId(targetAccountId);
