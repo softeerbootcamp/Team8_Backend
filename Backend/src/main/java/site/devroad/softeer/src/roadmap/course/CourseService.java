@@ -70,7 +70,7 @@ public class CourseService {
         Chapter chapter = getChapter(chapterId);
         Long courseId = chapter.getCourseId();
         int chapterCountByCourseId = getChapterCountByCourseId(courseId);
-        int completedChapterCnt = completedChapterRepo.readCompletedChapters(accountId, chapterId).size();
+        int completedChapterCnt = completedChapterRepo.readCompletedChapters(accountId, courseId).size();
         return completedChapterCnt == chapterCountByCourseId;
     }
 
