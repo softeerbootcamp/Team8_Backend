@@ -1,43 +1,31 @@
 <template>
-  <!-- style="display:flex; margin-right:auto" -->
-  <div>
-    <div class="container mt-5" style="display:flex; width:40vw">
-      <div>
-        지금 듣고 계시는 강의는<br>
-        <img src="../assets/images/spring.svg" style="width:10vw" />
+  <div class="container mt-5" style="display:flex; width:40vw">
+    <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
+      <div class="col-md-3 col-sm-6" style="width:200px">
+        전체 진행도
       </div>
-      <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
-        <div class="col-md-3 col-sm-6" style="width:200px">
-          전체 진행도
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
+      <div class="col-md-3 col-sm-6">
+        <circle-progress :show-percent="true" :percent="subjectPercentage" :is-gradient="true" :gradient="{
+          angle: 90,
+          startColor: 'black',
+          stopColor: 'black'
+        }" style="width:13vw" />
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5" style="display:flex; width:40vw">
+    <div class="row" style="display:flex;flex-direction:column;margin-right;:auto">
+      <div class="col-md-3 col-sm-6" style="width:200px">
+        강의 진행도
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
+          :gradient="{
             angle: 90,
             startColor: 'black',
             stopColor: 'black'
-          
-          }" style="width:13vw" />
-        </div>
-      </div>
-    </div>
-    <div class="container mt-5" style="display:flex; width:40vw">
-      <div class="row" style="display:flex;flex-direction:column;margin-right;:auto">
-        <div class="col-md-3 col-sm-6" style="width:200px">
-          강의 진행도
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <circle-progress style="width:13vw" :show-percent="true" :percent="roadmapPercentage" :is-gradient="true"
-            :gradient="{
-              angle: 90,
-              startColor: 'black',
-              stopColor: 'black'
-            }
-            " />
-        </div>
-      </div>
-      <div style="margin-left: auto;">
-        이다음 들어야 할 강의는<br>
-        <img src="../assets/images/tensorflow.svg" style="width:10vw;" />
+          }
+          " />
       </div>
     </div>
   </div>
@@ -56,7 +44,10 @@ import CircleProgress from "vue3-circle-progress";
 import { userData } from '@/api'
 
 export default {
-  components: { CircleProgress },
+  components: {
+    CircleProgress,
+
+  },
 
   name: "UserHome",
   data() {
@@ -146,6 +137,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

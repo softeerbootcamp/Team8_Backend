@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex justify-content-center align-items-center" style="height: 80vh;overflow-y: scroll;">
         <div class="card text-center" style="width: 500px;">
-            <div class="card-header bg-primary text-white">{{ subjectName }} 시험지</div>
+            <div class="card-header bg-dark text-white">{{ subjectName }} 시험지</div>
             <div class="card-body">
                 <p class="card-title">{{ name }}</p>
                 <hr>
@@ -18,8 +18,8 @@
                         <div class="form-check">
                             <template v-for="(choice, choiceIndex) in question.choices" :key="choice">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" :value="choiceIndex"
-                                        v-model="myAns[index]" :id="`q${index}-choice${choiceIndex}`">
+                                    <input class="form-check-input" type="radio" :value="choiceIndex" v-model="myAns[index]"
+                                        :id="`q${index}-choice${choiceIndex}`">
                                     <label class="form-check-label" :for="`q${index}-choice${choiceIndex}`">{{
                                         choice
                                     }}</label>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <router-link :to="{name : 'RoadMap'}">
+                    <router-link :to="{ name: 'RoadMap' }">
                         <button type="submit" @click="onSubmit" class="btn btn-primary mt-2">제출하기</button>
                     </router-link>
                 </div>
@@ -133,6 +133,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

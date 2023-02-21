@@ -1,13 +1,13 @@
 <template>
-    <div>
+    <div style="height: 80vh;overflow-y: scroll;">
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">이름</th>
                     <th scope="col">Email</th>
-                    <th scope="col">로드맵 관리</th>
-                    <th scope="col">코드 관리</th>
+                    <th scope="col">로드맵 삭제</th>
+                    <!-- <th scope="col">코드 관리</th> -->
 
                 </tr>
             </thead>
@@ -18,16 +18,16 @@
                     <td>{{ user.email }}</td>
                     <td>
                         <!-- <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;"> -->
-                        <button class="btn btn-dark">
-                            로드맵 관리
+                        <button class="btn btn-dark" @click="deleteRoadmap(user.id)">
+                            로드맵 삭제
                         </button>
                         <!-- </router-link> -->
                     </td>
                     <td>
                         <!-- <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;"> -->
-                        <button class="btn btn-dark">
+                        <!-- <button class="btn btn-dark">
                             코드 관리
-                        </button>
+                        </button> -->
                         <!-- </router-link> -->
                     </td>
                 </tr>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { adminUser } from '@/api'
+import { adminUser, deleteRoadmapData } from '@/api'
 export default {
     name: "AdminUserView",
     data() {
@@ -66,13 +66,28 @@ export default {
                     console.log(error);
                 });
 
+        },
+        async deleteRoadmap(accountId) {
+            const config = {
+                headers: {
+                    jwt: this.$store.state.jwt
+                }
+            };
+            await deleteRoadmapData(config, accountId)
+                .then((response) => {
+                    this.success = response.data.success;
+                    this.$router.push('/adminuserview');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
         }
+
     }
 
 
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

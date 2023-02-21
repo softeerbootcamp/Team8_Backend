@@ -38,9 +38,19 @@
 - 노현욱(FullStack) : [#rohsik2](https://github.com/rohsik2)
 
 # 기능 소개
-설문조사를 통해서 자신에게 맞는 개발자 로드맵을 받아보세요.
 
-과제를 제출하고, 전문가 리뷰를 받아보세요! 피어리뷰를 해주신다면 피어리뷰를 받으실 수 있어요.
+맞춤형으로 추천된 로드맵을 학습하세요!
+
+
+<img width=480px src = "https://user-images.githubusercontent.com/37894908/220059486-ca56700a-6cf2-435c-b57d-2f1fa73820b2.gif">
+
+구독을 통해 로드맵 맞춤형 과제를 받아보세요!
+
+<img width=480px src = "https://user-images.githubusercontent.com/37894908/220059552-3392b7e4-81be-466c-8702-fba05ab19273.gif">
+
+
+과제를 제출하고, AI 리뷰를 받아보세요! 피어리뷰를 해주신다면 피어리뷰를 받으실 수 있어요.
+
 
 개발자가 되기위해 성장하는길 DevRoad가 함께 합니다.
 
@@ -50,8 +60,7 @@ DevRoad 는 관리자 기능또한 제공합니다.
 
 
 # 프로젝트 구조
-
-![ProjectDiagram (1)](https://user-images.githubusercontent.com/37894908/217138941-c24909fd-a859-4414-b74a-ea2bbc3cbe61.jpg)
+![ProjectDiagram-페이지-1](https://user-images.githubusercontent.com/37894908/220061631-111ae0db-b972-4b24-97a9-8df71bceab2f.jpg)
 
 
 프로젝트의 큰 구조는 위와 같습니다. 각각 fork 한 본인의 repository에서 작업이후 dev branch에 담아서 pull request를 진행하고 있습니다.

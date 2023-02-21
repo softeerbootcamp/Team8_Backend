@@ -6,7 +6,16 @@
           style="text-decoration: none; color: black;">
           <div class="card text-center mb-4">
             <div class="card-body">
-              <h5 class="card-title">{{ chapter.chapterName }}</h5>
+              <h5 class="card-title">
+                <div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" :checked="chapter.finish" value=""
+                      id="flexCheckDefault">
+                    {{ chapter.chapterName }}
+
+                  </div>
+                </div>
+              </h5>
               <p class="card-text">{{ chapter.description }}</p>
             </div>
           </div>
@@ -28,6 +37,7 @@ export default {
       curCourseId: "",
       chapters: [],
       curChapterId: "",
+      isChecked: false,
       /* chapters
          "chapterName" : "자료형", 
          "chapterId" : 10011, 

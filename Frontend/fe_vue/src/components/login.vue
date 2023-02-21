@@ -29,7 +29,7 @@ import { signinUser } from "@/api";
 import jwt_decode from "jwt-decode";
 
 export default {
-  name: "Login",
+  name: "login",
   data() {
     return {
       formData: {
@@ -78,7 +78,6 @@ export default {
 
             } else {
               this.$router.push({ name: "UserHome" });
-
             }
           } else {
             this.isLoginFailed = true;
