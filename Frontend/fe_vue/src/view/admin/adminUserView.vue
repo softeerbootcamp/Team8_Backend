@@ -1,7 +1,6 @@
 <template>
     <div class="container adminuserview">
-        <table class="table table-hover" style="color : #B01E68;
-                            border-color: #B01E68;">
+        <table class="table table-hover" style="color : #B01E68;border-color: #B01E68;">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -19,7 +18,10 @@
                     <td>{{ user.email }}</td>
                     <td>
                         <!-- <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;"> -->
-                        <button class="btn a" @click="deleteRoadmap(user.id)">
+                        <button class="btn a" v-if="!isRoadmapExists(user)" disabled>
+                            로드맵 없음
+                        </button>
+                        <button v-else class="btn a" @click="deleteRoadmap(user.id)">
                             로드맵 삭제
                         </button>
                         <!-- </router-link> -->
@@ -51,6 +53,11 @@ export default {
         this.getAllUserDataForAdmin();
     },
     methods: {
+        isRoadmapExists(user) {
+            if (user.roadmapId == "0") {
+                return false
+            } else return true;
+        },
         async getAllUserDataForAdmin() {
             const config = {
                 headers: {
