@@ -1,21 +1,30 @@
 <template>
-    <div class="d-flex justify-content-center mt-4">
-
-        <iframe :src="chapterUrl" title="YouTube video player" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" width="560"
-            height="315" allowfullscreen style="width:100vh; height: 50vh;" />
-    </div>
-    <div class="d-flex justify-content-center mt-4">
-        <button class="btn btn-dark" @click="finishChapter" onmouseover="this.innerHTML='다음 강의로';"
-            onmouseout="this.innerHTML='수강완료';" style="margin-right:10px !important">수강완료</button>
-        <button class="btn btn-dark"
-            @click="$router.push({ name: 'ChapterView', params: { courseId: courseId } })">뒤로가기</button>
+    <div class="container chapterFrame">
+        <div class="container wrapper">
+            <div class="myframe d-flex justify-content-center">
+                <iframe :src="chapterUrl" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    width="560" height="315" allowfullscreen
+                    style="width:100vh; height: 50vh; margin-top: 40px;!important" />
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <button class="btn btn-dark" @click="finishChapter" onmouseover="this.innerHTML='다음 강의로';"
+                    onmouseout="this.innerHTML='수강완료';" style="margin-right:10px !important">수강완료</button>
+                <button class="btn btn-dark"
+                    @click="$router.push({ name: 'ChapterView', params: { courseId: courseId } })">뒤로가기</button>
+            </div>
+        </div>
+        <lastChapterAlertModalVue v-if="showlastChapterAlertModalVue" @close="closeModal"></lastChapterAlertModalVue>
     </div>
 </template>
 <script>
 import { getChapterDetailData, putFinishChapter } from '@/api';
+import lastChapterAlertModalVue from '@/components/lastChapterAlertModal.vue';
 export default {
     name: 'ChapterFrame',
+    components: {
+        lastChapterAlertModalVue
+    },
     data: () => ({
         myIframe: null,
         baseUrl: "https://youtube.com/embed/",
@@ -27,12 +36,23 @@ export default {
         finish: true,
         nextChapterId: "",
         courseId: "",
+        showlastChapterAlertModalVue: false,
 
     }),
     mounted() {
         this.getChapterDetail(this.$route.params.chapterId);
     },
     methods: {
+        openModal() {
+            this.showlastChapterAlertModalVue = true
+        },
+        closeModal() {
+            this.showlastChapterAlertModalVue = false
+            this.redirectWhenModalClosed();
+        },
+        redirectWhenModalClosed() {
+            this.$router.push('/roadmap');
+        },
         async finishChapter() {
             const config = {
                 headers: {
@@ -42,10 +62,13 @@ export default {
             await putFinishChapter(config, this.chapterId)
                 .then((response) => {
                     if (response.data.success) {
-                        //                     "nextChapterId" : "10014",
-                        // "isCourseFinished" : "false"
                         this.nextChapterId = response.data.nextChapterId;
-                        this.getChapterDetail(this.nextChapterId);
+                        if (this.nextChapterId == "-1") {
+                            console.log("마지막강의입니다!")
+                            this.openModal();
+                        } else {
+                            this.getChapterDetail(this.nextChapterId);
+                        }
 
                     }
                 })
@@ -93,4 +116,19 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.container.chapterFrame {
+    background-color: wheat;
+    margin: auto;
+    width: 70vw;
+    height: 80% !important;
+
+}
+
+.container.wrapper {
+    background-color: wheat;
+    width: 70vw;
+    height: 80% !important;
+
+}
+</style>
