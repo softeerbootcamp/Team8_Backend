@@ -14,7 +14,7 @@
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ user }}</td>
                     <td>
-                        <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;">
+                        <router-link :to="{name : 'RoadMapFactory', params : {userEmail : user}}" style="text-decoration: none; color:black;">
                             <button class="btn a">
                                 유저 로드맵 작성하기
                             </button>
