@@ -8,6 +8,7 @@ import site.devroad.softeer.src.roadmap.chapter.Chapter;
 import site.devroad.softeer.src.roadmap.chapter.ChapterRepo;
 import site.devroad.softeer.src.roadmap.completedchapter.CompletedChapter;
 import site.devroad.softeer.src.roadmap.completedchapter.CompletedChapterRepo;
+import site.devroad.softeer.src.roadmap.dto.PutChapterFinishRes;
 import site.devroad.softeer.src.roadmap.dto.domain.ChapterDetail;
 
 import java.util.List;
@@ -19,13 +20,13 @@ public class CourseService {
     private final RoadmapRepo roadmapRepo;
     private final ChapterRepo chapterRepo;
     private final CourseRepo courseRepo;
-    private final CompletedChapterRepo completedChapter;
+    private final CompletedChapterRepo completedChapterRepo;
 
-    public CourseService(RoadmapRepo roadmapRepo, ChapterRepo chapterRepo, CourseRepo courseRepo, CompletedChapterRepo completedChapter) {
+    public CourseService(RoadmapRepo roadmapRepo, ChapterRepo chapterRepo, CourseRepo courseRepo, CompletedChapterRepo completedChapterRepo) {
         this.roadmapRepo = roadmapRepo;
         this.chapterRepo = chapterRepo;
         this.courseRepo = courseRepo;
-        this.completedChapter = completedChapter;
+        this.completedChapterRepo = completedChapterRepo;
     }
 
     public List<ChapterDetail> getChapterDetails(Long courseId) {
@@ -65,22 +66,31 @@ public class CourseService {
         return chapterDetail;
     }
 
-    public Boolean getCourseFinished(Long chapterId) {
-        Optional<Chapter> nextChapter = getNextChapter(chapterId);
-        return nextChapter.isEmpty();
+    public Boolean getCourseFinished(Long accountId, Long chapterId) {
+        Chapter chapter = getChapter(chapterId);
+        Long courseId = chapter.getCourseId();
+        int chapterCountByCourseId = getChapterCountByCourseId(courseId);
+        int completedChapterCnt = completedChapterRepo.readCompletedChapters(accountId, courseId).size();
+        return completedChapterCnt == chapterCountByCourseId;
     }
 
-    public Long getNextChapterId(Long accountId, Long chapterId) {
+    public PutChapterFinishRes putFinishChapter(Long accountId, Long chapterId) {
+        //chapterId로 다음 챕터를 갖옴
         Optional<Chapter> nextChapter = getNextChapter(chapterId);
-        //completed chapter db에 chapter 넣어줌
-        Optional<CompletedChapter> completedChapterOptional = completedChapter.readCompletedChapter(accountId, chapterId);
-        if (completedChapterOptional.isPresent() && nextChapter.isPresent())
-            return nextChapter.get().getId();
-        completedChapter.createCompletedChapter(accountId, chapterId);
-        if (nextChapter.isPresent()) {
-            return nextChapter.get().getId();
+        //chapter를 다 들었는지 확인
+        Boolean courseFinished = getCourseFinished(accountId, chapterId);
+        //completed chapter에 해당하는 chapter가 있는지 확인하고 있따면 그냥 다음 챕터를 리턴함
+        Optional<CompletedChapter> completedChapterOptional = completedChapterRepo.readCompletedChapter(accountId, chapterId);
+        if (completedChapterOptional.isPresent()) {
+            if (nextChapter.isPresent())
+                return new PutChapterFinishRes(courseFinished, nextChapter.get().getId());
+            return new PutChapterFinishRes(courseFinished, FINISHED);
         }
-        return FINISHED;
+        completedChapterRepo.createCompletedChapter(accountId, chapterId);
+        if (nextChapter.isPresent()) {
+            return new PutChapterFinishRes(courseFinished, nextChapter.get().getId());
+        }
+        return new PutChapterFinishRes(courseFinished, FINISHED);
     }
 
     public int getChapterCountByCourseId(Long courseId) {

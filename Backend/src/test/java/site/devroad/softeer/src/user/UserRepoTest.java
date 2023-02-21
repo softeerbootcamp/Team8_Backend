@@ -1,10 +1,10 @@
 package site.devroad.softeer.src.user;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.test.context.jdbc.Sql;
 
-@SpringBootTest
+@JdbcTest
+@Sql("classpath:create")
 class UserRepoTest {
 
 }
