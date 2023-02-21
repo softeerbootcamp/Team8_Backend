@@ -5,12 +5,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import site.devroad.softeer.exceptions.CustomException;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
 import site.devroad.softeer.src.exam.model.Exam;
 import site.devroad.softeer.src.exam.model.ExamMcq;
-import site.devroad.softeer.src.exam.model.ExamSubmission;
-import site.devroad.softeer.src.exam.model.SubmissionType;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
@@ -76,33 +73,6 @@ public class ExamRepo {
                 "JOIN Exam e ON e.id = mcq.exam_id \n" +
                 "WHERE mcq.exam_id = ? \n" +
                 "ORDER BY mcq.`sequence` ", examMcqRowMapper(), examId);
-    }
-
-    public void delete(Long examId) {
-        jdbcTemplate.update("delete * from Exam where id = ?", examId);
-    }
-
-
-    public void subscribeExam(Long accountId, Long examId) throws CustomException {
-        jdbcTemplate.update("insert into PurchasedExam(account_id, exam_id) values(?, ?)", accountId, examId);
-    }
-
-    public void addExamSubmission(Long accountId, Long examId, String url, String description) throws CustomException {
-        jdbcTemplate.update("insert into ExamSubmission(account_id, exam_id, url, is_passed, description) " +
-                "values(?, ?, ?, 3, ?)", accountId, examId, url, description);
-
-    }
-
-    RowMapper<ExamSubmission> examSubmissionRowMapper() {
-        return (rs, rowNum) -> {
-            Long id = rs.getLong("id");
-            Long accountId = rs.getLong("account_id");
-            Long examId = rs.getLong("test_id");
-            String url = rs.getString("url");
-            SubmissionType submissionType = SubmissionType.getType(rs.getInt("is_passed"));
-            String explain = rs.getString("description");
-            return new ExamSubmission(id, accountId, examId, url, submissionType, explain);
-        };
     }
 
     RowMapper<Exam> examRowMapper() {
