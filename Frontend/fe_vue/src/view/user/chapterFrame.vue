@@ -57,7 +57,7 @@ export default {
             const config = {
                 headers: {
                     jwt: this.$store.state.jwt
-                }
+                },
             };
             await putFinishChapter(config, this.chapterId)
                 .then((response) => {
