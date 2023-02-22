@@ -12,7 +12,7 @@
             <form @submit.prevent="onSubmit">
                 <div v-for="(question, index) in questions" :key="index">
                     <div class="card-body">
-                        <h5 class="card-title">{{ question.title }}!</h5>
+                        <h5 class="card-title">{{ question.title }}</h5>
                         <p class="card-text">{{ question.content }}</p>
                         <div class="form-check">
                             <template v-for="(choice, choiceIndex) in question.choices" :key="choice">
