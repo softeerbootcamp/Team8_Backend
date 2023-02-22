@@ -18,7 +18,7 @@
                     <td>{{ user.email }}</td>
                     <td>
                         <!-- <router-link :to="'/roadmapFactory/' + user" style="text-decoration: none; color:black;"> -->
-                        <button class="btn a" v-if="!isRoadmapExists(user)" disabled>
+                        <button class="btn btn-secondary" v-if="!isRoadmapExists(user)" disabled>
                             로드맵 없음
                         </button>
                         <button v-else class="btn a" @click="deleteRoadmap(user.id)">
@@ -84,7 +84,7 @@ export default {
             await deleteRoadmapData(config, accountId)
                 .then((response) => {
                     this.success = response.data.success;
-                    this.$router.push('/adminuserview');
+                    location.reload();
                 })
                 .catch(function (error) {
                     console.log(error);
