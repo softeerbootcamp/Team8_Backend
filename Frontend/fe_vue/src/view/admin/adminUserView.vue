@@ -105,6 +105,9 @@ export default {
     width: 70vw !important;
     height: 80% !important;
     overflow-y: scroll;
-    border-radius: 40px 40px;
+}
+
+.container.adminuserview::-webkit-scrollbar {
+    display: none;
 }
 </style>

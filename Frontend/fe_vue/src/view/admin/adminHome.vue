@@ -1,7 +1,7 @@
 <template>
     <div class="container adminhome">
         <table class="table table-hover" style="color : #B01E68;
-                    border-color: #B01E68;">
+                                border-color: #B01E68;">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -14,7 +14,8 @@
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ user }}</td>
                     <td>
-                        <router-link :to="{name : 'RoadMapFactory', params : {userEmail : user}}" style="text-decoration: none; color:black;">
+                        <router-link :to="{ name: 'RoadMapFactory', params: { userEmail: user } }"
+                            style="text-decoration: none; color:black;">
                             <button class="btn a">
                                 유저 로드맵 작성하기
                             </button>
@@ -63,7 +64,10 @@ export default {
     width: 70vw !important;
     height: 80% !important;
     overflow-y: scroll;
-    border-radius: 40px 40px;
+}
+
+.container.adminhome::-webkit-scrollbar {
+    display: none;
 }
 
 .btn.a {
