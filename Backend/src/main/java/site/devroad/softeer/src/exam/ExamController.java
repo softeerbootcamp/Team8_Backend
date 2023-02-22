@@ -12,6 +12,7 @@ import site.devroad.softeer.src.exam.dto.GetExamDetailRes;
 import site.devroad.softeer.src.exam.dto.PostAssignSubmitReq;
 import site.devroad.softeer.src.exam.dto.PutExamDetailReq;
 import site.devroad.softeer.src.exam.dto.domain.ExamDetail;
+import site.devroad.softeer.src.exam.model.ExamSubmission;
 import site.devroad.softeer.src.roadmap.RoadmapService;
 import site.devroad.softeer.src.user.UserService;
 import site.devroad.softeer.utility.JwtUtility;
@@ -80,20 +81,22 @@ public class ExamController {
     }
 
 
-    @PostMapping("/api/exam/ai/{examSubmissionId}")
-    public ResponseEntity<?> doSubmissionAI(@PathVariable("examSubmissionId") Long examSubmissionId){
+    @PostMapping("/api/exam/ai/{examId}")
+    public ResponseEntity<?> doSubmissionAI(@RequestAttribute Long accountId, @PathVariable("examId") Long examId){
+        ExamSubmission submission = examService.getSubmissionByExamIdAndAccountId(examId, accountId);
         Thread runnable = new Thread(
                 ()->{
-                    examService.doAiReview(examSubmissionId);
+                    examService.doAiReview(submission.getId());
                 }
         );
         runnable.run();
         return new ResponseEntity<>(Map.of("success", true), HttpStatus.OK);
     }
 
-    @GetMapping("/api/exam/ai/{examSubmissionId}")
-    public ResponseEntity<?> isAIReviewFinish(@PathVariable("examSubmissionId") Long examSubmissionId){
-        String url = examService.getAssignmentDetail(examSubmissionId).getAssignment().getUrl();
+    @GetMapping("/api/exam/ai/{examId}")
+    public ResponseEntity<?> isAIReviewFinish(@RequestAttribute Long accountId, @PathVariable("examId") Long examId){
+        ExamSubmission submission = examService.getSubmissionByExamIdAndAccountId(examId, accountId);
+        String url = examService.getAssignmentDetail(submission.getId()).getAssignment().getUrl();
         if(url.contains("/issues/"))
             return new ResponseEntity<>(Map.of("success", true, "issueUrl", url), HttpStatus.OK);
         if(!url.contains("github"))
