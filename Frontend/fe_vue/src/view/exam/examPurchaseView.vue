@@ -47,7 +47,7 @@ export default {
       // 필요하면 백엔드에서 jwt, examId로 다 가져올수 있도록 제공가능함.
       console.log("account id : " + this.$store.state.accountId);
       console.log("examId : " + this.$route.params.examId);
-      tossPayment.requestPayment('카드', this.sendOrderToToss(this.$store.state.accountId, this.$route.params.examId, 16000));
+      tossPayment.requestPayment('카드', this.sendOrderToToss(this.$store.state.accountId, this.$route.params.examId, 1500));
     }
 
   }
