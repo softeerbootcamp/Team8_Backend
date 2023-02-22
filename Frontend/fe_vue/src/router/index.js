@@ -15,6 +15,7 @@ import UserPendingView from "@/view/user/userPendingView";
 import McqExamView from "@/view/exam/mcqExamView";
 import ChapterFrame from "@/view/user/chapterFrame";
 import Store from "@/store";
+import SurveyForm from "@/view/user/surveyForm";
 
 const routes = [
   {
@@ -97,6 +98,11 @@ const routes = [
     name: "ExamPurchaseView",
     component: ExamPurchaseView,
   },
+  {
+    path: "/survey",
+    name: "SurveyForm",
+    component: SurveyForm,
+  },
 ];
 
 const router = createRouter({
@@ -107,14 +113,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isLoggedIn = Store.state.isLogin;
   const isRoadmapExist = Store.state.isRoadmap;
-  if (to.path === "/") {
-    next();
-  }
 
   if (to.path === "/login" && isLoggedIn) {
     next("/");
   } else if (to.path === "/roadmap" && !isRoadmapExist) {
-    next("/userpendingview");
+    next("/roadmap/pending");
   } else {
     next();
   }
