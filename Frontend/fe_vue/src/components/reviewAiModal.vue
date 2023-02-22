@@ -68,7 +68,7 @@ export default {
                             } else {
                                 this.pendingDot += ".";
                             }
-                            getAiReviewFin(config, 136)
+                            getAiReviewFin(config, this.$store.state.curSubExamId)
                                 .then((response) => {
                                     if (response.data.success === true) {
                                         this.issueUrl = response.data.issueUrl;
