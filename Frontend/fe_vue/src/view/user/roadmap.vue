@@ -161,7 +161,7 @@ export default {
           this.openReviewModal();
         }
       }
-      if (state === 'PURCHASED') {
+      if (state === 'PURCHASED' || state =='FAILED') {
         if (isMcqOrFrq === 'MCQ') {
           console.log("purchased button  exam id log : " + examId)
           this.$router.push({ name: 'McqExamView', params: { mcqExamId: examId } });
