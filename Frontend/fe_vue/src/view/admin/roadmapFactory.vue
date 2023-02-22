@@ -1,6 +1,8 @@
 
-<template>
-    <div class="container roadMap">
+<template >
+    <div class="container roadMap" style="overflow-y: scroll;" height="100%" >
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTMQIW18Bw-VrI1ulZyMuGfDuZP24-9pYB_FZbAYytkzA9-LoORtrJWs6nrIWCoFh7XS-ImoWiBwaS2/pubhtml?widget=true&amp;headers=false" width="100%" height="320px" class="center"></iframe>
+
         <div class = "row justify-content-center">
             <h1 class="col text-center col-8 mt-4">유저 로드맵 생성 페이지</h1>
             <form class="col col-8" @submit="onSubmit" @reset="onReset">
