@@ -53,15 +53,13 @@ export default {
             window.open(url, "_blank")
         },
         async postAiCodeReview() {
-            // const params = {
-            //     "submissionId": 149
-            // }
+            
             const config = {
                 headers: {
                     jwt: this.$store.state.jwt
                 }
             };
-            await postAiCodeReviewModal(config, 136)
+            await postAiCodeReviewModal(config, this.$store.state.curSubExamId)
                 .then((response) => {
                     if (response.data.success) {
                         const intervalId = setInterval(() => {
