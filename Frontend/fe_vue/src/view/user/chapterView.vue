@@ -6,9 +6,9 @@
     <div class="d-flex justify-content-center mt-4" style="height: 80%;width: 70%;margin: auto;overflow-y: scroll;">
       <div class="card-deck">
         <div v-for="chapter in chapters" :key="chapter">
-          <router-link :to="{ name: 'ChapterFrame', params: { chapterId: chapter.chapterId } }"
-            style="text-decoration: none; color: black;">
-            <div class="card text-center mb-4">
+          <div class="card text-center">
+            <router-link :to="{ name: 'ChapterFrame', params: { chapterId: chapter.chapterId } }"
+              style="text-decoration: none; color: black;">
               <div class="card-body chapterbody">
                 <h5 class="card-title">
                   <div>
@@ -21,8 +21,8 @@
                 </h5>
                 <p class="card-text">{{ chapter.description }}</p>
               </div>
-            </div>
-          </router-link>
+            </router-link>
+          </div>
 
         </div>
       </div>
