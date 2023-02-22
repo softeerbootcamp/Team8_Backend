@@ -1,12 +1,15 @@
 <template>
+    <button class="btn" @click="loginDemoStudentId_noRoadmap">
+        학생_로드맵x
+    </button>
+    <button class="btn" @click="loginDemoAdminId">
+        관리자
+    </button>
     <button class="btn" @click="loginDemoStudentId_NotSub">
         학생_비구독
     </button>
     <button class="btn" @click="loginDemoStudentId">
         학생_구독
-    </button>
-    <button class="btn" @click="loginDemoAdminId">
-        관리자
     </button>
 </template>
 <script>
@@ -29,6 +32,11 @@ export default {
         loginDemoStudentId_NotSub() {
             this.logout();
             this.loginForm("notPurchase@naver.com", "1234");
+            this.$router.push('/');
+        },
+        loginDemoStudentId_noRoadmap() {
+            this.logout();
+            this.loginForm("RoadmapNo@naver.com", "1234");
             this.$router.push('/');
         },
         loginDemoStudentId() {

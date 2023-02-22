@@ -1,10 +1,11 @@
 
 <template >
-    <div class="container roadMap" style="overflow-y: scroll;" height="100%" >
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTMQIW18Bw-VrI1ulZyMuGfDuZP24-9pYB_FZbAYytkzA9-LoORtrJWs6nrIWCoFh7XS-ImoWiBwaS2/pubhtml?widget=true&amp;headers=false" width="100%" height="320px" class="center"></iframe>
-
-        <div class = "row justify-content-center">
-            <h1 class="col text-center col-8 mt-4">유저 로드맵 생성 페이지</h1>
+    <div class="container roadMap" style="overflow-y: scroll;" height="100%">
+        <iframe
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTMQIW18Bw-VrI1ulZyMuGfDuZP24-9pYB_FZbAYytkzA9-LoORtrJWs6nrIWCoFh7XS-ImoWiBwaS2/pubhtml?widget=true&amp;headers=false"
+            width="100%" height="320px" class="center"></iframe>
+        <div class="row justify-content-center">
+            <h1 class="col text-center col-8 mt-4">{{ userEmail }} 로드맵 생성 페이지</h1>
             <form class="col col-8" @submit="onSubmit" @reset="onReset">
                 <div v-for="i in roadmapSubjectCnt" :key="i">
                     <div class="form-group mt-3">
@@ -23,16 +24,16 @@
                         <i class="bi bi-plus"></i>
                     </button>
                     <button class="btn btn-danger" @click="subtractRoadmapSubjectCnt">
-                        <i class="bi bi-dash"></i>                   
+                        <i class="bi bi-dash"></i>
                     </button>
                 </div>
                 <div class="col col-12 d-flex justify-content-between mt-3">
 
-                <button class="btn a mt-2" type="submit">Submit</button>
-                <button class="btn a mt-2" type="reset">Reset</button>
+                    <button class="btn a mt-2" type="submit">Submit</button>
+                    <button class="btn a mt-2" type="reset">Reset</button>
                 </div>
             </form>
-            
+
         </div>
     </div>
 </template>
@@ -45,12 +46,14 @@ export default {
         return {
             roadmapSubjectCnt: 2,
             selectedSubjects: [],
-            subjects: []
+            subjects: [],
+            userEmail: "",
         };
     },
     mounted() {
         this.selectedSubjects = [];
         this.getAllSubjectDetail();
+        this.userEmail = this.$route.params.userEmail.split('@')[0];
     },
     methods: {
         addRoadmapSubjectCnt() {
@@ -112,13 +115,11 @@ export default {
 </script>
 
 <style>
-
 .container.roadMap {
     background-color: wheat;
     margin: auto !important;
     width: 70vw !important;
     height: 80% !important;
     overflow-y: scroll;
-    border-radius: 40px 40px;
 }
 </style>

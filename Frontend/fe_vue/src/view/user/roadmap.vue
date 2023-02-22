@@ -2,7 +2,7 @@
   <div class="container big">
     <roadmapGuideVue class="roadmapGuide"></roadmapGuideVue>
     <h1 class="d-flex justify-content-center mt-4" style="color: #B01E68;">MY RoadMap</h1>
-    <div class="d-flex justify-content-center mt-4" style="height: 80vh; overflow-y: scroll;">
+    <div class="roadmapPage d-flex justify-content-center mt-4">
       <div class="card-deck " style="width: 80vh;">
         <transition-group name="subject-cards" tag="div" class="card-deck">
           <transition :key="subject.subjectId" v-for="(subject, index) in subjects" :name="'subject-card-' + index"
@@ -161,7 +161,7 @@ export default {
           this.openReviewModal();
         }
       }
-      if (state === 'PURCHASED' || state =='FAILED') {
+      if (state === 'PURCHASED' || state == 'FAILED') {
         if (isMcqOrFrq === 'MCQ') {
           console.log("purchased button  exam id log : " + examId)
           this.$router.push({ name: 'McqExamView', params: { mcqExamId: examId } });
@@ -177,6 +177,16 @@ export default {
 </script>
 
 <style>
+.roadmapPage {
+  height: 80vh;
+  overflow-y: scroll;
+
+}
+
+.roadmapPage::-webkit-scrollbar {
+  display: none;
+}
+
 .card {
   background-color: none !important;
   border-width: 0 !important;
