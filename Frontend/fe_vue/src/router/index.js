@@ -15,6 +15,7 @@ import UserPendingView from "@/view/user/userPendingView";
 import McqExamView from "@/view/exam/mcqExamView";
 import ChapterFrame from "@/view/user/chapterFrame";
 import Store from "@/store";
+import SurveyForm from "@/view/user/surveyForm";
 
 const routes = [
   {
@@ -96,6 +97,11 @@ const routes = [
     path: "/exam/purchase/:examId",
     name: "ExamPurchaseView",
     component: ExamPurchaseView,
+  },
+  {
+    path: "/survey",
+    name: "SurveyForm",
+    component: SurveyForm,
   },
 ];
 
