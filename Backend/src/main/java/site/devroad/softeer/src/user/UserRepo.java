@@ -129,10 +129,10 @@ public class UserRepo {
                         "JOIN Chapter c2 On c2.id = r.chapter_id \n" +
                         "JOIN Course c On c.id = c2.course_id \n" +
                         "JOIN Subject s On s.id =c.subject_id \n" +
-                        "WHERE es.is_passed=4 and es.exam_id = ? ", accountIdRowMapper(), examId);
+                        "WHERE es.is_passed=4 and es.exam_id = ? ", peerDetailRowMapper(), examId);
     }
 
-    private RowMapper<PeerDetail> accountIdRowMapper() {
+    private RowMapper<PeerDetail> peerDetailRowMapper() {
         return ((rs, rowNum) -> {
             String url = (rs.getString("url"));
             String userName = (rs.getString("name"));

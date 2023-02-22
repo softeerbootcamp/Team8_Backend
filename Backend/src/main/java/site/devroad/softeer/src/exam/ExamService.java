@@ -215,4 +215,12 @@ public class ExamService {
         return new GetPeerDetail(true , peerList.subList(0,2));
     }
 
+
+    public ExamSubmission getSubmissionByExamIdAndAccountId(Long examId, Long accountId){
+        Optional<ExamSubmission> op = examSubmissionRepo.findByExamIdAndAccountId(examId, accountId);
+        if(op.isEmpty())
+            throw new CustomException(ExceptionType.EXAM_SUBMISSION_NOT_FOUND);
+        return op.get();
+    }
+
 }
