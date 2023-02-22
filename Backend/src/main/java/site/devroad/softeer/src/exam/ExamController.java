@@ -107,11 +107,6 @@ public class ExamController {
 
     @GetMapping("/api/exam/peer/{examId}")
     public ResponseEntity<?> getPeerDetail(@RequestAttribute Long accountId, @PathVariable("examId") Long examId){
-        ExamSubmission submission = examService.getSubmissionByExamIdAndAccountId(examId, accountId);
-        String url = examService.getAssignmentDetail(submission.getId()).getAssignment().getUrl();
-        return new ResponseEntity<>(examService.getPeerDetail(examId),HttpStatus.OK);
+        return new ResponseEntity<>(examService.getPeerDetail(accountId, examId),HttpStatus.OK);
     }
-
-
-
 }
