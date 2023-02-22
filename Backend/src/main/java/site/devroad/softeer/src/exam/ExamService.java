@@ -208,11 +208,19 @@ public class ExamService {
 
     }
 
-    public GetPeerDetail getPeerDetail(Long examId){
+    public GetPeerDetail getPeerDetail(Long accountId, Long examId){
 
-        List<PeerDetail> peerList = userRepo.findPeerDetailByExamId(examId);
+        List<PeerDetail> peerList = userRepo.findPeerDetailByExamId(accountId, examId);
         Collections.shuffle(peerList);
         return new GetPeerDetail(true , peerList.subList(0,2));
+    }
+
+
+    public ExamSubmission getSubmissionByExamIdAndAccountId(Long examId, Long accountId){
+        Optional<ExamSubmission> op = examSubmissionRepo.findByExamIdAndAccountId(examId, accountId);
+        if(op.isEmpty())
+            throw new CustomException(ExceptionType.EXAM_SUBMISSION_NOT_FOUND);
+        return op.get();
     }
 
 }
