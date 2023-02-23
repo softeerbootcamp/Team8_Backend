@@ -4,7 +4,7 @@
             <div class="modal-wrapper">
                 <div class="modal-container">
                     <div class="modal-header mt-1">
-                        테스트를 통과하셨군요! 이후 과정을 어떻게 진행하시겠어요?
+                        제출을 완료하셨군요! 이후 과정을 어떻게 진행하시겠어요?
                     </div>
                     <div class="modal-body">
                         <div class="row row-cols-1 row-cols-md-2 g-4 mt-1" style="height:100%">
