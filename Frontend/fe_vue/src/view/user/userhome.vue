@@ -27,10 +27,13 @@
         </div>
       </div>
       <div class="circle-expain1">
-        : 만큼 현재 과목에서 수강하셨군요! 다음 강의는 {{ curChapterName }} 입니다!
+        : 만큼 현재 과목에서 수강하셨군요!
       </div>
     </div>
     <div class="container">
+      <div class="nextChapterText">
+        다음 강의는 {{ curChapterName }} 입니다!
+      </div>
       <router-link :to="{ name: 'RoadMap' }" v-if="!isRoadmapStarted" style="text-decoration: none;">
         <button class="btn a d-grid gap-2 col-2 mx-auto mt-4" style=" color:white;" v-if="!roadMapShowClicked">
           로드맵 시작하기!
@@ -158,6 +161,12 @@ export default {
   height: 70% !important;
   border-radius: 40px 40px;
 
+
+}
+
+.nextChapterText {
+  text-align: center;
+  margin-top: 30px;
 
 }
 </style>
