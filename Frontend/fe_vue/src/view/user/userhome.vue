@@ -2,7 +2,7 @@
   <div class="container big userhome">
     <div class="container mt-5" style="display:flex; width:60%">
       <div class="circle-expain1">
-        {{ userName }}님의 현재 과목 전체 진행도 :
+        {{ userName }}님의 현재 로드맵 진행도 :
       </div>
       <div class="row" style="display:flex;flex-direction:column;margin-left:auto">
         <div class="col-md-3 col-sm-6 mt-4">
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="circle-expain1">
-        : 만큼 현재 과목에서 수강하셨군요!
+        : 만큼 현재 과목에서 수강하셨군요! 다음 강의는 {{ curChapterName }} 입니다!
       </div>
     </div>
     <div class="container">
@@ -55,7 +55,6 @@ export default {
     CircleProgress,
 
   },
-
   name: "UserHome",
   data() {
     return {
@@ -72,6 +71,7 @@ export default {
       subscribe: false,
       jwt: null,
       subjectPercentage: 0,
+      curChapterName: "",
     };
   },
   mounted() {
@@ -119,6 +119,7 @@ export default {
           this.chapterPercent = response.data.chapterPercent;
           this.curChapterPK = response.data.curChapterPK;
           this.subscribe = response.data.subscribe;
+          this.curChapterName = response.data.curChapterName;
           this.setProgressbar();
         })
         .catch(function (error) {
