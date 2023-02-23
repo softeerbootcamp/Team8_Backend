@@ -10,7 +10,6 @@ const axiosService = axios.create({
 });
 function putFinishChapter(config, param) {
   axiosService.headers = config;
-  console.log("configconfigconfig : " + config);
   return axiosService.put("api/chapter/" + param);
 }
 //AI Review Fin GET /api/exam/ai/{:submissionId}
