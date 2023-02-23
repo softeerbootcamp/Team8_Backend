@@ -158,7 +158,7 @@ export default {
   background-color: wheat;
   margin: auto;
   width: 70%;
-  height: 70% !important;
+  height: 80% !important;
   border-radius: 40px 40px;
 
 
