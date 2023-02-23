@@ -15,18 +15,18 @@
           </router-link>
         </b>
         <b v-if="isLogin">
-          <router-link :to="{ name: 'Home' }" @click="logout">
-            <i class="bi bi-person-slash" style="color : #B01E68;font-size: 26px;"></i>
+          <router-link :to="{ name: 'Home' }" @click="logout" style="color : #B01E68">
+            LogOut
           </router-link>
         </b>
         <b v-if="isLogin">
-          <router-link :to="{ name: 'RoadMap' }">
-            <i class="bi bi-signpost-split-fill" style="color : #B01E68;font-size: 26px;"></i>
+          <router-link :to="{ name: 'RoadMap' }" style="color : #B01E68;">
+            MyRoadmap
           </router-link>
         </b>
         <b v-if="isLogin">
-          <router-link :to="{ name: 'UserHome' }">
-            <i class="bi bi-person-circle" style="color : #B01E68;font-size: 26px;"></i>
+          <router-link :to="{ name: 'UserHome' }" style="color : #B01E68;">
+            MyPage
           </router-link>
         </b>
       </div>
@@ -38,19 +38,19 @@
           style="color : #B01E68">DevRoad</router-link>
 
         <b v-if="isLogin">
-          <router-link :to="{ name: 'Home' }" @click="logout">
-            <i class="bi bi-person-slash" style="color : #B01E68;font-size: 26px;"></i>
+          <router-link :to="{ name: 'Home' }" @click="logout" style="color : #B01E68;">
+            LogOut
           </router-link>
         </b>
         <b v-if="isLogin">
-          <router-link :to="{ name: 'AdminHome' }">
-            <i class="bi bi-signpost-split" style="color : #B01E68;font-size: 26px;"></i>
+          <router-link :to="{ name: 'AdminHome' }" style="color : #B01E68;">
+            Roadmap Maker
           </router-link>
 
         </b>
         <b v-if="isLogin">
-          <router-link :to="{ name: 'AdminUserView' }">
-            <i class="bi bi-people-fill" style="color : #B01E68;font-size: 26px;"></i>
+          <router-link :to="{ name: 'AdminUserView' }" style="color : #B01E68;">
+            All User
           </router-link>
         </b>
       </div>

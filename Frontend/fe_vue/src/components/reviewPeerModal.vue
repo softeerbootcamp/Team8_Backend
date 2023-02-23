@@ -4,7 +4,7 @@
             <div class="modal-wrapper">
                 <div class="modal-container">
                     <h4 class="modal-header-peer mt-1" style="text-align:center !important;
-                                color: #B01E68;">
+                                            color: #B01E68;">
                         peer 와 함께하는 리뷰입니다
                     </h4>
                     <div class="modal-body">
@@ -43,9 +43,9 @@
                     <footer class="modal-footer">
                         <slot name="footer">
                             <div>
-                                <button class="btn btn-dark mr-1" style="margin:10px"
+                                <button class="btn a mr-1" style="margin-right:10px"
                                     @click="$emit('card-selected', 'gobackToSelectFromPeer')">뒤로가기</button>
-                                <button class="btn btn-dark" @click="$emit('close')">창닫기</button>
+                                <button class="btn a" @click="$emit('close')">창닫기</button>
 
                             </div>
                         </slot>
